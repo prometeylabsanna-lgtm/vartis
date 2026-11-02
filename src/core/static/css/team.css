@@ -1,0 +1,289 @@
+/* About — Засновники (Pro-kompaniyu.dc.html) */
+
+#team.band-dark {
+  scroll-margin-top: 100px;
+}
+
+.founders {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.founders__head {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.founders__lead {
+  margin: 0;
+  max-width: 480px;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.founders__list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.founder-card {
+  border-radius: var(--radius-panel);
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 24px 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+}
+
+.founder-card__media {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.founder-card__photo {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 24px;
+  background: #12263a;
+  cursor: zoom-in;
+}
+
+.founder-card__email {
+  font-size: 15px;
+  color: var(--color-gold-light);
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.founder-card__email:hover {
+  color: var(--color-white);
+}
+
+.founder-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.founder-card__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.founder-card__name {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1.05;
+  color: var(--color-white);
+}
+
+.founder-card__role {
+  margin: 0;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--color-gold-light);
+}
+
+.founder-card__regalia {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.founder-card__bio {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.founder-card__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+
+.founder-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.founder-block__label {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.founder-block__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.founder-block__list li {
+  display: flex;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.founder-block__dot {
+  width: 7px;
+  height: 7px;
+  margin-top: 0.6em;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(112.588deg, #b58b4a -0.56%, #b58b4a 43.58%, #b58b4a 100.73%);
+}
+
+.founder-path {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.founder-path__item {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 14px;
+  padding-bottom: 16px;
+}
+
+.founder-path__bullet {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  border-radius: 50%;
+  border: 2px solid #b58b4a;
+  box-sizing: border-box;
+}
+
+.founder-path__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.founder-path__title {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--color-white);
+}
+
+.founder-path__year {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.photo-lb {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  margin: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 24px;
+  background: rgba(11, 22, 38, 0.88);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: zoom-out;
+}
+
+.photo-lb[open],
+.photo-lb.is-open {
+  display: flex;
+}
+
+.photo-lb__close {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  width: 49px;
+  height: 49px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.photo-lb__img {
+  display: block;
+  max-width: min(90vw, 900px);
+  max-height: 80vh;
+  border-radius: 16px;
+  object-fit: contain;
+  cursor: default;
+}
+
+.photo-lb__caption {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-white);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .founder-card {
+    padding: 40px;
+  }
+
+  .founder-card__cols {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 28px 40px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .founder-card {
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 32px 48px;
+  }
+
+  .founder-card__photo {
+    max-width: none;
+  }
+}

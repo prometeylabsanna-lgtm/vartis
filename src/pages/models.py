@@ -76,12 +76,24 @@ class AboutPage(SingletonModel, SEOFields):
     intro_text = models.TextField('Текст «Про нас»', blank=True)
     principles_title = models.CharField('Заголовок принципів', max_length=200, default='Принципи')
     team_title = models.CharField('Заголовок команди', max_length=200, default='Команда')
+    team_lead = models.TextField('Лід команди', blank=True)
+    science_eyebrow = models.CharField('Eyebrow науки', max_length=80, blank=True, default='Наукова основа')
     science_title = models.CharField(
         'Заголовок методології',
         max_length=200,
         default='Методологія та партнери',
     )
     science_text = models.TextField('Текст методології', blank=True)
+    science_doi_url = models.URLField('DOI посилання', blank=True)
+    science_doi_label = models.CharField('DOI підпис', max_length=200, blank=True)
+    partners_eyebrow = models.CharField(
+        'Eyebrow партнерів',
+        max_length=80,
+        blank=True,
+        default='Міжнародна діяльність',
+    )
+    partners_title = models.CharField('Заголовок партнерів', max_length=200, blank=True)
+    partners_text = models.TextField('Текст партнерів', blank=True)
     stats_title = models.CharField('Заголовок цифр', max_length=200, default='Ключові цифри')
     process_title = models.CharField('Заголовок процесу', max_length=200, default='Як ми працюємо')
 
@@ -104,6 +116,12 @@ class AboutPage(SingletonModel, SEOFields):
 
 class AboutPrinciple(models.Model):
     page = models.ForeignKey(AboutPage, on_delete=models.CASCADE, related_name='principles')
+    icon = models.CharField(
+        'Іконка',
+        max_length=64,
+        default='HiconOutlineShieldTick',
+        help_text='Ключ з vartis_icons',
+    )
     title = models.CharField('Заголовок', max_length=120)
     text = models.TextField('Текст')
     order = models.PositiveIntegerField('Порядок', default=0)
@@ -120,9 +138,14 @@ class AboutPrinciple(models.Model):
 class TeamMember(models.Model):
     page = models.ForeignKey(AboutPage, on_delete=models.CASCADE, related_name='team')
     name = models.CharField("Ім'я", max_length=120)
-    role = models.CharField('Посада', max_length=200)
+    role = models.CharField('Посада', max_length=300)
+    regalia = models.CharField('Регалії', max_length=400, blank=True)
+    email = models.EmailField('Email', blank=True)
     bio = models.TextField('Біографія', blank=True)
     photo = models.ImageField('Фото', upload_to='pages/team/', blank=True)
+    photo_position = models.CharField('Позиція фото', max_length=32, blank=True, default='50% 20%')
+    expertise = models.JSONField('Ключова експертиза', default=list, blank=True)
+    career_path = models.JSONField('Професійний шлях', default=list, blank=True)
     order = models.PositiveIntegerField('Порядок', default=0)
 
     class Meta:

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin, TabularInline
+from unfold.admin import ModelAdmin, StackedInline, TabularInline
 
 from .models import (
     AboutPage,
@@ -67,11 +67,16 @@ class HomePageAdmin(SingletonAdmin):
 class AboutPrincipleInline(TabularInline):
     model = AboutPrinciple
     extra = 0
+    fields = ('icon', 'title', 'text', 'order')
 
 
-class TeamMemberInline(TabularInline):
+class TeamMemberInline(StackedInline):
     model = TeamMember
     extra = 0
+    fields = (
+        'name', 'role', 'regalia', 'email', 'bio',
+        'photo', 'photo_position', 'expertise', 'career_path', 'order',
+    )
 
 
 class AboutStatInline(TabularInline):
@@ -97,7 +102,10 @@ class AboutPageAdmin(SingletonAdmin):
         ('Контент', {
             'fields': (
                 'intro_title', 'intro_text', 'principles_title',
-                'team_title', 'science_title', 'science_text',
+                'team_title', 'team_lead',
+                'science_eyebrow', 'science_title', 'science_text',
+                'science_doi_url', 'science_doi_label',
+                'partners_eyebrow', 'partners_title', 'partners_text',
                 'stats_title', 'process_title',
             ),
         }),

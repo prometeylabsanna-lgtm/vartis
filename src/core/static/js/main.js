@@ -115,10 +115,49 @@
     });
   });
 
+  var photoLb = document.getElementById('photo-lb');
+  var photoImg = document.getElementById('photo-lb-img');
+  var photoCap = document.getElementById('photo-lb-caption');
+  function setPhotoLb(open, src, title) {
+    if (!photoLb) return;
+    if (open && photoImg) {
+      photoImg.src = src || '';
+      photoImg.alt = title || '';
+      if (photoCap) photoCap.textContent = title || '';
+      photoLb.removeAttribute('hidden');
+      photoLb.classList.add('is-open');
+      photoLb.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    } else {
+      photoLb.classList.remove('is-open');
+      photoLb.setAttribute('hidden', '');
+      photoLb.setAttribute('aria-hidden', 'true');
+      if (photoImg) photoImg.removeAttribute('src');
+      document.body.classList.remove('modal-open');
+    }
+  }
+  document.querySelectorAll('[data-action="zoom-photo"]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setPhotoLb(true, el.getAttribute('data-src'), el.getAttribute('data-title'));
+    });
+  });
+  document.querySelectorAll('[data-action="close-photo"]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setPhotoLb(false);
+    });
+  });
+  if (photoLb) {
+    photoLb.addEventListener('click', function (e) {
+      if (e.target === photoLb) setPhotoLb(false);
+    });
+  }
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       setModal(false);
       setMenu(false);
+      setPhotoLb(false);
       if (svcWrap) svcWrap.classList.remove('is-open');
     }
   });

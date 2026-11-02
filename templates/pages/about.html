@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static vartis_icons %}
 
 {% block content %}
 <div id="top">
@@ -29,13 +29,16 @@
   </section>
 
   <section class="section" aria-labelledby="pr-title">
-    <div class="container">
+    <div class="container about-principles">
       <h2 id="pr-title" class="section__title">{{ page.principles_title }}</h2>
-      <div class="adv-grid mt-40">
+      <div class="adv-grid">
         {% for p in page.principles.all %}
         <article class="adv-card">
-          <h3 class="adv-card__title">{{ p.title }}</h3>
-          <p class="adv-card__text">{{ p.text }}</p>
+          <div class="adv-card__icon" aria-hidden="true">{% icon p.icon 60 %}</div>
+          <div class="adv-card__body">
+            <h3 class="adv-card__title">{{ p.title }}</h3>
+            <p class="adv-card__text">{{ p.text }}</p>
+          </div>
         </article>
         {% endfor %}
       </div>
@@ -43,38 +46,120 @@
   </section>
 
   <section id="team" class="band-dark" aria-labelledby="team-title">
-    <div class="container">
-      <h2 id="team-title" class="section__title section__title--light">{{ page.team_title }}</h2>
-      <div class="team-grid mt-40">
+    <div class="container founders">
+      <div class="founders__head">
+        <h2 id="team-title" class="section__title section__title--light">{{ page.team_title }}</h2>
+        {% if page.team_lead %}<p class="founders__lead">{{ page.team_lead }}</p>{% endif %}
+      </div>
+      <div class="founders__list">
         {% for m in page.team.all %}
-        <article class="team-card">
-          <div class="team-card__photo">
-            {% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" loading="lazy" width="480" height="480">{% endif %}
+        <article class="founder-card">
+          <div class="founder-card__media">
+            {% if m.photo %}
+            <img
+              class="founder-card__photo"
+              src="{{ m.photo.url }}"
+              alt="{{ m.name }}"
+              loading="lazy"
+              width="480"
+              height="600"
+              style="object-position: {{ m.photo_position|default:'50% 20%' }}"
+              data-action="zoom-photo"
+              data-src="{{ m.photo.url }}"
+              data-title="{{ m.name }}"
+            >
+            {% endif %}
+            {% if m.email %}
+            <a class="founder-card__email" href="mailto:{{ m.email }}">{{ m.email }}</a>
+            {% endif %}
           </div>
-          <h3 class="team-card__name">{{ m.name }}</h3>
-          <p class="team-card__role">{{ m.role }}</p>
-          {% if m.bio %}<p>{{ m.bio }}</p>{% endif %}
+          <div class="founder-card__body">
+            <div class="founder-card__intro">
+              <h3 class="founder-card__name">{{ m.name }}</h3>
+              <p class="founder-card__role">{{ m.role }}</p>
+              {% if m.regalia %}<p class="founder-card__regalia">{{ m.regalia }}</p>{% endif %}
+            </div>
+            {% if m.bio %}<p class="founder-card__bio">{{ m.bio }}</p>{% endif %}
+            <div class="founder-card__cols">
+              {% if m.expertise %}
+              <div class="founder-block">
+                <span class="founder-block__label">Ключова експертиза</span>
+                <ul class="founder-block__list">
+                  {% for e in m.expertise %}
+                  <li><span class="founder-block__dot" aria-hidden="true"></span><span>{{ e }}</span></li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+              {% if m.career_path %}
+              <div class="founder-block">
+                <span class="founder-block__label">Професійний шлях</span>
+                <ol class="founder-path">
+                  {% for p in m.career_path %}
+                  <li class="founder-path__item">
+                    <span class="founder-path__bullet" aria-hidden="true"></span>
+                    <span class="founder-path__text">
+                      <span class="founder-path__title">{{ p.t }}</span>
+                      {% if p.y %}<span class="founder-path__year">{{ p.y }}</span>{% endif %}
+                    </span>
+                  </li>
+                  {% endfor %}
+                </ol>
+              </div>
+              {% endif %}
+            </div>
+          </div>
         </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
+  <div
+    class="photo-lb"
+    id="photo-lb"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-label="Перегляд фото"
+    hidden
+  >
+    <button type="button" class="photo-lb__close" data-action="close-photo" aria-label="Закрити">×</button>
+    <img class="photo-lb__img" id="photo-lb-img" src="" alt="">
+    <p class="photo-lb__caption" id="photo-lb-caption"></p>
+  </div>
+
   <section class="section" aria-labelledby="sci-title">
-    <div class="container">
-      <h2 id="sci-title" class="section__title">{{ page.science_title }}</h2>
-      <p class="section__lead">{{ page.science_text }}</p>
+    <div class="container science-grid">
+      <article class="science-card">
+        {% if page.science_eyebrow %}<span class="science-card__eyebrow">{{ page.science_eyebrow }}</span>{% endif %}
+        <h2 id="sci-title" class="science-card__title">{{ page.science_title }}</h2>
+        {% if page.science_text %}<p class="science-card__text">{{ page.science_text }}</p>{% endif %}
+        {% if page.science_doi_url %}
+        <a
+          class="science-card__link"
+          href="{{ page.science_doi_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ page.science_doi_label|default:page.science_doi_url }} →</a>
+        {% endif %}
+      </article>
+      <article class="science-card science-card--lift">
+        {% if page.partners_eyebrow %}<span class="science-card__eyebrow">{{ page.partners_eyebrow }}</span>{% endif %}
+        {% if page.partners_title %}<h2 class="science-card__title">{{ page.partners_title }}</h2>{% endif %}
+        {% if page.partners_text %}<p class="science-card__text">{{ page.partners_text }}</p>{% endif %}
+      </article>
     </div>
   </section>
 
   <section class="section" aria-labelledby="num-title">
-    <div class="container">
+    <div class="container about-stats">
       <h2 id="num-title" class="section__title">{{ page.stats_title }}</h2>
-      <div class="stats-grid mt-40">
+      <div class="about-stats__grid">
         {% for s in page.key_stats %}
-        <div class="stat-card">
-          <div class="stat-card__value">{{ s.value }}</div>
-          <div class="stat-card__label">{{ s.label }}</div>
+        <div class="about-stats__card">
+          <div class="about-stats__value">{{ s.value }}</div>
+          <div class="about-stats__label">{{ s.label }}</div>
         </div>
         {% endfor %}
       </div>
@@ -82,16 +167,18 @@
   </section>
 
   <section class="section section--end" aria-labelledby="how-title">
-    <div class="container">
+    <div class="container about-how">
       <h2 id="how-title" class="section__title">{{ page.process_title }}</h2>
-      <ol class="step-list mt-40">
+      <ol class="about-how__list">
         {% for step in page.process_steps.all %}
-        <li class="step-item">
-          <span class="step-item__num">{{ step.number }}</span>
-          <div>
-            <h3 class="step-item__title">{{ step.title }}</h3>
-            <p class="step-item__text">{{ step.text }}</p>
+        <li class="about-how__item">
+          <div class="about-how__track" aria-hidden="true">
+            <span class="about-how__line"></span>
+            <span class="about-how__dot"></span>
           </div>
+          <span class="about-how__num">{{ step.number }}</span>
+          <h3 class="about-how__title">{{ step.title }}</h3>
+          <p class="about-how__text">{{ step.text }}</p>
         </li>
         {% endfor %}
       </ol>

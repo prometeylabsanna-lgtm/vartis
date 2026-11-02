@@ -135,33 +135,151 @@ class Command(BaseCommand):
         )
         page.principles_title = 'Наші принципи'
         page.team_title = 'Засновники'
+        page.team_lead = (
+            'Поєднуємо практичний досвід роботи в правоохоронних органах '
+            'із науковим підходом до аналізу інформації'
+        )
+        page.science_eyebrow = 'Наукова основа'
         page.science_title = 'Власний сервіс VI Analysis'
         page.science_text = (
+            'Методологічна основа сервісу швидкої перевірки контрагентів викладена '
+            'у статті засновників компанії В. В. Аброськіна та С. В. Тіхонова '
+            '«Цифрова екосистема перевірки контрагентів…» («Право і суспільство», № 1/2026).'
+        )
+        page.science_doi_url = 'https://doi.org/10.32842/2078-3736/2026.1.1.28'
+        page.science_doi_label = 'doi.org/10.32842/2078-3736/2026.1.1.28'
+        page.partners_eyebrow = 'Міжнародна діяльність'
+        page.partners_title = 'Для бізнесу з інтересами за межами України'
+        page.partners_text = (
             'Інтереси бізнесу не обмежуються кордонами, тож і наша робота теж. '
             'Партнерами Vartis Intelligence є провідні профільні компанії, що '
-            'спеціалізуються на пошуку та аналізі інформації.'
+            'спеціалізуються на пошуку та аналізі інформації в інтересах фізичних '
+            'і юридичних осіб. Вони працюють виключно у спосіб, дозволений '
+            'національним законодавством держав Європейського Союзу.'
         )
         page.stats_title = 'Ключові цифри'
         page.process_title = 'Як ми працюємо'
         assign_image(page.hero_image, 'about-bg.png')
         page.save()
 
+        principles = [
+            ('HiconOutlineShieldTick', 'Законність',
+             'Усі дані отримуємо виключно законним шляхом — з відкритих джерел, державних реєстрів та інших дозволених законом ресурсів.'),
+            ('HiconOutlineLock3', 'Конфіденційність',
+             'Факт звернення, зміст запиту та результати роботи залишаються відомими лише вам.'),
+            ('HiconOutlineScan5', 'Експертиза',
+             'Поєднуємо практичний досвід роботи в правоохоронних органах із науковим підходом до аналізу інформації.'),
+            ('HiconOutlineCalling1', 'Практичний результат',
+             'Не просто збираємо факти, а пояснюємо, що вони означають для вашого бізнесу, і даємо конкретні рекомендації.'),
+        ]
         if not page.principles.exists():
-            for i, (title, text) in enumerate([
-                ('Законність', 'Усі дані отримуємо виключно законним шляхом — з відкритих джерел, державних реєстрів та інших дозволених законом ресурсів.'),
-                ('Конфіденційність', 'Факт звернення, зміст запиту та результати роботи залишаються відомими лише вам.'),
-                ('Експертиза', 'Поєднуємо практичний досвід роботи в правоохоронних органах із науковим підходом до аналізу інформації.'),
-                ('Практичний результат', 'Не просто збираємо факти, а пояснюємо, що вони означають для вашого бізнесу, і даємо конкретні рекомендації.'),
-            ]):
-                AboutPrinciple.objects.create(page=page, title=title, text=text, order=i)
+            for i, (icon, title, text) in enumerate(principles):
+                AboutPrinciple.objects.create(
+                    page=page, icon=icon, title=title, text=text, order=i,
+                )
+        else:
+            for i, (icon, title, text) in enumerate(principles):
+                AboutPrinciple.objects.filter(page=page, title=title).update(
+                    icon=icon, text=text, order=i,
+                )
 
-        if not page.team.exists():
-            for i, (name, role, photo) in enumerate([
-                ('В. В. Аброськін', 'Співзасновник', 'team/abroskin.jpg'),
-                ('С. В. Тіхонов', 'Співзасновник', 'team/tikhonov.jpg'),
-            ]):
-                m = TeamMember(page=page, name=name, role=role, order=i)
-                assign_image(m.photo, photo)
+        team_data = [
+            {
+                'name': 'В’ячеслав Аброськін',
+                'photo': 'team/abroskin.jpg',
+                'photo_position': '50% 20%',
+                'email': 'vaceslavabroskin46@gmail.com',
+                'role': 'Співзасновник і директор ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»',
+                'regalia': (
+                    'Кандидат юридичних наук · Адвокат, партнер FOMIN PARTNERS · '
+                    'Генерал поліції ІІ рангу у відставці'
+                ),
+                'bio': (
+                    'Понад 25 років професійного досвіду в правоохоронній системі, а також у сферах '
+                    'державного управління, військової служби, юридичної практики, кримінального '
+                    'аналізу та корпоративної безпеки. Обіймав посаду першого заступника Голови '
+                    'Національної поліції — керівника кримінальної поліції; був ініціатором '
+                    'створення підрозділів кримінального аналізу.'
+                ),
+                'expertise': [
+                    'Кримінальний аналіз і робота з інформацією',
+                    'Протидія організованій злочинності та оперативно-розшукова діяльність',
+                    'Корпоративна безпека й оцінка безпекових ризиків',
+                    'Корпоративне право, захист інтересів бізнесу та управління юридичними ризиками',
+                    'Забезпечення публічної безпеки в кризових умовах',
+                ],
+                'career_path': [
+                    {'t': 'Співзасновник і директор ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»', 'y': 'Нині'},
+                    {'t': 'Адвокат, партнер FOMIN PARTNERS', 'y': 'Нині'},
+                    {'t': 'Збройні Сили України, підполковник', 'y': '2022–2024'},
+                    {'t': 'Ректор Одеського державного університету внутрішніх справ', 'y': '2019–2021'},
+                    {
+                        't': 'Перший заступник Голови Національної поліції України — керівник кримінальної поліції',
+                        'y': '2017–2019',
+                    },
+                    {'t': 'Начальник ГУ Національної поліції в Донецькій області', 'y': '2014–2017'},
+                    {'t': 'Карний розшук органів внутрішніх справ', 'y': 'З 1994'},
+                ],
+            },
+            {
+                'name': 'Сергій Тіхонов',
+                'photo': 'team/tikhonov.jpg',
+                'photo_position': '50% 15%',
+                'email': 'tikhonov31@gmail.com',
+                'role': 'Співзасновник ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»',
+                'regalia': 'Доктор філософії у галузі права · Генерал поліції ІІІ рангу у відставці',
+                'bio': (
+                    'Понад 25 років досвіду в правоохоронній системі — від оперативника до керівника '
+                    'центрального підрозділу карного розшуку, служби загальнодержавного рівня. '
+                    'Колишній завідувач кафедри оперативно-розшукової діяльності Національної '
+                    'академії внутрішніх справ.'
+                ),
+                'expertise': [
+                    'Пошук, перевірка та аналіз інформації',
+                    'Оперативно-розшукова діяльність і карний розшук',
+                    'Криміналістика',
+                    'Правове регулювання та реформування правоохоронної діяльності',
+                    'Методичне забезпечення практичної діяльності',
+                ],
+                'career_path': [
+                    {'t': 'Співзасновник ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»', 'y': 'Нині'},
+                    {'t': 'Завідувач кафедри оперативно-розшукової діяльності НАВС', 'y': ''},
+                    {'t': 'Керівник центрального підрозділу карного розшуку', 'y': ''},
+                    {'t': 'Підрозділи карного розшуку', 'y': ''},
+                ],
+            },
+        ]
+        existing_team = list(page.team.all())
+        if not existing_team:
+            for i, row in enumerate(team_data):
+                m = TeamMember(
+                    page=page,
+                    name=row['name'],
+                    role=row['role'],
+                    regalia=row['regalia'],
+                    email=row['email'],
+                    bio=row['bio'],
+                    photo_position=row['photo_position'],
+                    expertise=row['expertise'],
+                    career_path=row['career_path'],
+                    order=i,
+                )
+                assign_image(m.photo, row['photo'])
+                m.save()
+        else:
+            for i, row in enumerate(team_data):
+                m = existing_team[i] if i < len(existing_team) else TeamMember(page=page)
+                m.name = row['name']
+                m.role = row['role']
+                m.regalia = row['regalia']
+                m.email = row['email']
+                m.bio = row['bio']
+                m.photo_position = row['photo_position']
+                m.expertise = row['expertise']
+                m.career_path = row['career_path']
+                m.order = i
+                if not m.photo:
+                    assign_image(m.photo, row['photo'])
                 m.save()
 
         if not page.stats.filter(block=AboutStat.BLOCK_INTRO).exists():
@@ -175,27 +293,52 @@ class Command(BaseCommand):
                     value=value, label=label, order=i,
                 )
 
-        if not page.stats.filter(block=AboutStat.BLOCK_KEY).exists():
-            for i, (value, label) in enumerate([
-                ('25+', 'років досвіду засновників'),
-                ('1000', 'проведених перевірок'),
-                ('50+', 'клієнтів'),
-                ('10+', 'реалізованих проєктів'),
-            ]):
+        key_metrics = [
+            ('25+', 'років досвіду засновників'),
+            ('1000', 'проведених перевірок'),
+            ('50+', 'клієнтів'),
+            ('10+', 'реалізованих проєктів'),
+        ]
+        existing_key = list(page.stats.filter(block=AboutStat.BLOCK_KEY))
+        for i, (value, label) in enumerate(key_metrics):
+            if i < len(existing_key):
+                row = existing_key[i]
+                row.value = value
+                row.label = label
+                row.order = i
+                row.save(update_fields=['value', 'label', 'order'])
+            else:
                 AboutStat.objects.create(
                     page=page, block=AboutStat.BLOCK_KEY,
                     value=value, label=label, order=i,
                 )
 
-        if not page.process_steps.exists():
-            for i, (num, title, text) in enumerate([
-                ('01', 'Запит', 'Ви описуєте задачу — у режимі повної конфіденційності.'),
-                ('02', 'Визначення обсягу', 'Разом погоджуємо, що саме потрібно встановити, у які строки та в якому форматі.'),
-                ('03', 'Дослідження', 'Збираємо та аналізуємо інформацію виключно законними методами.'),
-                ('04', 'Висновок', 'Ви отримуєте структурований звіт із виявленими ризиками та рекомендаціями.'),
-                ('05', 'Супровід', 'За потреби пояснюємо результати та забезпечуємо подальший моніторинг.'),
-            ]):
-                AboutProcessStep.objects.create(page=page, number=num, title=title, text=text, order=i)
+        process_steps = [
+            ('01', 'Запит', 'Ви описуєте задачу — у режимі повної конфіденційності.'),
+            ('02', 'Визначення обсягу', 'Разом погоджуємо, що саме потрібно встановити, у які строки та в якому форматі.'),
+            ('03', 'Дослідження', 'Збираємо та аналізуємо інформацію виключно законними методами.'),
+            ('04', 'Висновок', 'Ви отримуєте структурований звіт із виявленими ризиками та рекомендаціями.'),
+            ('05', 'Супровід', 'За потреби пояснюємо результати, відповідаємо на запитання та забезпечуємо подальший моніторинг.'),
+        ]
+        existing_steps = list(page.process_steps.all())
+        if not existing_steps:
+            for i, (num, title, text) in enumerate(process_steps):
+                AboutProcessStep.objects.create(
+                    page=page, number=num, title=title, text=text, order=i,
+                )
+        else:
+            for i, (num, title, text) in enumerate(process_steps):
+                if i < len(existing_steps):
+                    step = existing_steps[i]
+                    step.number = num
+                    step.title = title
+                    step.text = text
+                    step.order = i
+                    step.save(update_fields=['number', 'title', 'text', 'order'])
+                else:
+                    AboutProcessStep.objects.create(
+                        page=page, number=num, title=title, text=text, order=i,
+                    )
 
     def seed_services(self):
         idx = ServicesIndex.load()
