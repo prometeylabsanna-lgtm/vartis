@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/about-bg.png' shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
+  {% endif %}
+
+  <section id="intro" class="section" aria-labelledby="intro-title">
+    <div class="container about-intro">
+      <h2 id="intro-title" class="section__title">{{ page.intro_title }}</h2>
+      <div class="about-intro__copy section__lead--ink">
+        {{ page.intro_text|linebreaks }}
+      </div>
+    </div>
+    {% if page.intro_figures %}
+    <div class="container about-figures" role="list">
+      {% for s in page.intro_figures %}
+      <div class="about-figures__item" role="listitem">
+        <span class="about-figures__value">{{ s.value }}</span>
+        <span class="about-figures__label">{{ s.label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="section" aria-labelledby="pr-title">
+    <div class="container">
+      <h2 id="pr-title" class="section__title">{{ page.principles_title }}</h2>
+      <div class="adv-grid mt-40">
+        {% for p in page.principles.all %}
+        <article class="adv-card">
+          <h3 class="adv-card__title">{{ p.title }}</h3>
+          <p class="adv-card__text">{{ p.text }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="band-dark" aria-labelledby="team-title">
+    <div class="container">
+      <h2 id="team-title" class="section__title section__title--light">{{ page.team_title }}</h2>
+      <div class="team-grid mt-40">
+        {% for m in page.team.all %}
+        <article class="team-card">
+          <div class="team-card__photo">
+            {% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" loading="lazy" width="480" height="480">{% endif %}
+          </div>
+          <h3 class="team-card__name">{{ m.name }}</h3>
+          <p class="team-card__role">{{ m.role }}</p>
+          {% if m.bio %}<p>{{ m.bio }}</p>{% endif %}
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="sci-title">
+    <div class="container">
+      <h2 id="sci-title" class="section__title">{{ page.science_title }}</h2>
+      <p class="section__lead">{{ page.science_text }}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="num-title">
+    <div class="container">
+      <h2 id="num-title" class="section__title">{{ page.stats_title }}</h2>
+      <div class="stats-grid mt-40">
+        {% for s in page.key_stats %}
+        <div class="stat-card">
+          <div class="stat-card__value">{{ s.value }}</div>
+          <div class="stat-card__label">{{ s.label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--end" aria-labelledby="how-title">
+    <div class="container">
+      <h2 id="how-title" class="section__title">{{ page.process_title }}</h2>
+      <ol class="step-list mt-40">
+        {% for step in page.process_steps.all %}
+        <li class="step-item">
+          <span class="step-item__num">{{ step.number }}</span>
+          <div>
+            <h3 class="step-item__title">{{ step.title }}</h3>
+            <p class="step-item__text">{{ step.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+</div>
+{% endblock %}

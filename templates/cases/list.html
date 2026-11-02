@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% include 'partials/hero.html' with title=h1 text='Реалізовані проєкти та демонстраційні приклади' fallback_static='images/hero.png' shade=True %}
+
+  <section id="cases-feed" class="section section--end" aria-label="Галерея кейсів">
+    <div class="container">
+      {% include 'cases/partials/grid.html' %}
+    </div>
+  </section>
+</div>
+{% endblock %}

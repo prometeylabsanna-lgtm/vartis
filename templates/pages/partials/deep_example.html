@@ -1,0 +1,55 @@
+<section id="example" class="band-dark band-dark--flush" aria-labelledby="ex-title">
+  <div class="container deep-example">
+    <div class="section__head">
+      <h2 id="ex-title" class="section__title section__title--light">{{ d.example_title }}</h2>
+      <p class="section__lead section__lead--light">{{ d.example_lead }}</p>
+    </div>
+
+    <div class="ex-block">
+      <p class="eyebrow eyebrow--light">{{ d.ex_frag1 }}</p>
+      <div class="ex-stats">
+        {% for s in d.ex_stats %}
+        <div class="ex-stat">
+          <span class="ex-stat__v">{{ s.0 }}</span>
+          <span class="ex-stat__l">{{ s.1 }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <ul class="ex-notes">
+        {% for n in d.ex_notes %}
+        <li>{{ n }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="ex-block">
+      <p class="eyebrow eyebrow--light">{{ d.ex_frag3 }}</p>
+      <p class="section__lead section__lead--light">{{ d.ex_frag3_lead }}</p>
+      <div class="ex-facts-grid">
+        <div class="ex-panel">
+          <h3 class="ex-panel__title">Встановлені факти</h3>
+          <ul class="ex-check-list">
+            {% for f in d.ex_facts %}
+            <li>{{ f }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="ex-panel ex-panel--accent">
+          <h3 class="ex-panel__title">Висновок і ступінь упевненості</h3>
+          <p><strong class="gold-plain">Припущення:</strong> {{ d.ex_assumption }}</p>
+          <p class="ex-panel__muted"><strong class="gold-plain">Чому не факт:</strong> {{ d.ex_why_not }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-block">
+      <p class="eyebrow eyebrow--light">{{ d.ex_frag4 }}</p>
+      <p class="section__lead section__lead--light">{{ d.ex_frag4_lead }}</p>
+      <div class="ex-limits">
+        {% for q in d.ex_limits %}
+        <blockquote class="ex-quote">{{ q }}</blockquote>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

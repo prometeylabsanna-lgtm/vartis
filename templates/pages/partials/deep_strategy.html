@@ -1,0 +1,39 @@
+<section id="strategy" class="section" aria-labelledby="strategy-title">
+  <div class="container deep-strategy">
+    <div class="deep-strategy__top">
+      <div class="deep-strategy__heading">
+        <p class="eyebrow">{{ d.strategy_eyebrow }}</p>
+        <h2 id="strategy-title" class="section__title">{{ d.strategy_title }}</h2>
+      </div>
+      <div class="deep-strategy__copy">
+        {% for p in d.strategy_paragraphs %}
+        <p class="section__lead">{{ p }}</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <article class="compare-card">
+        <p class="eyebrow eyebrow--muted">{{ d.compare_express.eyebrow }}</p>
+        <h3 class="compare-card__title">{{ d.compare_express.title }}</h3>
+        <p class="compare-card__text">{{ d.compare_express.text }}</p>
+        <a href="{% url 'pages:analysis' %}" class="link-underline">{{ d.compare_express.link }}</a>
+      </article>
+      <article class="compare-card compare-card--dark">
+        <p class="eyebrow eyebrow--light">{{ d.compare_deep.eyebrow }}</p>
+        <h3 class="compare-card__title compare-card__title--light">{{ d.compare_deep.title }}</h3>
+        <p class="compare-card__text compare-card__text--light">{{ d.compare_deep.text }}</p>
+      </article>
+    </div>
+
+    <ol class="process-grid process-grid--toprule">
+      {% for step in d.steps %}
+      <li class="process-card process-card--rule">
+        <span class="process-card__num">{{ step.0 }}</span>
+        <h3 class="process-card__title">{{ step.1 }}</h3>
+        <p class="process-card__text">{{ step.2 }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>

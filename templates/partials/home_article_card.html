@@ -1,0 +1,26 @@
+<article class="home-article">
+  {% if article.image %}
+  <img
+    class="home-article__media"
+    src="{{ article.image.url }}"
+    alt="{{ article.title }}"
+    loading="lazy"
+    width="640"
+    height="360"
+  >
+  {% else %}
+  <div class="home-article__media home-article__media--empty" aria-hidden="true"></div>
+  {% endif %}
+  <div class="home-article__body">
+    <p class="home-article__meta">
+      <span class="home-article__cat">{{ article.category }}</span>
+      <span aria-hidden="true">·</span>
+      <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+    </p>
+    <h3 class="home-article__title">
+      <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+    </h3>
+    <p class="home-article__text">{{ article.excerpt }}</p>
+  </div>
+  <a href="{{ article.get_absolute_url }}" class="home-article__more">Читати статтю</a>
+</article>

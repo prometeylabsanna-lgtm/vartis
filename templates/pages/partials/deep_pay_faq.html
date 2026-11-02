@@ -1,0 +1,63 @@
+<section class="section" aria-labelledby="pay-title">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="pay-title" class="section__title">{{ d.pay_title }}</h2>
+      <p class="section__lead">{{ d.pay_lead }}</p>
+    </div>
+    <div class="pay-grid mt-40">
+      {% for p in d.pay_stages %}
+      <article class="pay-card">
+        <div class="pay-card__top">
+          <span class="pay-card__pct">{{ p.pct }}</span>
+          <span class="pay-card__when">{{ p.when }}</span>
+        </div>
+        <p class="pay-card__stage">{{ p.stage }} · сплачено {{ p.paid }}</p>
+        <h3 class="pay-card__title">{{ p.title }}</h3>
+        <p class="pay-card__text">{{ p.text }}</p>
+        <p class="pay-card__see"><strong>Перед наступним платежем:</strong> {{ p.see }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    <ul class="pay-guar">
+      {% for g in d.pay_guar %}
+      <li>{{ g }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="quality-title">
+  <div class="container">
+    <h2 id="quality-title" class="section__title">{{ d.quality_title }}</h2>
+    <ul class="quality-grid mt-40">
+      {% for q in d.quality %}
+      <li class="quality-item">
+        <span class="quality-item__mark" aria-hidden="true">✓</span>
+        <div>
+          <h3 class="quality-item__title">{{ q.0 }}</h3>
+          <p class="quality-item__text">{{ q.1 }}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="faq-title">
+  <div class="container">
+    <h2 id="faq-title" class="section__title">{{ d.faq_title }}</h2>
+    <div class="faq-list mt-40">
+      {% for f in d.faqs %}
+      <div class="faq-item">
+        <button type="button" class="faq-item__btn" data-action="toggle-faq" aria-expanded="false">
+          <span>{{ f.0 }}</span>
+          <span class="faq-item__chev" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__panel" hidden>
+          <p>{{ f.1 }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

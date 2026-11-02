@@ -1,0 +1,54 @@
+{% load vartis_icons %}
+<div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+  <div class="mobile-nav__inner">
+    <nav aria-label="Мобільна навігація">
+      <ul class="mobile-nav__list">
+        <li>
+          <a href="{% url 'pages:about' %}" class="mobile-nav__link" data-action="close-menu">
+            <span class="mobile-nav__num">01</span>
+            <span class="mobile-nav__label">Про компанію</span>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'pages:services' %}" class="mobile-nav__link" data-action="close-menu">
+            <span class="mobile-nav__num">02</span>
+            <span class="mobile-nav__label">Послуги</span>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+          <ul class="mobile-nav__subs">
+            {% for s in nav_services %}
+            <li>
+              <a href="{{ s.href }}" class="mobile-nav__sub" data-action="close-menu">
+                <span class="mobile-nav__sub-icon" aria-hidden="true">{% icon s.icon 22 %}</span>
+                <span>{{ s.title }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li>
+          <a href="{% url 'blog:list' %}" class="mobile-nav__link" data-action="close-menu">
+            <span class="mobile-nav__num">03</span>
+            <span class="mobile-nav__label">Блог</span>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'pages:contacts' %}" class="mobile-nav__link" data-action="close-menu">
+            <span class="mobile-nav__num">04</span>
+            <span class="mobile-nav__label">Контакти</span>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="mobile-nav__footer">
+      <p>Стратегічна аналітика, перевірка контрагентів та захист бізнесу</p>
+      <div class="btn-row">
+        <button type="button" class="btn btn--primary" data-action="open-form">Залишити заявку</button>
+        <button type="button" class="btn btn--light" data-action="open-form">Обговорити завдання</button>
+      </div>
+    </div>
+  </div>
+</div>

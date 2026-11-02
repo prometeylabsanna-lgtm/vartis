@@ -1,0 +1,47 @@
+{% with form=lead_form %}
+<form
+  id="{{ form_id|default:'lead-form' }}"
+  class="lead-form"
+  method="post"
+  action="{% url 'leads:submit' %}"
+  hx-post="{% url 'leads:submit' %}"
+  hx-target="this"
+  hx-swap="outerHTML"
+  novalidate
+>
+  {% csrf_token %}
+  <input type="hidden" name="form_variant" value="{{ form_variant|default:'footer' }}">
+  <input type="hidden" name="form_id" value="{{ form_id|default:'lead-form' }}">
+  <input type="hidden" name="source_page" value="{{ request.path }}">
+  {{ form.honeypot }}
+
+  <label class="lead-form__label">Ім'я
+    {{ form.name }}
+    <span class="lead-form__error">{{ form.name.errors|striptags }}</span>
+  </label>
+
+  <div class="lead-form__row">
+    <label class="lead-form__label">Телефон
+      {{ form.phone }}
+      <span class="lead-form__error">{{ form.phone.errors|striptags }}</span>
+    </label>
+    <label class="lead-form__label">Email
+      {{ form.email }}
+      <span class="lead-form__error">{{ form.email.errors|striptags }}</span>
+    </label>
+  </div>
+
+  <label class="lead-form__label">Коротко про завдання
+    {{ form.message }}
+    <span class="lead-form__error">{{ form.message.errors|striptags }}</span>
+  </label>
+
+  <label class="lead-form__consent">
+    {{ form.consent }}
+    <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики конфіденційності</a></span>
+  </label>
+  <span class="lead-form__error">{{ form.consent.errors|striptags }}</span>
+
+  <button type="submit" class="btn btn--primary">Надіслати заявку</button>
+</form>
+{% endwith %}

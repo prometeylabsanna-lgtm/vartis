@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+  {% endif %}
+
+  <section id="catalog" class="section section--end" aria-label="Каталог послуг">
+    <div class="container">
+      <div class="split-catalog">
+        {% for c in catalog %}
+        <article id="{{ c.key }}" class="split-item">
+          <a href="{{ c.href }}" class="split-item__media" aria-label="{{ c.title }}">
+            {% if c.card_image %}<img src="{{ c.card_image.url }}" alt="" loading="lazy" width="800" height="500">{% endif %}
+          </a>
+          <div class="split-item__body">
+            <span class="split-item__num">0{{ forloop.counter }}</span>
+            <h2 class="split-item__title">{{ c.title }}</h2>
+            <p class="split-item__text">{{ c.card_text }}</p>
+            {% if c.tags %}
+            <ul class="chip-list">
+              {% for t in c.tags %}
+              <li class="chip">{{ t }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <a href="{{ c.href }}" class="btn btn--outline">
+              Детальніше
+              <svg width="16" height="16" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

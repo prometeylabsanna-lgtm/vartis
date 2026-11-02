@@ -1,0 +1,73 @@
+<footer id="site-footer" class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__top">
+      <h2 class="site-footer__title">Залишити <span class="gold-text">заявку</span></h2>
+      <p class="site-footer__lead">{{ site_settings.footer_cta_text }}</p>
+    </div>
+    <div class="site-footer__grid">
+      <div class="site-footer__left">
+        <div class="site-footer__brand">
+          <a href="{% url 'pages:home' %}" class="site-footer__logo" aria-label="VARTIS INTELLIGENCE — на головну"></a>
+          <p class="site-footer__tagline">{{ site_settings.tagline }}</p>
+        </div>
+        <div class="site-footer__cols">
+          <nav class="site-footer__nav" aria-label="Навігація у футері">
+            <p class="site-footer__nav-title">Компанія</p>
+            <a href="{% url 'pages:about' %}">Про компанію</a>
+            <a href="{% url 'pages:services' %}">Послуги</a>
+            <a href="{% url 'blog:list' %}">Блог</a>
+            <a href="{% url 'pages:contacts' %}">Контакти</a>
+          </nav>
+          <nav class="site-footer__nav" aria-label="Послуги у футері">
+            <p class="site-footer__nav-title">Послуги</p>
+            {% for s in footer_services %}
+            <a href="{{ s.href }}">{{ s.title }}</a>
+            {% endfor %}
+          </nav>
+        </div>
+        <div class="site-footer__contacts">
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">Тел</span>
+            <span class="site-footer__row-value{% if not site_settings.phone %} is-placeholder{% endif %}">
+              {% if site_settings.phone %}<a href="tel:{{ site_settings.phone|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ site_settings.phone }}</a>{% else %}[Телефон]{% endif %}
+            </span>
+          </div>
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">Email</span>
+            <span class="site-footer__row-value{% if not site_settings.email %} is-placeholder{% endif %}">
+              {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>{% else %}[Email]{% endif %}
+            </span>
+          </div>
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">Адр</span>
+            <span class="site-footer__row-value{% if not site_settings.address %} is-placeholder{% endif %}">{{ site_settings.address|default:"[Адреса офісу]" }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="site-footer__right" id="footer-form">
+        {% include 'leads/partials/form.html' with form_variant='footer' form_id='lead-form-footer' %}
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© {% now "Y" %} {{ site_settings.company_name }}</span>
+      <span class="site-footer__credit">
+        Розроблено
+        {% if request.resolver_match.url_name == 'home' %}
+        <a
+          class="site-footer__credit-link"
+          href="https://www.prometeylabs.com/corporate-website-v2/"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+        >PrometeyLabs</a>
+        {% else %}
+        <span class="site-footer__credit-name">PrometeyLabs</span>
+        {% endif %}
+      </span>
+      <a href="{% url 'pages:privacy' %}">Політика конфіденційності</a>
+      <a href="#top" class="site-footer__up" aria-label="Повернутися вгору">
+        Вгору
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 12V2M7 2L3 6M7 2L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,44 @@
+{% load static %}
+<section
+  class="hero{% if shade %} hero--shade{% endif %}{% if home %} hero--home{% endif %}{% if home and image %} has-upload{% endif %}"
+  aria-labelledby="hero-title"
+>
+  {% if image %}
+  <img class="hero__bg" src="{{ image }}" alt="" width="1600" height="900" decoding="async">
+  {% elif not home and fallback_static %}
+  <img class="hero__bg" src="{% static fallback_static %}" alt="" width="1600" height="900" decoding="async">
+  {% endif %}
+  <div class="hero__panel">
+    {% if crumbs %}
+    <nav aria-label="Хлібні крихти">
+      <ol class="hero__crumbs">
+        <li><a href="{% url 'pages:home' %}">Головна</a></li>
+        {% for crumb in crumbs %}
+        <li aria-hidden="true">/</li>
+        {% if crumb.url %}
+        <li><a href="{{ crumb.url }}">{{ crumb.label }}</a></li>
+        {% else %}
+        <li aria-current="page">{{ crumb.label }}</li>
+        {% endif %}
+        {% endfor %}
+      </ol>
+    </nav>
+    {% endif %}
+    <div class="hero__content">
+      <h1 id="hero-title" class="hero__title">{{ title|linebreaksbr }}</h1>
+      {% if text %}<p class="hero__text">{{ text|linebreaksbr }}</p>{% endif %}
+    </div>
+    {% if show_cta %}
+      {% if cta_style == 'light' %}
+      <button type="button" class="hero__cta" data-action="open-form">{{ cta_primary|default:"Обговорити завдання" }}</button>
+      {% else %}
+      <div class="btn-row">
+        <button type="button" class="btn btn--primary" data-action="open-form">{{ cta_primary|default:"Залишити заявку" }}</button>
+        {% if secondary_href %}
+        <a href="{{ secondary_href }}" class="btn btn--light">{{ secondary_label }}</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<a href="{{ article.get_absolute_url }}" class="article-card">
+  <div class="article-card__media">
+    {% if article.image %}<img src="{{ article.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+  </div>
+  <div class="article-card__body">
+    <div class="article-card__meta">
+      <span class="article-card__cat">{{ article.category }}</span>
+      <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+    </div>
+    <h3 class="article-card__title">{{ article.title }}</h3>
+    <p class="article-card__text">{{ article.excerpt|truncatewords:28 }}</p>
+  </div>
+</a>

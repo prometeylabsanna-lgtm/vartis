@@ -1,0 +1,42 @@
+<div id="cases-partial">
+  <div class="feed-toolbar" role="group" aria-label="Категорії кейсів">
+    <a
+      href="{% url 'cases:list' %}"
+      class="feed-chip{% if not current_cat %} is-active{% endif %}"
+      hx-get="{% url 'cases:list' %}"
+      hx-target="#cases-partial"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+    >Усі</a>
+    {% for cat in categories %}
+    <a
+      href="{% url 'cases:list' %}?cat={{ cat|urlencode }}"
+      class="feed-chip{% if current_cat == cat %} is-active{% endif %}"
+      hx-get="{% url 'cases:list' %}?cat={{ cat|urlencode }}"
+      hx-target="#cases-partial"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+    >{{ cat }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="article-grid">
+    {% for case in cases %}
+    <a href="{{ case.get_absolute_url }}" class="article-card">
+      <div class="article-card__media">
+        {% if case.image %}<img src="{{ case.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <span class="article-card__cat">{{ case.category }}</span>
+          {% if case.is_demo %}<span>Демо</span>{% endif %}
+        </div>
+        <h3 class="article-card__title">{{ case.title }}</h3>
+        <p class="article-card__text">{{ case.excerpt|truncatewords:28 }}</p>
+      </div>
+    </a>
+    {% empty %}
+    <p>Кейсів у цій категорії поки немає.</p>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if article.image %}
+    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article.image.url shade=True %}
+  {% else %}
+    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt fallback_static='images/blog/article.png' shade=True %}
+  {% endif %}
+
+  <section id="article" class="section" aria-label="Текст статті">
+    <div class="container">
+      <div class="article-card__meta">
+        <span class="article-card__cat">{{ article.category }}</span>
+        <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+      </div>
+      <div class="article-body mt-40">
+        {% for block in article.blocks.all %}
+          {% if block.block_type == 'h' %}
+            <h2>{{ block.heading }}</h2>
+            {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+          {% elif block.block_type == 'list' %}
+            <ul>
+              {% for item in block.items %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          {% elif block.block_type == 'note' %}
+            <aside class="article-note">{{ block.text }}</aside>
+          {% else %}
+            <p>{{ block.text }}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="share-row">
+        <button type="button" class="share-btn" data-action="share-copy" data-url="{{ request.build_absolute_uri }}">Скопіювати посилання</button>
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="share-btn" href="https://t.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </div>
+    </div>
+  </section>
+
+  {% if related %}
+  <section class="section section--end" aria-labelledby="rel-title">
+    <div class="container">
+      <h2 id="rel-title" class="section__title">Схожі статті</h2>
+      <div class="article-grid mt-40">
+        {% for article in related %}
+          {% include 'partials/article_card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

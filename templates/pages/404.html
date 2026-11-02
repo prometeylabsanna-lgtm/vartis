@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Сторінку не знайдено — VARTIS INTELLIGENCE{% endblock %}
+
+{% block content %}
+<div id="top">
+  {% include 'partials/hero.html' with title='Сторінку не знайдено' text='Можливо, адресу змінено або сторінку видалено.' fallback_static='images/hero.png' shade=True show_cta=False %}
+  <section class="section section--end">
+    <div class="container">
+      <div class="btn-row">
+        <a href="{% url 'pages:home' %}" class="btn btn--primary">На головну</a>
+        <a href="{% url 'pages:services' %}" class="btn btn--light">Наші послуги</a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

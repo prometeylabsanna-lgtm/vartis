@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static vartis_icons %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
+  {% else %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/hero.png' home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
+  {% endif %}
+
+  <section id="services" class="section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 id="services-title" class="section__title">{{ copy.services_title }}</h2>
+        <p class="section__lead">{{ copy.services_lead }}</p>
+      </div>
+      <div class="dir-grid mt-40">
+        {% for s in services %}
+        <a href="{{ s.href }}" class="dir-card">
+          <div class="dir-card__media">
+            {% if s.card_image %}<img src="{{ s.card_image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+          </div>
+          <div class="dir-card__body">
+            <h3 class="dir-card__title">{{ s.title }}</h3>
+            <p class="dir-card__text">{{ s.card_text }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section" aria-labelledby="adv-title">
+    <div class="container adv-stack">
+      <div class="section__head section__head--center">
+        <h2 id="adv-title" class="section__title">{{ copy.advantages_title }}</h2>
+        <p class="section__tagline">{{ copy.advantages_lead }}</p>
+      </div>
+      <div class="adv-grid">
+        {% for a in advantages %}
+        <article class="adv-card">
+          <div class="adv-card__icon" aria-hidden="true">{% icon a.icon 60 %}</div>
+          <div class="adv-card__body">
+            <h3 class="adv-card__title">{{ a.title }}</h3>
+            <p class="adv-card__text">{{ a.text }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="mission{% if page.mission_image %} has-upload{% endif %}"
+    aria-labelledby="mission-title"
+    {% if page.mission_image %}style="--mission-upload: url('{{ page.mission_image.url }}')"{% endif %}
+  >
+    <div class="mission__panel">
+      <div class="mission__inner">
+        <h2 id="mission-title" class="mission__title">{{ copy.mission_title|linebreaksbr }}</h2>
+        <p class="mission__text">{{ copy.mission_text|linebreaksbr }}</p>
+      </div>
+      <button type="button" class="mission__cta" data-action="open-form">{{ copy.hero_cta }}</button>
+    </div>
+  </section>
+
+  <section id="cases" class="section" aria-labelledby="process-title">
+    <div class="container process-stack">
+      <div class="section__head">
+        <h2 id="process-title" class="section__title">{{ copy.process_title }}</h2>
+        <p class="section__lead">{{ copy.process_lead }}</p>
+      </div>
+      <ol class="process-grid process-grid--boxes">
+        {% for step in process_steps %}
+        <li class="process-box">
+          <span class="process-box__num">{{ step.num }}</span>
+          <div class="process-box__body">
+            <h3 class="process-box__title">{{ step.title }}</h3>
+            <p class="process-box__text">{{ step.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section id="blog" class="section section--end" aria-labelledby="blog-title">
+    <div class="container process-stack">
+      <div class="section__head section__head--split">
+        <div class="section__head">
+          <h2 id="blog-title" class="section__title">{{ copy.blog_title }}</h2>
+          <p class="section__lead section__lead--blog">{{ copy.blog_lead }}</p>
+        </div>
+        <a href="{% url 'blog:list' %}" class="btn btn--outline">Усі статті →</a>
+      </div>
+      <div class="home-articles">
+        {% for article in articles %}
+          {% include 'partials/home_article_card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

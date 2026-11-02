@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/services/dir-1.png' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+  {% endif %}
+
+  <section id="checks" class="section" aria-labelledby="checks-title">
+    <div class="container">
+      <h2 id="checks-title" class="section__title">{{ page.steps_title }}</h2>
+      <ol class="step-list mt-40">
+        {% for step in page.steps.all %}
+        <li class="step-item">
+          <span class="step-item__num">{{ step.number }}</span>
+          <div>
+            <h3 class="step-item__title">{{ step.title }}</h3>
+            <p class="step-item__text">{{ step.text }}</p>
+            {% if step.bullet_list %}
+            <ul class="mt-32">
+              {% for b in step.bullet_list %}
+              <li>{{ b }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band-dark" aria-labelledby="risk-title">
+    <div class="container">
+      <h2 id="risk-title" class="section__title section__title--light">{{ page.risks_title }}</h2>
+      <div class="adv-grid mt-40">
+        {% for r in page.risks.all %}
+        <article class="adv-card">
+          <h3 class="adv-card__title">{{ r.title }}</h3>
+          <p class="adv-card__text">{{ r.text }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rec-title">
+    <div class="container">
+      <h2 id="rec-title" class="section__title">{{ page.recommendation_title }}</h2>
+      <p class="section__lead">{{ page.recommendation_text }}</p>
+      <ul class="chip-list mt-32">
+        <li class="chip">Рекомендовано</li>
+        <li class="chip">З обережністю</li>
+        <li class="chip">Не рекомендовано</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="get-title">
+    <div class="container">
+      <h2 id="get-title" class="section__title">{{ page.result_title }}</h2>
+      <p class="section__lead">{{ page.result_text }}</p>
+    </div>
+  </section>
+
+  <section id="paket" class="section" aria-labelledby="paket-title">
+    <div class="container">
+      <h2 id="paket-title" class="section__title">{{ page.paket_title }}</h2>
+      <p class="section__lead">{{ page.paket_subtitle }}</p>
+      <p class="section__lead">{{ page.paket_text }}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="inc-title">
+    <div class="container">
+      <h2 id="inc-title" class="section__title">{{ page.include_title }}</h2>
+      <div class="adv-grid mt-40">
+        {% for item in page.includes.all %}
+        <article class="adv-card">
+          <h3 class="adv-card__title">{{ item.title }}</h3>
+          <p class="adv-card__text">{{ item.text }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <h2 id="why-title" class="section__title">{{ page.why_title }}</h2>
+      <ol class="step-list mt-40">
+        {% for item in page.why_items.all %}
+        <li class="step-item">
+          <span class="step-item__num">{{ item.number }}</span>
+          <div>
+            <h3 class="step-item__title">{{ item.title }}</h3>
+            <p class="step-item__text">{{ item.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="price-title">
+    <div class="container">
+      <h2 id="price-title" class="section__title">{{ page.price_title }}</h2>
+      <div class="mt-40">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Складова</th>
+              <th>Період</th>
+              <th>Що входить</th>
+              <th>Як рахується</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in page.price_rows.all %}
+            <tr>
+              <td>{{ row.number }}</td>
+              <td>{{ row.title }}</td>
+              <td>{{ row.period }}</td>
+              <td>{{ row.description }}</td>
+              <td>{{ row.price_note }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="order" class="band-dark" aria-labelledby="order-title">
+    <div class="container">
+      <h2 id="order-title" class="section__title section__title--light">{{ page.order_title }}</h2>
+      <p class="section__lead section__lead--light">{{ page.order_text }}</p>
+      <div class="mt-40">
+        {% include 'leads/partials/form.html' with form_variant='analysis' form_id='lead-form-analysis' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--end" aria-labelledby="other-title">
+    <div class="container">
+      <h2 id="other-title" class="section__title">Профільні послуги</h2>
+      <div class="dir-grid mt-40">
+        {% for s in others %}
+        <a href="{{ s.href }}" class="dir-card">
+          <div class="dir-card__media">
+            {% if s.card_image %}<img src="{{ s.card_image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+          </div>
+          <div class="dir-card__body">
+            <h3 class="dir-card__title">{{ s.title }}</h3>
+            <p class="dir-card__text">{{ s.card_text }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

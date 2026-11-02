@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if case.image %}
+    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt image=case.image.url shade=True %}
+  {% else %}
+    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt fallback_static='images/hero.png' shade=True %}
+  {% endif %}
+
+  <section class="section section--end" aria-label="Опис кейсу">
+    <div class="container">
+      <div class="article-card__meta">
+        <span class="article-card__cat">{{ case.category }}</span>
+        {% if case.client %}<span>{{ case.client }}</span>{% endif %}
+        {% if case.service %}<span>{{ case.service }}</span>{% endif %}
+        {% if case.scope %}<span>{{ case.scope }}</span>{% endif %}
+      </div>
+
+      {% if case.stats.all %}
+      <div class="case-stats">
+        {% for s in case.stats.all %}
+        <div class="case-stat">
+          <div class="case-stat__value">{{ s.value }}</div>
+          <div class="case-stat__label">{{ s.label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="article-body">
+        {% for block in case.blocks.all %}
+          {% if block.heading %}<h2>{{ block.heading }}</h2>{% endif %}
+          {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+          {% if block.items %}
+          <ul>
+            {% for item in block.items %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if block.fact_list %}
+          <ul>
+            {% for item in block.fact_list %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if block.assumption %}
+          <aside class="article-note">{{ block.assumption }}</aside>
+          {% endif %}
+          {% if block.why %}<p>{{ block.why }}</p>{% endif %}
+          {% if block.quote_list %}
+            {% for q in block.quote_list %}
+            <aside class="article-note">«{{ q }}»</aside>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="btn-row mt-40">
+        <a href="{% url 'cases:list' %}" class="btn btn--outline">Усі кейси</a>
+        <button type="button" class="btn btn--primary" data-action="open-form">Залишити заявку</button>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

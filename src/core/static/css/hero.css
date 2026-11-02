@@ -1,0 +1,180 @@
+.hero {
+  position: relative;
+  min-height: calc(100svh - 150px);
+  background-color: var(--color-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 180px var(--gutter) 24px;
+  overflow: hidden;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero--home .hero__bg {
+  object-position: 54.098% 50%;
+}
+
+.hero--home {
+  background-color: var(--color-dark);
+  background-image: url("../images/hero.png");
+  background-position: 54.098% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero--home.has-upload {
+  background-image: none;
+}
+
+.hero--shade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(11, 22, 38, 0.82) 0%, rgba(11, 22, 38, 0.45) 60%, rgba(11, 22, 38, 0.2) 100%);
+  pointer-events: none;
+}
+
+.hero__panel {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container);
+  width: 100%;
+  margin: 0 auto;
+  border-radius: var(--radius-panel);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+.hero__crumbs {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero__crumbs a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+
+.hero__crumbs a:hover {
+  color: var(--color-gold-light);
+}
+
+.hero__crumbs [aria-current="page"] {
+  color: var(--color-gold-light);
+}
+
+.hero__content {
+  max-width: 805px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero__title {
+  font-weight: 600;
+  font-size: clamp(36px, 4.17vw, 60px);
+  line-height: 1;
+  color: var(--color-white);
+  text-wrap: balance;
+}
+
+.hero--shade .hero__title {
+  font-size: clamp(40px, 4.17vw, 60px);
+}
+
+.hero__text {
+  max-width: 694px;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--color-white);
+}
+
+.hero--shade .hero__text {
+  max-width: 640px;
+}
+
+/* About / inner pages — Pro-kompaniyu.dc.html panel metrics */
+.hero--shade .hero__panel {
+  min-height: 0;
+  padding: 28px 20px;
+  gap: 24px;
+}
+
+.hero--shade .btn-row .btn--light {
+  padding: 14px 24px;
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 205px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-field);
+  background: var(--color-white);
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  font-family: inherit;
+  color: var(--color-ink);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero__cta:hover {
+  background: var(--color-gold-light);
+  color: var(--color-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.hero__cta:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* design: ph = w < 640 */
+@media (min-width: 640px) {
+  .hero {
+    min-height: clamp(490px, calc(64.86vw - 150px), 784px);
+    padding: 120px var(--gutter) 50px;
+  }
+
+  .hero__panel {
+    min-height: 371px;
+    padding: 40px clamp(20px, 2.78vw, 40px);
+    gap: 50px;
+  }
+
+  .hero--shade .hero__panel {
+    min-height: 0;
+    padding: 32px clamp(20px, 2.78vw, 40px);
+    gap: 28px;
+  }
+}

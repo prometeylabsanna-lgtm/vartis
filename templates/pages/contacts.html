@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+  {% endif %}
+
+  <section id="info" class="section section--end" aria-labelledby="info-title">
+    <div class="container process-stack">
+      <h2 id="info-title" class="section__title">{{ page.info_title }}</h2>
+      <div class="contacts-grid">
+        {% if site_settings.phone %}
+        <a href="tel:{{ site_settings.phone|cut:' '|cut:'('|cut:')'|cut:'-' }}" class="contacts-tile">
+          <span class="contacts-tile__label">Телефон</span>
+          <span class="contacts-tile__value">{{ site_settings.phone }}</span>
+          <span class="contacts-tile__hint">Натисніть, щоб зателефонувати</span>
+        </a>
+        {% endif %}
+        {% if site_settings.email %}
+        <a href="mailto:{{ site_settings.email }}" class="contacts-tile">
+          <span class="contacts-tile__label">Email</span>
+          <span class="contacts-tile__value">{{ site_settings.email }}</span>
+          <span class="contacts-tile__hint">Натисніть, щоб написати</span>
+        </a>
+        {% endif %}
+        {% if site_settings.address %}
+        <div class="contacts-tile">
+          <span class="contacts-tile__label">Адреса</span>
+          <span class="contacts-tile__value">{{ site_settings.address }}</span>
+        </div>
+        {% endif %}
+        {% if site_settings.facebook_url %}
+        <a href="{{ site_settings.facebook_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
+          <span class="contacts-tile__label">Соцмережі</span>
+          <span class="contacts-tile__value">Facebook</span>
+          <span class="contacts-tile__hint">Відкрити сторінку</span>
+        </a>
+        {% endif %}
+      </div>
+      {% if site_settings.map_embed_url %}
+      <iframe class="contacts-map" src="{{ site_settings.map_embed_url }}" title="Карта офісу" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

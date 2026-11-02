@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static vartis_icons %}
+
+{% block content %}
+<div id="top">
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+  {% endif %}
+
+  <section class="section" aria-labelledby="scope-title">
+    <div class="container scope-block">
+      <div class="scope-block__intro">
+        <h2 id="scope-title" class="section__title">{{ copy.scope_title }}</h2>
+        {% for p in copy.scope_paragraphs %}
+        <p class="section__lead">{{ p }}</p>
+        {% empty %}
+        {% if page.scope_text %}<p class="section__lead">{{ page.scope_text }}</p>{% endif %}
+        {% endfor %}
+      </div>
+      {% if copy.scope_items %}
+      <ul class="scope-list">
+        {% for item in copy.scope_items %}
+        <li class="scope-list__item">
+          <span class="scope-list__num">0{{ forloop.counter }}</span>
+          <p class="scope-list__text">{{ item }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </section>
+
+  <section id="method" class="section" aria-labelledby="method-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 id="method-title" class="section__title">{{ copy.method_title }}</h2>
+        {% if copy.method_lead %}<p class="section__lead">{{ copy.method_lead }}</p>{% endif %}
+      </div>
+      {% if copy.method_variant == 'timeline' %}
+      <ol class="timeline-grid mt-40">
+        {% for step in copy.steps %}
+        <li class="timeline-item">
+          <span class="timeline-item__num">{{ step.0 }}</span>
+          <h3 class="timeline-item__title">{{ step.1 }}</h3>
+          <p class="timeline-item__text">{{ step.2 }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}
+      <ol class="process-grid process-grid--boxes mt-40">
+        {% for step in copy.steps %}
+        <li class="process-box">
+          <span class="process-box__num">{{ step.0 }}</span>
+          <h3 class="process-box__title">{{ step.1 }}</h3>
+          <p class="process-box__text">{{ step.2 }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if copy.advantages_dark %}
+  <section class="band-dark band-dark--photo" aria-labelledby="adv-title">
+    <div class="container">
+      <h2 id="adv-title" class="section__title section__title--light">{{ copy.advantages_title }}</h2>
+      <div class="adv-grid mt-40">
+        {% for a in copy.advantages %}
+        <article class="adv-card">
+          <div class="adv-card__icon" aria-hidden="true">{% icon a.0 60 %}</div>
+          <div class="adv-card__body">
+            <h3 class="adv-card__title">{{ a.1 }}</h3>
+            <p class="adv-card__text">{{ a.2 }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% else %}
+  <section class="section" aria-labelledby="adv-title">
+    <div class="container adv-stack">
+      <div class="section__head section__head--center">
+        <h2 id="adv-title" class="section__title">{{ copy.advantages_title }}</h2>
+        {% if copy.advantages_lead %}<p class="section__tagline">{{ copy.advantages_lead }}</p>{% endif %}
+      </div>
+      <div class="adv-grid">
+        {% for a in copy.advantages %}
+        <article class="adv-card">
+          <div class="adv-card__icon" aria-hidden="true">{% icon a.0 60 %}</div>
+          <div class="adv-card__body">
+            <h3 class="adv-card__title">{{ a.1 }}</h3>
+            <p class="adv-card__text">{{ a.2 }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if copy.order_variant == 'light' %}
+  <section id="order" class="section" aria-labelledby="order-title">
+    <div class="container order-grid">
+      <div class="order-grid__copy">
+        <h2 id="order-title" class="section__title">{{ copy.order_title|linebreaksbr }}</h2>
+        <p class="section__lead">{{ copy.order_text }}</p>
+      </div>
+      <div class="order-grid__form order-grid__form--dark" id="service-form">
+        {% include 'leads/partials/form.html' with form_variant='service' form_id='lead-form-service' %}
+      </div>
+    </div>
+  </section>
+  {% else %}
+  <section id="order" class="band-dark" aria-labelledby="order-title">
+    <div class="container order-grid">
+      <div class="order-grid__copy">
+        <h2 id="order-title" class="section__title section__title--light">{{ copy.order_title|linebreaksbr }}</h2>
+        <p class="section__lead section__lead--light">{{ copy.order_text }}</p>
+      </div>
+      <div class="order-grid__form" id="service-form">
+        {% include 'leads/partials/form.html' with form_variant='service' form_id='lead-form-service' %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="section section--end" aria-labelledby="other-title">
+    <div class="container">
+      <h2 id="other-title" class="section__title">Профільні послуги</h2>
+      <div class="dir-grid mt-40">
+        {% for s in others %}
+        <a href="{{ s.href }}" class="dir-card">
+          <div class="dir-card__media">
+            {% if s.card_image %}<img src="{{ s.card_image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+          </div>
+          <div class="dir-card__body">
+            <h3 class="dir-card__title">{{ s.title }}</h3>
+            <p class="dir-card__text">{{ s.card_text }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+:root {
+  --color-ink: #12263a;
+  --color-ink-soft: #5a6270;
+  --color-dark: #0b1626;
+  --color-gold: #b58b4a;
+  --color-gold-light: #e2c48e;
+  --color-cream: #f6f0e6;
+  --color-white: #ffffff;
+  --color-overlay: rgba(11, 22, 38, 0.82);
+
+  --font-sans: Roboto, -apple-system, "Segoe UI", Arial, sans-serif;
+
+  --container: 1340px;
+  --gutter: clamp(16px, 3.48vw, 50px);
+  --radius-pill: 100px;
+  --radius-panel: 30px;
+  --radius-field: 20px;
+  --radius-media: 16px;
+  --radius-chip: 30px;
+
+  --shadow-header: 0 10px 30px rgba(11, 22, 38, 0.14);
+  --shadow-menu: 0 24px 60px rgba(11, 22, 38, 0.18);
+  --shadow-gold: 0 12px 28px rgba(181, 139, 74, 0.35);
+
+  --header-offset: 117px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration: 0.25s;
+
+  --fs-hero: clamp(40px, 4.17vw, 60px);
+  --fs-section: clamp(32px, 3.47vw, 50px);
+  --fs-body: 18px;
+  --fs-small: 14px;
+  --fs-nav: 16px;
+
+  --space-section: 100px;
+  --space-section-sm: 64px;
+}

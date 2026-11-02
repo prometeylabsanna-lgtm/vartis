@@ -1,0 +1,10 @@
+<div id="lead-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="lead-modal-title">
+  <div class="modal__dialog">
+    <button type="button" class="modal__close" data-action="close-form" aria-label="Закрити">×</button>
+    <h2 id="lead-modal-title" class="modal__title">Залишити заявку</h2>
+    <p class="modal__lead">Опишіть ситуацію — ми зв'яжемося, щоб уточнити завдання.</p>
+    <div id="modal-form">
+      {% include 'leads/partials/modal_form.html' with form_variant='modal' form_id='lead-form-modal' %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div id="feed-partial">
+  <div class="feed-toolbar" role="group" aria-label="Категорії">
+    <a
+      href="{% url 'blog:list' %}"
+      class="feed-chip{% if not current_cat %} is-active{% endif %}"
+      hx-get="{% url 'blog:list' %}"
+      hx-target="#feed-partial"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+    >Усі</a>
+    {% for cat in categories %}
+    <a
+      href="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
+      class="feed-chip{% if current_cat == cat %} is-active{% endif %}"
+      hx-get="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
+      hx-target="#feed-partial"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+    >{{ cat }}</a>
+    {% endfor %}
+  </div>
+
+  {% if featured %}
+  <a href="{{ featured.get_absolute_url }}" class="article-featured">
+    <div class="article-featured__media">
+      {% if featured.image %}<img src="{{ featured.image.url }}" alt="" loading="lazy" width="960" height="540">{% endif %}
+    </div>
+    <div>
+      <div class="article-card__meta">
+        <span class="article-card__cat">{{ featured.category }}</span>
+        <time datetime="{{ featured.published_at|date:'Y-m-d' }}">{{ featured.published_at|date:"j E Y" }}</time>
+      </div>
+      <h2 class="article-featured__title">{{ featured.title }}</h2>
+      <p class="article-card__text">{{ featured.excerpt }}</p>
+    </div>
+  </a>
+  {% endif %}
+
+  <div class="article-grid">
+    {% for article in grid %}
+      {% include 'partials/article_card.html' %}
+    {% empty %}
+      <p>Матеріалів у цій категорії поки немає.</p>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+  <nav class="pagination" aria-label="Сторінки">
+    {% for num in page_obj.paginator.page_range %}
+    <a
+      href="?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
+      class="pagination__btn{% if page_obj.number == num %} is-active{% endif %}"
+      {% if page_obj.number == num %}aria-current="page"{% endif %}
+      hx-get="?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
+      hx-target="#feed-partial"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+    >{{ num }}</a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+</div>
