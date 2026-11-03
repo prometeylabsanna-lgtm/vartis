@@ -20,14 +20,18 @@ CSRF_TRUSTED_ORIGINS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Vercel: файлова система read-only → SQLite у /tmp (ефемерно, ок для демо)
+# Vercel: файлова система read-only → SQLite + media у /tmp (ефемерно, ок для демо)
 if os.environ.get('VERCEL'):
+    from pathlib import Path as _Path
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': '/tmp/vartis-demo.sqlite3',
         }
     }
+    MEDIA_ROOT = _Path('/tmp/vartis-media')
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
 
 STORAGES = {
     'default': {
