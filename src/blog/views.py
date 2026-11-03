@@ -1,6 +1,4 @@
-from django.core.paginator import Paginator
-from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from src.leads.forms import LeadForm
@@ -8,6 +6,25 @@ from src.leads.forms import LeadForm
 from .models import Article
 
 PER_PAGE = 6
+
+# Порядок чіпів як у Blog.dc.html / articles.js (перша поява в стрічці)
+CHIP_ORDER = (
+    'Перевірка контрагентів',
+    'Аналітика',
+    'Корпоративна безпека',
+    'Консалтинг',
+)
+
+
+def _ordered_categories():
+    present = set(
+        Article.objects.filter(is_published=True)
+        .values_list('category', flat=True)
+        .distinct()
+    )
+    ordered = [c for c in CHIP_ORDER if c in present]
+    extras = sorted(present - set(CHIP_ORDER))
+    return ordered + extras
 
 
 class ArticleListView(ListView):
@@ -17,7 +34,7 @@ class ArticleListView(ListView):
     paginate_by = PER_PAGE
 
     def get_queryset(self):
-        qs = Article.objects.filter(is_published=True)
+        qs = Article.objects.filter(is_published=True).prefetch_related('blocks')
         cat = self.request.GET.get('cat', '').strip()
         if cat:
             qs = qs.filter(category=cat)
@@ -31,17 +48,11 @@ class ArticleListView(ListView):
         objects = list(page_obj.object_list)
         featured = objects[0] if page_obj.number == 1 and objects else None
         grid = objects[1:] if featured else objects
-        categories = (
-            Article.objects.filter(is_published=True)
-            .values_list('category', flat=True)
-            .distinct()
-            .order_by('category')
-        )
         ctx.update({
             'featured': featured,
             'grid': grid,
             'current_cat': cat,
-            'categories': categories,
+            'categories': _ordered_categories(),
             'lead_form': LeadForm(),
             'seo_title': 'Блог — VARTIS INTELLIGENCE',
             'seo_description': (
@@ -77,9 +88,24 @@ class ArticleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         article = ctx['article']
-        ctx['related'] = (
+        same = list(
             Article.objects.filter(is_published=True, category=article.category)
             .exclude(pk=article.pk)[:3]
         )
+        if len(same) < 3:
+            extra = list(
+                Article.objects.filter(is_published=True)
+                .exclude(pk=article.pk)
+                .exclude(pk__in=[a.pk for a in same])[: 3 - len(same)]
+            )
+            same.extend(extra)
+        ctx['related'] = same
         ctx['lead_form'] = LeadForm()
+        ctx['share_url'] = self.request.build_absolute_uri()
+        ctx['crumbs'] = [
+            {'label': 'Блог', 'url': reverse('blog:list')},
+            {'label': article.category, 'url': ''},
+        ]
+        ctx['seo_title'] = article.seo_title or f'{article.title} — VARTIS INTELLIGENCE'
+        ctx['seo_description'] = article.seo_description or article.excerpt
         return ctx

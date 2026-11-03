@@ -4,50 +4,90 @@
 {% block content %}
 <div id="top">
   {% if article.image %}
-    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article.image.url shade=True %}
+    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article.image.url shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
   {% else %}
-    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt fallback_static='images/blog/article.png' shade=True %}
+    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt fallback_static='images/blog/article.png' shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
   {% endif %}
 
-  <section id="article" class="section" aria-label="Текст статті">
-    <div class="container">
-      <div class="article-card__meta">
-        <span class="article-card__cat">{{ article.category }}</span>
-        <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
-      </div>
-      <div class="article-body mt-40">
+  <section id="article" class="art-section" aria-label="Текст статті">
+    <div class="art-layout">
+      <aside class="art-aside">
+        <div class="art-aside__meta">
+          <span class="art-aside__cat">{{ article.category }}</span>
+          <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+          <span>{{ article.read_label }}</span>
+        </div>
+        <div class="art-share">
+          <p class="art-share__label">Поділитися</p>
+          <div class="art-share__row">
+            <a class="art-share__btn" href="https://t.me/share/url?url={{ share_url|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">Telegram</a>
+            <a class="art-share__btn" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a class="art-share__btn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="art-share__btn" href="https://twitter.com/intent/tweet?url={{ share_url|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">X</a>
+            <button type="button" class="art-share__btn" data-action="share-copy" data-url="{{ share_url }}">Скопіювати посилання</button>
+          </div>
+        </div>
+      </aside>
+
+      <article class="art-body">
         {% for block in article.blocks.all %}
+        <div class="art-block">
           {% if block.block_type == 'h' %}
             <h2>{{ block.heading }}</h2>
             {% if block.text %}<p>{{ block.text }}</p>{% endif %}
-          {% elif block.block_type == 'list' %}
-            <ul>
+            {% if block.list_items %}
+            <ul class="art-list">
               {% for item in block.items %}
-              <li>{{ item }}</li>
+              <li><span class="art-list__dot" aria-hidden="true"></span><span>{{ item }}</span></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          {% elif block.block_type == 'list' %}
+            <ul class="art-list">
+              {% for item in block.items %}
+              <li><span class="art-list__dot" aria-hidden="true"></span><span>{{ item }}</span></li>
               {% endfor %}
             </ul>
           {% elif block.block_type == 'note' %}
-            <aside class="article-note">{{ block.text }}</aside>
+            <blockquote class="art-note">{{ block.text }}</blockquote>
           {% else %}
             <p>{{ block.text }}</p>
           {% endif %}
+        </div>
         {% endfor %}
-      </div>
-      <div class="share-row">
-        <button type="button" class="share-btn" data-action="share-copy" data-url="{{ request.build_absolute_uri }}">Скопіювати посилання</button>
-        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a class="share-btn" href="https://t.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">Telegram</a>
-      </div>
+
+        <div class="art-cta">
+          <p class="art-cta__text">Потрібна допомога з подібним завданням?</p>
+          <button type="button" class="btn btn--primary" data-action="open-form">Обговорити завдання</button>
+        </div>
+      </article>
     </div>
   </section>
 
   {% if related %}
-  <section class="section section--end" aria-labelledby="rel-title">
+  <section class="art-related" aria-labelledby="rel-title">
     <div class="container">
-      <h2 id="rel-title" class="section__title">Схожі статті</h2>
-      <div class="article-grid mt-40">
+      <div class="art-related__head">
+        <h2 id="rel-title" class="section__title">Читайте також</h2>
+        <a href="{% url 'blog:list' %}" class="art-related__all">Усі статті →</a>
+      </div>
+      <div class="blog-grid">
         {% for article in related %}
-          {% include 'partials/article_card.html' %}
+        <article class="blog-card">
+          <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
+            {% if article.image %}<img src="{{ article.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+          </a>
+          <div class="blog-card__meta">
+            <span class="article-card__cat">{{ article.category }}</span>
+            <span aria-hidden="true">·</span>
+            <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+          </h3>
+          <p class="blog-card__text">{{ article.excerpt }}</p>
+          <a href="{{ article.get_absolute_url }}" class="blog-card__more">Читати статтю</a>
+        </article>
         {% endfor %}
       </div>
     </div>

@@ -31,6 +31,16 @@ class Article(models.Model):
     def display_h1(self):
         return self.h1 or self.title
 
+    @property
+    def read_label(self):
+        words = len((self.excerpt or '').split())
+        for block in self.blocks.all():
+            words += len((block.heading or '').split())
+            words += len((block.text or '').split())
+            words += len((block.list_items or '').split())
+        minutes = max(2, round(words / 180)) if words else 2
+        return f'{minutes} хв читання'
+
 
 class ArticleBlock(models.Model):
     class BlockType(models.TextChoices):

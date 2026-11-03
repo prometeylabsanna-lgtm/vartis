@@ -1,46 +1,74 @@
-<div id="feed-partial">
-  <div class="feed-toolbar" role="group" aria-label="Категорії">
-    <a
-      href="{% url 'blog:list' %}"
-      class="feed-chip{% if not current_cat %} is-active{% endif %}"
-      hx-get="{% url 'blog:list' %}"
-      hx-target="#feed-partial"
-      hx-swap="outerHTML"
-      hx-push-url="true"
-    >Усі</a>
-    {% for cat in categories %}
-    <a
-      href="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
-      class="feed-chip{% if current_cat == cat %} is-active{% endif %}"
-      hx-get="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
-      hx-target="#feed-partial"
-      hx-swap="outerHTML"
-      hx-push-url="true"
-    >{{ cat }}</a>
-    {% endfor %}
+<div id="feed-partial" class="feed">
+  <div class="feed-head">
+    <h2 class="feed-head__title">Усі публікації</h2>
+    <div class="feed-toolbar" role="group" aria-label="Фільтр за темою">
+      <a
+        href="{% url 'blog:list' %}"
+        class="feed-chip{% if not current_cat %} is-active{% endif %}"
+        {% if not current_cat %}aria-pressed="true"{% else %}aria-pressed="false"{% endif %}
+        hx-get="{% url 'blog:list' %}"
+        hx-target="#feed-partial"
+        hx-swap="outerHTML"
+        hx-push-url="true"
+      >Усі</a>
+      {% for cat in categories %}
+      <a
+        href="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
+        class="feed-chip{% if current_cat == cat %} is-active{% endif %}"
+        {% if current_cat == cat %}aria-pressed="true"{% else %}aria-pressed="false"{% endif %}
+        hx-get="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
+        hx-target="#feed-partial"
+        hx-swap="outerHTML"
+        hx-push-url="true"
+      >{{ cat }}</a>
+      {% endfor %}
+    </div>
   </div>
 
   {% if featured %}
-  <a href="{{ featured.get_absolute_url }}" class="article-featured">
-    <div class="article-featured__media">
+  <article class="article-featured">
+    <a href="{{ featured.get_absolute_url }}" class="article-featured__media" aria-label="{{ featured.title }}">
       {% if featured.image %}<img src="{{ featured.image.url }}" alt="" loading="lazy" width="960" height="540">{% endif %}
-    </div>
-    <div>
-      <div class="article-card__meta">
+    </a>
+    <div class="article-featured__body">
+      <div class="article-featured__meta">
+        <span class="article-featured__badge">Нове</span>
         <span class="article-card__cat">{{ featured.category }}</span>
+        <span aria-hidden="true">·</span>
         <time datetime="{{ featured.published_at|date:'Y-m-d' }}">{{ featured.published_at|date:"j E Y" }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ featured.read_label }}</span>
       </div>
-      <h2 class="article-featured__title">{{ featured.title }}</h2>
-      <p class="article-card__text">{{ featured.excerpt }}</p>
+      <h3 class="article-featured__title">
+        <a href="{{ featured.get_absolute_url }}">{{ featured.title }}</a>
+      </h3>
+      <p class="article-featured__text">{{ featured.excerpt }}</p>
+      <a href="{{ featured.get_absolute_url }}" class="btn btn--primary">Читати статтю</a>
     </div>
-  </a>
+  </article>
   {% endif %}
 
-  <div class="article-grid">
+  <div class="blog-grid">
     {% for article in grid %}
-      {% include 'partials/article_card.html' %}
+    <article class="blog-card">
+      <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
+        {% if article.image %}<img src="{{ article.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+      </a>
+      <div class="blog-card__meta">
+        <span class="article-card__cat">{{ article.category }}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime="{{ article.published_at|date:'Y-m-d' }}">{{ article.published_at|date:"j E Y" }}</time>
+      </div>
+      <h3 class="blog-card__title">
+        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+      </h3>
+      <p class="blog-card__text">{{ article.excerpt }}</p>
+      <a href="{{ article.get_absolute_url }}" class="blog-card__more">Читати статтю</a>
+    </article>
     {% empty %}
-      <p>Матеріалів у цій категорії поки немає.</p>
+      {% if not featured %}
+      <p class="feed-empty">У цій темі ще немає публікацій.</p>
+      {% endif %}
     {% endfor %}
   </div>
 
