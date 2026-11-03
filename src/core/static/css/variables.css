@@ -6,6 +6,8 @@
   --color-gold-light: #e2c48e;
   --color-cream: #f6f0e6;
   --color-white: #ffffff;
+  --color-danger: #d64545;
+  --color-danger-text: #ffb4b4;
   --color-overlay: rgba(11, 22, 38, 0.82);
 
   --font-sans: Roboto, -apple-system, "Segoe UI", Arial, sans-serif;

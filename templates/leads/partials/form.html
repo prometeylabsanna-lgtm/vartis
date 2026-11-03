@@ -47,7 +47,7 @@
     <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики
         конфіденційності</a></span>
   </label>
-  <span class="lead-form__error">{{ form.consent.errors|striptags }}</span>
+  <span class="lead-form__error" data-error-for="consent">{{ form.consent.errors|striptags }}</span>
 
   <button type="submit" class="btn btn--primary">Надіслати заявку</button>
 </form>

@@ -70,10 +70,28 @@
   outline: none;
 }
 
+.lead-form__input.is-invalid,
+.lead-form__textarea.is-invalid {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 1px var(--color-danger);
+}
+
+.lead-form__input.is-invalid:focus,
+.lead-form__textarea.is-invalid:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 2px rgba(214, 69, 69, 0.35);
+}
+
+.lead-form__checkbox.is-invalid {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
 .lead-form__error {
   font-weight: 400;
   font-size: 13px;
-  color: var(--color-gold-light);
+  line-height: 1.35;
+  color: var(--color-danger-text);
   min-height: 0;
 }
 
