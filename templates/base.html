@@ -4,6 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" sizes="any">
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" sizes="32x32">
+  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}" sizes="180x180">
+  <link rel="icon" type="image/png" href="{% static 'images/icon-192.png' %}" sizes="192x192">
   <title>{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% elif seo_title %}{{ seo_title }}{% elif article.seo_title %}{{ article.seo_title }}{% elif case.seo_title %}{{ case.seo_title }}{% else %}{{ site_settings.default_seo_title }}{% endif %}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{% if page.seo_description %}{{ page.seo_description }}{% elif seo_description %}{{ seo_description }}{% elif article.seo_description %}{{ article.seo_description }}{% elif case.seo_description %}{{ case.seo_description }}{% else %}{{ site_settings.default_seo_description }}{% endif %}{% endblock %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
