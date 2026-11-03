@@ -36,6 +36,8 @@ select {
 
 button {
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 a {

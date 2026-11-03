@@ -92,9 +92,9 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-width: 160px;
+  min-width: 205px;
   height: 44px;
-  padding: 12px 24px;
+  padding: 0 24px;
   border: 0;
   border-radius: var(--radius-chip);
   font-weight: 500;
@@ -104,6 +104,8 @@ a:hover {
   text-decoration: none;
   transition: filter var(--duration) ease, transform var(--duration) ease, box-shadow var(--duration) ease, background var(--duration) ease, color var(--duration) ease;
   -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .btn--primary {
@@ -208,9 +210,4 @@ a:hover {
   color: rgba(255, 255, 255, 0.8);
 }
 
-@media (min-width: 640px) {
-  .btn {
-    min-width: 205px;
-  }
-}
 

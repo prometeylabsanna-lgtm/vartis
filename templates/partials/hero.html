@@ -24,6 +24,7 @@
       </ol>
     </nav>
     {% endif %}
+    {% if code %}<span class="hero__code" aria-hidden="true">{{ code }}</span>{% endif %}
     <div class="hero__content">
       <h1 id="hero-title" class="hero__title">{{ title|linebreaksbr }}</h1>
       {% if text %}<p class="hero__text">{{ text|linebreaksbr }}</p>{% endif %}
@@ -33,7 +34,11 @@
       <button type="button" class="hero__cta" data-action="open-form">{{ cta_primary|default:"Обговорити завдання" }}</button>
       {% else %}
       <div class="btn-row">
+        {% if primary_href %}
+        <a href="{{ primary_href }}" class="btn btn--primary">{{ cta_primary|default:"На головну" }}</a>
+        {% else %}
         <button type="button" class="btn btn--primary" data-action="open-form">{{ cta_primary|default:"Залишити заявку" }}</button>
+        {% endif %}
         {% if secondary_href %}
         <a href="{{ secondary_href }}" class="btn btn--light">{{ secondary_label }}</a>
         {% endif %}

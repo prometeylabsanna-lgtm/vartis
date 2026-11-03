@@ -4,15 +4,9 @@
 {% block title %}Сторінку не знайдено — VARTIS INTELLIGENCE{% endblock %}
 
 {% block content %}
+{% url 'pages:home' as home_url %}
+{% url 'pages:services' as services_url %}
 <div id="top">
-  {% include 'partials/hero.html' with title='Сторінку не знайдено' text='Можливо, адресу змінено або сторінку видалено.' fallback_static='images/hero.png' shade=True show_cta=False %}
-  <section class="section section--end">
-    <div class="container">
-      <div class="btn-row">
-        <a href="{% url 'pages:home' %}" class="btn btn--primary">На головну</a>
-        <a href="{% url 'pages:services' %}" class="btn btn--light">Наші послуги</a>
-      </div>
-    </div>
-  </section>
+  {% include 'partials/hero.html' with code='404' title='Сторінку не знайдено' text='Можливо, адресу введено з помилкою або сторінку було переміщено. Поверніться на головну або оберіть потрібний розділ у меню.' fallback_static='images/hero.png' shade=True show_cta=True primary_href=home_url cta_primary='На головну' secondary_href=services_url secondary_label='Наші послуги' %}
 </div>
 {% endblock %}

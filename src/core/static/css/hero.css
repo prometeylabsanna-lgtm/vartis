@@ -86,6 +86,14 @@
   color: var(--color-gold-light);
 }
 
+.hero__code {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(72px, 9vw, 140px);
+  line-height: 1;
+  color: var(--color-gold-light);
+}
+
 .hero__content {
   max-width: 805px;
   display: flex;
@@ -125,7 +133,8 @@
 }
 
 .hero--shade .btn-row .btn--light {
-  padding: 14px 24px;
+  padding: 0 24px;
+  border-radius: var(--radius-field);
 }
 
 .hero__cta {
@@ -137,7 +146,7 @@
   border: 0;
   border-radius: var(--radius-field);
   background: var(--color-white);
-  padding: 12px 20px;
+  padding: 0 20px;
   font-weight: 500;
   font-size: 16px;
   line-height: 1;
@@ -145,6 +154,9 @@
   color: var(--color-ink);
   white-space: nowrap;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
