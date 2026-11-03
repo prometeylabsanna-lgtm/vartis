@@ -6,6 +6,7 @@
   grid-auto-columns: 82%;
   gap: 14px;
   overflow-x: auto;
+  overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--gutter);
@@ -343,7 +344,7 @@
 .band-dark {
   margin-top: var(--space-section-sm);
   background: var(--color-dark);
-  padding: 64px var(--gutter);
+  padding: 64px 0;
   color: var(--color-white);
 }
 
@@ -353,12 +354,29 @@
     linear-gradient(112.588deg, #b58b4a 0%, #b58b4a 50%, #b58b4a 100%) border-box;
 }
 
+.band-dark--photo .adv-card {
+  border: 0;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding: 24px;
+}
+
+.band-dark--photo .adv-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .band-dark .adv-card__title {
   color: var(--color-white);
 }
 
 .band-dark .adv-card__text {
   color: rgba(255, 255, 255, 0.75);
+}
+
+.band-dark--photo .adv-card__text {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (min-width: 640px) {
@@ -373,6 +391,22 @@
     margin-inline: 0;
     padding-inline: 0;
     padding-bottom: 0;
+  }
+
+  .dir-grid--profile {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(300px, 320px);
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-bottom: 4px;
+    scrollbar-width: none;
   }
 
   .dir-card {
@@ -433,6 +467,6 @@
 
   .band-dark {
     margin-top: var(--space-section);
-    padding: 100px var(--gutter);
+    padding: 100px 0;
   }
 }

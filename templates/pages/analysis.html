@@ -10,136 +10,250 @@
   {% endif %}
 
   <section id="checks" class="section" aria-labelledby="checks-title">
-    <div class="container">
-      <h2 id="checks-title" class="section__title">{{ page.steps_title }}</h2>
-      <ol class="step-list mt-40">
+    <div class="container vi-steps">
+      <div class="vi-steps__intro">
+        {% if copy.steps_eyebrow %}
+        <p class="vi-steps__eyebrow">{{ copy.steps_eyebrow }}</p>
+        {% endif %}
+        <h2 id="checks-title" class="section__title">{{ page.steps_title }}</h2>
+        {% for p in copy.steps_leads %}
+        <p class="section__lead">{{ p }}</p>
+        {% endfor %}
+      </div>
+      <ol class="vi-steps__grid">
         {% for step in page.steps.all %}
-        <li class="step-item">
-          <span class="step-item__num">{{ step.number }}</span>
-          <div>
-            <h3 class="step-item__title">{{ step.title }}</h3>
-            <p class="step-item__text">{{ step.text }}</p>
-            {% if step.bullet_list %}
-            <ul class="mt-32">
-              {% for b in step.bullet_list %}
-              <li>{{ b }}</li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-          </div>
+        <li class="vi-step-card">
+          <span class="vi-step-card__num">{{ step.number }}</span>
+          <h3 class="vi-step-card__title">{{ step.title }}</h3>
+          <p class="vi-step-card__text">{{ step.text }}</p>
+          {% if step.bullet_list %}
+          <ul class="vi-step-card__list">
+            {% for b in step.bullet_list %}
+            <li><span aria-hidden="true"></span><span>{{ b }}</span></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
         </li>
         {% endfor %}
       </ol>
     </div>
   </section>
 
-  <section class="band-dark" aria-labelledby="risk-title">
-    <div class="container">
-      <h2 id="risk-title" class="section__title section__title--light">{{ page.risks_title }}</h2>
-      <div class="adv-grid mt-40">
-        {% for r in page.risks.all %}
-        <article class="adv-card">
-          <h3 class="adv-card__title">{{ r.title }}</h3>
-          <p class="adv-card__text">{{ r.text }}</p>
+  <section class="band-dark vi-risks" aria-labelledby="risk-title">
+    <div class="container vi-risks__inner">
+      <div class="vi-risks__intro">
+        <h2 id="risk-title" class="section__title section__title--light">{{ copy.risks_title }}</h2>
+        <p class="vi-risks__lead">{{ copy.risks_lead }}</p>
+      </div>
+      <div class="vi-risks__types">
+        {% for t in copy.risk_types %}
+        <article class="vi-risk-card">
+          <span class="vi-risk-card__tag">{{ t.tag }}</span>
+          <h3 class="vi-risk-card__title">{{ t.title }}</h3>
+          <p class="vi-risk-card__text">{{ t.text }}</p>
         </article>
         {% endfor %}
+      </div>
+      <div class="vi-risk-levels" role="list">
+        {% for l in copy.risk_levels %}
+        <div class="vi-risk-levels__row" role="listitem">
+          <span class="vi-risk-levels__level">
+            <span class="vi-risk-levels__dot vi-risk-levels__dot--{{ l.tone }}" aria-hidden="true"></span>
+            {{ l.level }}
+          </span>
+          <span class="vi-risk-levels__meaning">{{ l.meaning }}</span>
+          <span class="vi-risk-levels__action">{{ l.action }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="vi-risks__note">
+        <strong class="vi-risks__note-title">{{ copy.risks_note_title }}</strong>
+        {{ copy.risks_note }}
+      </p>
+    </div>
+  </section>
+
+  <section class="section vi-rec" aria-labelledby="rec-title">
+    <div class="container vi-rec__grid">
+      <div class="vi-rec__copy">
+        <h2 id="rec-title" class="section__title">{{ copy.recommendation_title }}</h2>
+        <p class="vi-rec__lead">{{ copy.recommendation_text }}</p>
+        <ul class="vi-rec__list">
+          {% for r in copy.recs %}
+          <li class="vi-rec__item">
+            <span class="vi-rec__dot vi-rec__dot--{{ r.tone }}" aria-hidden="true"></span>
+            <span class="vi-rec__item-text"><strong>{{ r.title }}</strong> — {{ r.text }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <figure class="vi-rec__example">
+        <div class="vi-rec-panel" aria-hidden="true">
+          <div class="vi-rec-panel__head">
+            <span class="vi-rec-panel__heading">{{ copy.rec_example.heading }}</span>
+            <span class="vi-rec-panel__badge">
+              <span class="vi-rec-panel__badge-dot"></span>
+              {{ copy.rec_example.badge }}
+            </span>
+          </div>
+          <div class="vi-rec-panel__body">
+            <span class="vi-rec-panel__verdict">
+              <span class="vi-rec-panel__code">{{ copy.rec_example.code }}</span>
+              {{ copy.rec_example.verdict }}
+            </span>
+            <span class="vi-rec-panel__note">{{ copy.rec_example.note }}</span>
+            <span class="vi-rec-panel__flag">{{ copy.rec_example.flag }}</span>
+          </div>
+          <div class="vi-rec-panel__foot">
+            <div class="vi-rec-panel__actions">
+              <span class="vi-rec-panel__btn vi-rec-panel__btn--primary">{{ copy.rec_example.accept }}</span>
+              <span class="vi-rec-panel__btn">{{ copy.rec_example.reject }}</span>
+            </div>
+            <span class="vi-rec-panel__date">{{ copy.rec_example.date }}</span>
+          </div>
+        </div>
+        <figcaption class="vi-rec__caption">{{ copy.rec_example.caption }}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section vi-get" aria-labelledby="get-title">
+    <div class="container">
+      <div class="vi-get__panel">
+        <h2 id="get-title" class="vi-get__title">{{ copy.result_title }}</h2>
+        <div class="vi-get__body">
+          <p class="vi-get__lead">{{ copy.result_text }}</p>
+          <p class="vi-get__method">
+            {{ copy.result_method_prefix }}<a href="{{ copy.result_doi_href }}" target="_blank" rel="noopener">{{ copy.result_doi_label }}</a>{{ copy.result_method_suffix }}
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="rec-title">
-    <div class="container">
-      <h2 id="rec-title" class="section__title">{{ page.recommendation_title }}</h2>
-      <p class="section__lead">{{ page.recommendation_text }}</p>
-      <ul class="chip-list mt-32">
-        <li class="chip">Рекомендовано</li>
-        <li class="chip">З обережністю</li>
-        <li class="chip">Не рекомендовано</li>
+  <section id="paket" class="section vi-paket" aria-labelledby="paket-title">
+    <div class="container vi-paket__inner">
+      <div class="vi-paket__intro">
+        <p class="vi-paket__eyebrow">{{ copy.paket_eyebrow }}</p>
+        <h2 id="paket-title" class="section__title">{{ copy.paket_title }}</h2>
+        <p class="vi-paket__lead">{{ copy.paket_lead }}</p>
+      </div>
+      <ol class="vi-paket__grid">
+        {% for s in copy.paket_steps %}
+        <li class="vi-paket-card">
+          <span class="vi-paket-card__num">{{ s.num }}</span>
+          <h3 class="vi-paket-card__title">{{ s.title }}</h3>
+          <p class="vi-paket-card__text">{{ s.text }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section vi-incl" aria-labelledby="inc-title">
+    <div class="container vi-incl__inner">
+      <div class="vi-incl__intro">
+        <h2 id="inc-title" class="section__title">{{ copy.include_title }}</h2>
+        <p class="vi-incl__lead">{{ copy.include_lead }}</p>
+      </div>
+      <ul class="vi-incl__grid">
+        {% for item in copy.includes %}
+        <li class="vi-incl__item">
+          <span class="vi-incl__check" aria-hidden="true">✓</span>
+          <div class="vi-incl__copy">
+            <h3 class="vi-incl__title">{{ item.title }}</h3>
+            <p class="vi-incl__text">{{ item.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <aside class="vi-incl-option">
+        <div class="vi-incl-option__head">
+          <span class="vi-incl-option__eyebrow">{{ copy.include_option_eyebrow }}</span>
+          <h3 class="vi-incl-option__title">{{ copy.include_option_title }}</h3>
+        </div>
+        <p class="vi-incl-option__text">{{ copy.include_option_text }}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section vi-why" aria-labelledby="why-title">
+    <div class="container vi-why__inner">
+      <h2 id="why-title" class="section__title">{{ copy.why_title }}</h2>
+      <ul class="vi-why__grid">
+        {% for item in copy.why_items %}
+        <li class="vi-why-card">
+          <span class="vi-why-card__num">{{ item.num }}</span>
+          <div class="vi-why-card__body">
+            <h3 class="vi-why-card__title">{{ item.title }}</h3>
+            <p class="vi-why-card__text">{{ item.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
       </ul>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="get-title">
-    <div class="container">
-      <h2 id="get-title" class="section__title">{{ page.result_title }}</h2>
-      <p class="section__lead">{{ page.result_text }}</p>
-    </div>
-  </section>
-
-  <section id="paket" class="section" aria-labelledby="paket-title">
-    <div class="container">
-      <h2 id="paket-title" class="section__title">{{ page.paket_title }}</h2>
-      <p class="section__lead">{{ page.paket_subtitle }}</p>
-      <p class="section__lead">{{ page.paket_text }}</p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="inc-title">
-    <div class="container">
-      <h2 id="inc-title" class="section__title">{{ page.include_title }}</h2>
-      <div class="adv-grid mt-40">
-        {% for item in page.includes.all %}
-        <article class="adv-card">
-          <h3 class="adv-card__title">{{ item.title }}</h3>
-          <p class="adv-card__text">{{ item.text }}</p>
+  <section class="section vi-price" aria-labelledby="price-title">
+    <div class="container vi-price__inner">
+      <div class="vi-price__intro">
+        <h2 id="price-title" class="section__title">{{ copy.price_title }}</h2>
+        <p class="vi-price__lead">{{ copy.price_lead }}</p>
+      </div>
+      <div class="vi-price-parts" role="list">
+        {% for p in copy.price_parts %}
+        <div class="vi-price-parts__row" role="listitem">
+          <div class="vi-price-parts__meta">
+            <span class="vi-price-parts__num">{{ p.num }}</span>
+            <span class="vi-price-parts__labels">
+              <span class="vi-price-parts__name">{{ p.title }}</span>
+              <span class="vi-price-parts__when">{{ p.when }}</span>
+            </span>
+          </div>
+          <p class="vi-price-parts__text">{{ p.text }}</p>
+          <span class="vi-price-parts__price">{{ p.price }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <h3 class="vi-price__tariffs-title">{{ copy.tariffs_title }}</h3>
+      <div class="vi-tariffs">
+        {% for t in copy.tariffs %}
+        <article class="vi-tariff{% if t.featured %} vi-tariff--featured{% endif %}">
+          <div class="vi-tariff__head">
+            <span class="vi-tariff__name">{{ t.name }}</span>
+            <span class="vi-tariff__sub">{{ t.sub }}</span>
+          </div>
+          <dl class="vi-tariff__rows">
+            {% for r in t.rows %}
+            <div class="vi-tariff__row">
+              <dt>{{ r.k }}</dt>
+              <dd>{{ r.v }}</dd>
+            </div>
+            {% endfor %}
+          </dl>
+          <div class="vi-tariff__foot">
+            <span class="vi-tariff__amount">{{ t.price }}</span>
+            <span class="vi-tariff__period">{{ t.period }}</span>
+          </div>
         </article>
         {% endfor %}
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="why-title">
-    <div class="container">
-      <h2 id="why-title" class="section__title">{{ page.why_title }}</h2>
-      <ol class="step-list mt-40">
-        {% for item in page.why_items.all %}
-        <li class="step-item">
-          <span class="step-item__num">{{ item.number }}</span>
-          <div>
-            <h3 class="step-item__title">{{ item.title }}</h3>
-            <p class="step-item__text">{{ item.text }}</p>
-          </div>
-        </li>
+      <div class="vi-pay-terms">
+        {% for u in copy.pay_terms %}
+        <p class="vi-pay-terms__item"><strong>{{ u.title }}</strong> {{ u.text }}</p>
         {% endfor %}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="price-title">
-    <div class="container">
-      <h2 id="price-title" class="section__title">{{ page.price_title }}</h2>
-      <div class="mt-40">
-        <table class="price-table">
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>Складова</th>
-              <th>Період</th>
-              <th>Що входить</th>
-              <th>Як рахується</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in page.price_rows.all %}
-            <tr>
-              <td>{{ row.number }}</td>
-              <td>{{ row.title }}</td>
-              <td>{{ row.period }}</td>
-              <td>{{ row.description }}</td>
-              <td>{{ row.price_note }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
       </div>
+      <p class="vi-price__note">{{ copy.price_note }}</p>
     </div>
   </section>
 
   <section id="order" class="band-dark" aria-labelledby="order-title">
-    <div class="container">
-      <h2 id="order-title" class="section__title section__title--light">{{ page.order_title }}</h2>
-      <p class="section__lead section__lead--light">{{ page.order_text }}</p>
-      <div class="mt-40">
+    <div class="container order-grid">
+      <div class="order-grid__copy">
+        <h2 id="order-title" class="section__title section__title--light">{{ copy.order_title|linebreaksbr }}</h2>
+        <p class="section__lead section__lead--light">{{ copy.order_text }}</p>
+      </div>
+      <div class="order-grid__form">
         {% include 'leads/partials/form.html' with form_variant='analysis' form_id='lead-form-analysis' %}
       </div>
     </div>
@@ -148,7 +262,7 @@
   <section class="section section--end" aria-labelledby="other-title">
     <div class="container">
       <h2 id="other-title" class="section__title">Профільні послуги</h2>
-      <div class="dir-grid mt-40">
+      <div class="dir-grid dir-grid--profile mt-40">
         {% for s in others %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">

@@ -1,11 +1,11 @@
 <section id="example" class="band-dark band-dark--flush" aria-labelledby="ex-title">
   <div class="container deep-example">
-    <div class="section__head">
+    <div class="ex-intro">
       <h2 id="ex-title" class="section__title section__title--light">{{ d.example_title }}</h2>
-      <p class="section__lead section__lead--light">{{ d.example_lead }}</p>
+      <p class="ex-intro__lead">{{ d.example_lead }}</p>
     </div>
 
-    <div class="ex-block">
+    <div class="ex-block ex-block--stats">
       <p class="eyebrow eyebrow--light">{{ d.ex_frag1 }}</p>
       <div class="ex-stats">
         {% for s in d.ex_stats %}
@@ -24,7 +24,7 @@
 
     <div class="ex-block">
       <p class="eyebrow eyebrow--light">{{ d.ex_frag3 }}</p>
-      <p class="section__lead section__lead--light">{{ d.ex_frag3_lead }}</p>
+      <p class="ex-block__lead">{{ d.ex_frag3_lead }}</p>
       <div class="ex-facts-grid">
         <div class="ex-panel">
           <h3 class="ex-panel__title">Встановлені факти</h3>
@@ -44,7 +44,7 @@
 
     <div class="ex-block">
       <p class="eyebrow eyebrow--light">{{ d.ex_frag4 }}</p>
-      <p class="section__lead section__lead--light">{{ d.ex_frag4_lead }}</p>
+      <p class="ex-block__lead">{{ d.ex_frag4_lead }}</p>
       <div class="ex-limits">
         {% for q in d.ex_limits %}
         <blockquote class="ex-quote">{{ q }}</blockquote>

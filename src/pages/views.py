@@ -87,14 +87,17 @@ class ServiceDetailView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         page = get_object_or_404(ServicePage, slug=kwargs['slug'], is_published=True)
         ctx['page'] = page
-        ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug][:4]
-        ctx['crumbs'] = _crumbs_service(page.title)
+        ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug]
         ctx['lead_form'] = LeadForm()
 
         if page.slug == DEEP_SLUG:
             ctx['d'] = design_copy.DEEP_ANALYTICS
+            ctx['crumbs'] = _crumbs_service(
+                design_copy.DEEP_ANALYTICS.get('crumb') or page.title
+            )
         else:
             copy = dict(design_copy.SERVICES.get(page.slug, {}))
+            ctx['crumbs'] = _crumbs_service(copy.get('crumb') or page.title)
             if 'h1' not in copy:
                 copy['h1'] = page.h1 or page.title
             if 'hero_text' not in copy:
@@ -146,7 +149,7 @@ class AnalysisView(TemplateView):
         ctx['page'] = page
         ctx['copy'] = a
         ctx['crumbs'] = _crumbs_service(a['crumb'])
-        ctx['others'] = [s for s in service_nav_items() if not s['is_analysis']][:4]
+        ctx['others'] = [s for s in service_nav_items() if not s['is_analysis']]
         ctx['lead_form'] = LeadForm()
         return ctx
 

@@ -1,0 +1,103 @@
+.scope-bento {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.scope-bento__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 700px;
+}
+
+.scope-bento__intro .section__lead {
+  margin: 0;
+  max-width: none;
+}
+
+.scope-bento__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
+}
+
+.scope-bento__feature {
+  border-radius: var(--radius-panel);
+  background:
+    var(--color-dark) url("../images/about-bg.png") center / cover no-repeat;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 16px;
+  min-height: 260px;
+}
+
+.scope-bento__feature-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(26px, 2.4vw, 34px);
+  line-height: 1.1;
+  color: var(--color-white);
+  max-width: 520px;
+}
+
+.scope-bento__feature-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 460px;
+}
+
+.scope-bento__card {
+  border-radius: var(--radius-panel);
+  padding: 24px;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    linear-gradient(112.588deg, #b58b4a 0%, #b58b4a 50%, #b58b4a 100%) border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: auto;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+.scope-bento__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px rgba(11, 22, 38, 0.1);
+}
+
+.scope-bento__num {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 0.8;
+  background: linear-gradient(180deg, #b58b4a 0%, #b58b4a 50%, #b58b4a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #b58b4a;
+  -webkit-text-fill-color: transparent;
+  align-self: flex-start;
+}
+
+.scope-bento__card-text {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+@media (min-width: 640px) {
+  .scope-bento__card {
+    min-height: 200px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .scope-bento__feature {
+    grid-column: span 2;
+  }
+}

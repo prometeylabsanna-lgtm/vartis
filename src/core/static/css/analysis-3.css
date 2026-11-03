@@ -1,0 +1,240 @@
+.vi-price__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.vi-price__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 820px;
+}
+
+.vi-price__intro .section__title {
+  margin: 0;
+}
+
+.vi-price__lead {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.vi-price-parts {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(90, 98, 112, 0.22);
+}
+
+.vi-price-parts__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(90, 98, 112, 0.22);
+  align-items: baseline;
+}
+
+.vi-price-parts__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.vi-price-parts__num {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 0.8;
+  color: var(--color-gold);
+}
+
+.vi-price-parts__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vi-price-parts__name {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-ink);
+}
+
+.vi-price-parts__when {
+  font-size: 14px;
+  color: var(--color-gold);
+}
+
+.vi-price-parts__text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.vi-price-parts__price {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+
+.vi-price__tariffs-title {
+  margin: 20px 0 0;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+.vi-tariffs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.vi-tariff {
+  border-radius: var(--radius-panel);
+  border: 1.5px solid var(--color-gold);
+  background: var(--color-white);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--color-ink);
+}
+
+.vi-tariff--featured {
+  border-color: var(--color-dark);
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+.vi-tariff__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vi-tariff__name {
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.vi-tariff__sub {
+  font-size: 14px;
+  color: var(--color-gold);
+}
+
+.vi-tariff--featured .vi-tariff__sub {
+  color: var(--color-gold-light);
+}
+
+.vi-tariff__rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.vi-tariff__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(90, 98, 112, 0.18);
+}
+
+.vi-tariff--featured .vi-tariff__row {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.vi-tariff__row dt {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-ink-soft);
+}
+
+.vi-tariff--featured .vi-tariff__row dt {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.vi-tariff__row dd {
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.vi-tariff__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.vi-tariff__amount {
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.vi-tariff__period {
+  font-size: 14px;
+  color: var(--color-ink-soft);
+}
+
+.vi-tariff--featured .vi-tariff__period {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.vi-pay-terms {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px 40px;
+}
+
+.vi-pay-terms__item {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.vi-pay-terms__item strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.vi-price__note {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+@media (min-width: 640px) {
+  .vi-tariff {
+    padding: 32px;
+  }
+}
+
+@media (min-width: 900px) {
+  .vi-price-parts__row {
+    grid-template-columns: 260px minmax(0, 1fr) 240px;
+  }
+
+  .vi-pay-terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .vi-tariffs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

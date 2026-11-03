@@ -103,6 +103,7 @@
 
 .hero--shade .hero__title {
   font-size: clamp(40px, 4.17vw, 60px);
+  line-height: 1.05;
 }
 
 .hero__text {

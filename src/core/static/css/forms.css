@@ -60,7 +60,11 @@
   font-weight: 400;
   font-size: 13px;
   color: var(--color-gold-light);
-  min-height: 1.2em;
+  min-height: 0;
+}
+
+.lead-form__error:empty {
+  display: none;
 }
 
 .lead-form__row {

@@ -1,39 +1,46 @@
-<section class="section" aria-labelledby="pay-title">
-  <div class="container">
-    <div class="section__head">
+<section id="method" class="section" aria-labelledby="pay-title">
+  <div class="container deep-pay">
+    <div class="section__head section__head--wide">
       <h2 id="pay-title" class="section__title">{{ d.pay_title }}</h2>
-      <p class="section__lead">{{ d.pay_lead }}</p>
+      <p class="deep-pay__lead">{{ d.pay_lead }}</p>
     </div>
-    <div class="pay-grid mt-40">
+    <div class="pay-grid">
       {% for p in d.pay_stages %}
       <article class="pay-card">
         <div class="pay-card__top">
           <span class="pay-card__pct">{{ p.pct }}</span>
           <span class="pay-card__when">{{ p.when }}</span>
         </div>
-        <p class="pay-card__stage">{{ p.stage }} · сплачено {{ p.paid }}</p>
-        <h3 class="pay-card__title">{{ p.title }}</h3>
+        <div class="pay-card__bar" aria-hidden="true">
+          <span class="pay-card__bar-fill" style="width: {{ p.paid }}"></span>
+        </div>
+        <span class="pay-card__paid">Сплачено: {{ p.paid }}</span>
+        <div class="pay-card__stage-block">
+          <span class="pay-card__stage">{{ p.stage }}</span>
+          <h3 class="pay-card__title">{{ p.title }}</h3>
+        </div>
         <p class="pay-card__text">{{ p.text }}</p>
         <p class="pay-card__see"><strong>Перед наступним платежем:</strong> {{ p.see }}</p>
       </article>
       {% endfor %}
     </div>
-    <ul class="pay-guar">
+    <div class="pay-guar">
+      <h3 class="pay-guar__title">Ваша гарантія</h3>
       {% for g in d.pay_guar %}
-      <li>{{ g }}</li>
+      <p class="pay-guar__item">{{ g }}</p>
       {% endfor %}
-    </ul>
+    </div>
   </div>
 </section>
 
-<section class="section" aria-labelledby="quality-title">
-  <div class="container">
-    <h2 id="quality-title" class="section__title">{{ d.quality_title }}</h2>
-    <ul class="quality-grid mt-40">
+<section id="quality" class="section" aria-labelledby="q-title">
+  <div class="container deep-quality">
+    <h2 id="q-title" class="section__title deep-quality__title">{{ d.quality_title }}</h2>
+    <ul class="quality-grid">
       {% for q in d.quality %}
       <li class="quality-item">
         <span class="quality-item__mark" aria-hidden="true">✓</span>
-        <div>
+        <div class="quality-item__body">
           <h3 class="quality-item__title">{{ q.0 }}</h3>
           <p class="quality-item__text">{{ q.1 }}</p>
         </div>
@@ -43,15 +50,15 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="faq-title">
-  <div class="container">
-    <h2 id="faq-title" class="section__title">{{ d.faq_title }}</h2>
-    <div class="faq-list mt-40">
+<section id="faq" class="section" aria-labelledby="faq-title">
+  <div class="deep-faq">
+    <h2 id="faq-title" class="section__title deep-faq__title">{{ d.faq_title }}</h2>
+    <div class="faq-list">
       {% for f in d.faqs %}
       <div class="faq-item">
         <button type="button" class="faq-item__btn" data-action="toggle-faq" aria-expanded="false">
           <span>{{ f.0 }}</span>
-          <span class="faq-item__chev" aria-hidden="true"></span>
+          <span class="faq-item__plus" aria-hidden="true">+</span>
         </button>
         <div class="faq-item__panel" hidden>
           <p>{{ f.1 }}</p>

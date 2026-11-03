@@ -9,7 +9,7 @@
       </span>
       <div class="nda-card__body">
         <h2 id="nda-title" class="nda-card__title">{{ d.nda_title }}</h2>
-        <p class="section__lead">{{ d.nda_text }}</p>
+        <p class="nda-card__text">{{ d.nda_text }}</p>
         <p class="nda-card__note">{{ d.nda_note }}</p>
       </div>
     </div>
@@ -17,16 +17,16 @@
 </section>
 
 <section class="section" aria-labelledby="get-title">
-  <div class="container">
-    <div class="section__head">
+  <div class="container get-block">
+    <div class="get-block__intro">
       <h2 id="get-title" class="section__title">{{ d.get_title }}</h2>
-      <p class="section__lead">{{ d.get_lead }}</p>
+      <p class="get-block__lead">{{ d.get_lead }}</p>
     </div>
-    <div class="get-grid mt-40">
+    <div class="get-grid">
       {% for item in d.get_items %}
       <article class="get-card">
         <span class="get-card__num">{{ item.0 }}</span>
-        <div>
+        <div class="get-card__body">
           <h3 class="get-card__title">{{ item.1 }}</h3>
           <p class="get-card__text">{{ item.2 }}</p>
         </div>
