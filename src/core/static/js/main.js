@@ -68,8 +68,14 @@
   }
 
   var modal = document.getElementById('lead-modal');
+  var modalPanel = document.getElementById('modal-panel');
+  var modalPanelInitial = modalPanel ? modalPanel.innerHTML : '';
   function setModal(open) {
     if (!modal) return;
+    if (open && modalPanel && modalPanelInitial && !modalPanel.querySelector('form')) {
+      modalPanel.innerHTML = modalPanelInitial;
+      if (window.htmx) window.htmx.process(modalPanel);
+    }
     modal.classList.toggle('is-open', open);
     modal.setAttribute('aria-hidden', open ? 'false' : 'true');
     document.body.classList.toggle('modal-open', open);

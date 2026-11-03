@@ -9,9 +9,9 @@ from .services import notify_lead
 def lead_submit(request):
     form = LeadForm(request.POST)
     source = request.POST.get('source_page', request.META.get('HTTP_REFERER', ''))[:200]
-    template = 'leads/partials/form.html'
-    if 'modal' in request.POST.get('form_variant', ''):
-        template = 'leads/partials/modal_form.html'
+    variant = request.POST.get('form_variant', 'footer')
+    is_modal = 'modal' in variant
+    template = 'leads/partials/modal_panel.html' if is_modal else 'leads/partials/form.html'
 
     if form.is_valid():
         lead = form.save(commit=False)
@@ -19,7 +19,7 @@ def lead_submit(request):
         lead.save()
         notify_lead(lead)
         return render(request, 'leads/partials/thanks.html', {
-            'variant': request.POST.get('form_variant', 'footer'),
+            'variant': 'modal' if is_modal else variant,
         })
 
     return render(
@@ -27,7 +27,7 @@ def lead_submit(request):
         template,
         {
             'lead_form': form,
-            'form_variant': request.POST.get('form_variant', 'footer'),
+            'form_variant': variant,
             'form_id': request.POST.get('form_id', 'lead-form'),
         },
         status=422,

@@ -1,6 +1,20 @@
 {% with form=lead_form %}
-<form id="{{ form_id|default:'lead-form' }}" class="lead-form" method="post" action="{% url 'leads:submit' %}"
-  hx-post="{% url 'leads:submit' %}" hx-target="this" hx-swap="outerHTML" novalidate>
+<form
+  id="{{ form_id|default:'lead-form' }}"
+  class="lead-form{% if form_variant == 'modal' %} lead-form--modal{% endif %}"
+  method="post"
+  action="{% url 'leads:submit' %}"
+  hx-post="{% url 'leads:submit' %}"
+  {% if form_variant == 'modal' %}
+  hx-target="#modal-panel"
+  hx-swap="innerHTML"
+  aria-label="Форма заявки у вікні"
+  {% else %}
+  hx-target="this"
+  hx-swap="outerHTML"
+  {% endif %}
+  novalidate
+>
   {% csrf_token %}
   <input type="hidden" name="form_variant" value="{{ form_variant|default:'footer' }}">
   <input type="hidden" name="form_id" value="{{ form_id|default:'lead-form' }}">

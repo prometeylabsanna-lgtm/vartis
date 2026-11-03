@@ -1,4 +1,13 @@
-<div class="lead-form lead-form__thanks" role="status">
-  <h3>Дякуємо за заявку</h3>
-  <p>Ми отримали ваше звернення і звʼяжемося найближчим часом. Факт звернення залишається конфіденційним.</p>
+{% if variant == 'modal' %}
+<div class="modal__head" role="status">
+  <h2 id="lead-modal-title" class="modal__title">Дякуємо за заявку</h2>
+  <p class="modal__lead">Ми отримали ваше звернення і звʼяжемося найближчим часом. Факт звернення залишається конфіденційним.</p>
 </div>
+{% else %}
+<div class="lead-form" role="status">
+  <div class="lead-form__thanks">
+    <h3>Дякуємо за заявку</h3>
+    <p>Ми отримали ваше звернення і звʼяжемося найближчим часом. Факт звернення залишається конфіденційним.</p>
+  </div>
+</div>
+{% endif %}
