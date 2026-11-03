@@ -3,13 +3,11 @@
 
 {% block content %}
 <div id="top">
-  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title fallback_static='images/hero.png' shade=True %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=hero_text fallback_static='images/hero.png' shade=True crumbs=crumbs %}
 
-  <section class="section section--end" aria-label="Текст політики">
-    <div class="container">
-      <div class="privacy-body">
-        {{ page.body|safe }}
-      </div>
+  <section class="privacy-section" aria-label="Текст політики">
+    <div class="privacy-body">
+      {{ page.body|safe }}
     </div>
   </section>
 </div>

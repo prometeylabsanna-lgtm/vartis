@@ -1,0 +1,60 @@
+/* Політика — Polityka.dc.html */
+
+.privacy-section {
+  padding: 100px 0;
+}
+
+.privacy-body {
+  max-width: 820px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.privacy-body > p:first-child {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.privacy-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.privacy-block h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.privacy-block__num {
+  color: var(--color-gold);
+}
+
+.privacy-block p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 639px) {
+  .privacy-section {
+    padding: 64px 0;
+  }
+
+  .privacy-body {
+    gap: 36px;
+  }
+
+  .privacy-block p {
+    font-size: 16px;
+  }
+}

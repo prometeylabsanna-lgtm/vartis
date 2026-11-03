@@ -1,14 +1,6 @@
 {% with form=lead_form %}
-<form
-  id="{{ form_id|default:'lead-form' }}"
-  class="lead-form"
-  method="post"
-  action="{% url 'leads:submit' %}"
-  hx-post="{% url 'leads:submit' %}"
-  hx-target="this"
-  hx-swap="outerHTML"
-  novalidate
->
+<form id="{{ form_id|default:'lead-form' }}" class="lead-form" method="post" action="{% url 'leads:submit' %}"
+  hx-post="{% url 'leads:submit' %}" hx-target="this" hx-swap="outerHTML" novalidate>
   {% csrf_token %}
   <input type="hidden" name="form_variant" value="{{ form_variant|default:'footer' }}">
   <input type="hidden" name="form_id" value="{{ form_id|default:'lead-form' }}">
@@ -38,7 +30,8 @@
 
   <label class="lead-form__consent">
     {{ form.consent }}
-    <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики конфіденційності</a></span>
+    <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики
+        конфіденційності</a></span>
   </label>
   <span class="lead-form__error">{{ form.consent.errors|striptags }}</span>
 

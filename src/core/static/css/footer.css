@@ -27,10 +27,14 @@
 }
 
 .site-footer__title {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
   font-weight: 600;
   font-size: var(--fs-hero);
   line-height: 1;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
 }
 
 .site-footer__lead {

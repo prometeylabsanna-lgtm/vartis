@@ -1,0 +1,125 @@
+/* Контакти — Kontakty.dc.html */
+
+.contacts-info {
+  padding: 100px 0 0;
+  scroll-margin-top: 100px;
+}
+
+.contacts-info__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-bottom: 100px;
+}
+
+.contacts-tile__value--break {
+  word-break: break-word;
+}
+
+.contacts-office {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.contacts-office__map {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 300px;
+  background: var(--color-cream);
+}
+
+.contacts-office__map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.contacts-office__card {
+  border-radius: 30px;
+  background: #0b1626;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.contacts-office__label {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e2c48e;
+}
+
+.contacts-office__address {
+  margin: 0;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--color-white);
+}
+
+.contacts-office__note {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.contacts-office__card .btn {
+  align-self: flex-start;
+}
+
+@media (min-width: 640px) {
+  .contacts-office__card {
+    padding: 64px 48px;
+  }
+
+  .contacts-office__map {
+    min-height: 420px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .contacts-office {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .contacts-info {
+    scroll-margin-top: calc(100px + env(safe-area-inset-top, 0px));
+  }
+}
+
+@media (max-width: 639px) {
+  .contacts-info {
+    padding-top: 64px;
+  }
+
+  .contacts-info__inner {
+    padding-bottom: 64px;
+    gap: 32px;
+  }
+
+  .contacts-office__card {
+    padding: 28px 20px;
+    border-radius: 24px;
+  }
+
+  .contacts-office__map {
+    border-radius: 24px;
+  }
+
+  .contacts-office__address {
+    font-size: 20px;
+  }
+}

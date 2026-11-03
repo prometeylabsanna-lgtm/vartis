@@ -1,4 +1,6 @@
 .lead-form {
+  position: relative;
+  overflow: hidden;
   border-radius: var(--radius-panel);
   background: rgba(11, 22, 38, 0.5);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
@@ -97,14 +99,20 @@
 
 .lead-form__honeypot {
   position: absolute;
-  left: -9999px;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
   opacity: 0;
-  height: 0;
-  width: 0;
   pointer-events: none;
 }
 
-.lead-form > .btn--primary {
+.lead-form>.btn--primary {
   width: 100%;
   min-width: 0;
   height: 52px;
