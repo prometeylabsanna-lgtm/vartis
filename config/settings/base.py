@@ -4,7 +4,11 @@ from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = config('SECRET_KEY')
+# TODO(prod): прибрати default — SECRET_KEY лише з env / Vercel secrets
+SECRET_KEY = config(
+    'SECRET_KEY',
+    default='TODO-VERCEL-DEMO-INSECURE-SECRET-KEY-REPLACE-BEFORE-PROD',
+)
 
 DEBUG = False
 
