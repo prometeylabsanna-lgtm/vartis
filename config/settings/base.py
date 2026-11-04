@@ -267,13 +267,10 @@ UNFOLD = {
             '950': 'oklch(12% 0.03 250)',
         },
     },
+    # Рядки (не reverse_lazy / не static() у Promise): Vercel серіалізує settings у JSON.
     'STYLES': [
-        lambda request: __import__('django.templatetags.static', fromlist=['static']).static(
-            'css/admin/vartis_unfold.css'
-        ),
-        lambda request: __import__('django.templatetags.static', fromlist=['static']).static(
-            'css/admin/site_content.css'
-        ),
+        '/static/css/admin/vartis_unfold.css',
+        '/static/css/admin/site_content.css',
     ],
     'SIDEBAR': {
         'show_search': True,
