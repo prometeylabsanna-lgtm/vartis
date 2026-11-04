@@ -45,6 +45,10 @@
   background: url("../images/logo.png") 50% 0.185% / 100% 109.559% no-repeat;
 }
 
+.site-header__logo.has-upload {
+  background: var(--site-logo) center / contain no-repeat;
+}
+
 .site-header__nav {
   display: none;
   align-items: center;

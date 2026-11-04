@@ -68,6 +68,8 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('activeFieldsetTab', body)
         self.assertIn('SEO', body)
         self.assertIn('vartis-url-field', body)
+        self.assertIn('Логотип сайту', body)
+        self.assertIn('id_logo', body)
 
     def test_admin_branding_logo_and_favicon(self):
         response = self.client.get('/admin/')

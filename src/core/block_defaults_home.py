@@ -69,7 +69,7 @@ def register_home_blocks() -> None:
         richtext=True,
     )
 
-    _reg("site", "header_cta_label", "Обговорити завдання", label="Текст CTA у хедері", inline=True)
+    _reg("site", "header_cta_label", "Залишити заявку", label="Текст CTA у хедері", inline=True)
     _reg("site", "header_services_label", "Послуги", label="Підпис меню «Послуги»", inline=True)
 
     _reg("site", "footer_nav_company_title", "Компанія", label="Заголовок колонки «Компанія»", inline=True)

@@ -34,6 +34,12 @@ class SiteSettings(SingletonModel):
         max_length=300,
         default='Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків',
     )
+    logo = models.ImageField(
+        'Логотип сайту',
+        upload_to='site/',
+        blank=True,
+        help_text='PNG/SVG/WebP. Якщо порожньо — стандартний логотип із статичних файлів.',
+    )
     phone = models.CharField('Телефон', max_length=50, blank=True)
     email = models.EmailField('Email', blank=True)
     address = models.CharField('Адреса', max_length=300, blank=True)

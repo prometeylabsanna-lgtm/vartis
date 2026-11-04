@@ -73,6 +73,10 @@
   background: url("../images/logo.png") center / contain no-repeat;
 }
 
+.site-footer__logo.has-upload {
+  background: var(--site-logo) center / contain no-repeat;
+}
+
 .site-footer__tagline {
   max-width: 300px;
   font-size: 13px;

@@ -1,3 +1,4 @@
+from django.templatetags.static import static
 from django.urls import reverse
 
 from .design_copy import HOME
@@ -14,16 +15,38 @@ SERVICES_NAV_ORDER = (
     'kryminalni-provadzhennia',
 )
 
+# Статичні запасні зображення карток (як у seed_content), якщо media відсутнє
+CARD_IMAGE_STATIC = {
+    'perevirka-kontrahentiv': 'images/services/dir-1.png',
+    'kompleksna-dopomoha-biznesu': 'images/services/dir-2.png',
+    'konsaltynh': 'images/services/dir-3.png',
+    'zbir-ta-analiz-informatsiyi': 'images/services/dir-4.png',
+    'zakhyst-vid-vytoku': 'images/blog/lock.jpg',
+    'kryminalni-provadzhennia': 'images/blog/law.jpg',
+}
+
+
+def _card_image_url(field, key):
+    if field:
+        try:
+            return field.url
+        except (ValueError, OSError):
+            pass
+    path = CARD_IMAGE_STATIC.get(key)
+    return static(path) if path else ''
+
 
 def _analysis_nav_item():
     analysis = AnalysisPage.load()
+    key = 'perevirka-kontrahentiv'
     return {
-        'key': 'perevirka-kontrahentiv',
+        'key': key,
         'title': analysis.title or 'Експрес-перевірка контрагентів — VI Analysis',
         'short': analysis.short or 'Збір інформації, ризики, рекомендації',
         'icon': analysis.icon or 'HiconOutlineShieldTick',
         'href': reverse('pages:analysis'),
         'card_image': analysis.card_image,
+        'card_image_url': _card_image_url(analysis.card_image, key),
         'card_text': analysis.card_text or analysis.short,
         'tags': analysis.tag_list(),
         'is_analysis': True,
@@ -39,6 +62,7 @@ def _service_nav_item(svc):
         'icon': svc.icon,
         'href': reverse('pages:service_detail', kwargs={'slug': svc.slug}),
         'card_image': svc.card_image,
+        'card_image_url': _card_image_url(svc.card_image, svc.slug),
         'card_text': svc.card_text or svc.short,
         'tags': svc.tag_list(),
         'is_analysis': False,

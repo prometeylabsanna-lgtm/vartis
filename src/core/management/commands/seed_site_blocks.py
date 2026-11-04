@@ -149,6 +149,10 @@ class Command(BaseCommand):
 
         styles_created = ensure_all_page_styles()
         styles_reset = reset_page_styles_to_layout_defaults()
+        # Хедер CTA у макеті — «Залишити заявку» (не плутати з hero CTA).
+        SiteBlock.objects.filter(page="site", key="header_cta_label").exclude(
+            text_html="Залишити заявку",
+        ).update(text_html="Залишити заявку")
         self.stdout.write(
             self.style.SUCCESS(
                 f"seed_site_blocks: +{created} blocks, copied {copied}, "

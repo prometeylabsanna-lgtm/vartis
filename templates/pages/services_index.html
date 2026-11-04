@@ -15,7 +15,7 @@
         {% for c in catalog %}
         <article id="{{ c.key }}" class="split-item">
           <a href="{{ c.href }}" class="split-item__media" aria-label="{{ c.title }}">
-            {% if c.card_image %}<img src="{{ c.card_image.url }}" alt="" loading="lazy" width="800" height="500">{% endif %}
+            {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="" loading="lazy" width="800" height="500">{% endif %}
           </a>
           <div class="split-item__body">
             <span class="split-item__num">0{{ forloop.counter }}</span>

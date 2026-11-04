@@ -266,7 +266,7 @@
         {% for s in others %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">
-            {% if s.card_image %}<img src="{{ s.card_image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
           </div>
           <div class="dir-card__body">
             <h3 class="dir-card__title">{{ s.title }}</h3>
