@@ -1,12 +1,14 @@
 from django.db import models
 from django.urls import reverse
 
+from src.core.fields import WebPImageField
+
 
 class CaseStudy(models.Model):
     slug = models.SlugField('Slug', unique=True, max_length=160)
     title = models.CharField('Заголовок', max_length=300)
     category = models.CharField('Категорія', max_length=120)
-    image = models.ImageField('Зображення', upload_to='cases/', blank=True)
+    image = WebPImageField('Зображення', upload_to='cases/', blank=True)
     excerpt = models.TextField('Короткий опис')
     client = models.CharField('Клієнт', max_length=200, blank=True)
     service = models.CharField('Послуга', max_length=200, blank=True)

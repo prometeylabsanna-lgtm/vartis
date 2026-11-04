@@ -22,6 +22,52 @@
       (d.charAt(0) === '0' && d.length === 10);
   }
 
+  function clampPhoneDigits(digits) {
+    if (!digits) return '';
+    // Локальний 0XXXXXXXXX — макс 10 цифр; інакше UA +380… — макс 12
+    if (digits.charAt(0) === '0') return digits.slice(0, 10);
+    return digits.slice(0, 12);
+  }
+
+  function clampPhoneValue(raw) {
+    var value = String(raw || '');
+    var digits = '';
+    var out = '';
+    for (var i = 0; i < value.length; i += 1) {
+      var ch = value.charAt(i);
+      if (ch >= '0' && ch <= '9') {
+        var next = clampPhoneDigits(digits + ch);
+        if (next.length === digits.length) continue;
+        digits = next;
+        out += ch;
+        continue;
+      }
+      if (ch === '+' && out.length === 0) {
+        out += ch;
+        continue;
+      }
+      if (ch === ' ' || ch === '-' || ch === '(' || ch === ')') {
+        out += ch;
+      }
+    }
+    return out;
+  }
+
+  function enforcePhoneLimit(input) {
+    if (!input || input.getAttribute('data-validate') !== 'phone') return;
+    var clamped = clampPhoneValue(input.value);
+    if (clamped !== input.value) {
+      var start = input.selectionStart;
+      input.value = clamped;
+      if (typeof start === 'number') {
+        try {
+          var pos = Math.min(start, clamped.length);
+          input.setSelectionRange(pos, pos);
+        } catch (e) { /* iOS Safari */ }
+      }
+    }
+  }
+
   function fieldWrap(input) {
     return input.closest('.lead-form__label') ||
       input.closest('.lead-form__consent') ||
@@ -154,9 +200,22 @@
 
   document.addEventListener('input', function (e) {
     var input = e.target;
-    if (!input || !input.classList || !input.classList.contains('is-invalid')) return;
-    if (!input.closest('.lead-form')) return;
+    if (!input || !input.closest || !input.closest('.lead-form')) return;
+    if (input.getAttribute('data-validate') === 'phone') {
+      enforcePhoneLimit(input);
+    }
+    if (!input.classList || !input.classList.contains('is-invalid')) return;
     validateField(input);
+  }, true);
+
+  document.addEventListener('paste', function (e) {
+    var input = e.target;
+    if (!input || !input.closest || !input.closest('.lead-form')) return;
+    if (input.getAttribute('data-validate') !== 'phone') return;
+    window.setTimeout(function () {
+      enforcePhoneLimit(input);
+      if (input.classList.contains('is-invalid')) validateField(input);
+    }, 0);
   }, true);
 
   document.addEventListener('change', function (e) {

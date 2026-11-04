@@ -5,6 +5,8 @@ from __future__ import annotations
 from django.core.cache import cache
 from django.db import models
 
+from src.core.fields import WebPImageField
+
 SITE_BLOCKS_CACHE_KEY = 'vartis_site_blocks_v1'
 
 
@@ -40,7 +42,7 @@ class SiteBlock(models.Model):
         default=ContentType.TEXT,
     )
     text_html = models.TextField('Текст', blank=True)
-    image = models.ImageField('Зображення', upload_to='blocks/', blank=True)
+    image = WebPImageField('Зображення', upload_to='blocks/', blank=True)
     link_url = models.CharField('URL посилання', max_length=512, blank=True)
     link_label = models.CharField('Текст посилання', max_length=128, blank=True)
     sort_order = models.PositiveSmallIntegerField('Порядок', default=0)
@@ -96,7 +98,7 @@ class PageStyle(models.Model):
         blank=True,
         help_text='HEX. Порожнє — дефолт сайту.',
     )
-    background_image = models.ImageField(
+    background_image = WebPImageField(
         'Фонове зображення',
         upload_to='blocks/page-style/',
         blank=True,

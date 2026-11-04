@@ -1,13 +1,15 @@
 from django.db import models
 from django.urls import reverse
 
+from src.core.fields import WebPImageField
+
 
 class Article(models.Model):
     slug = models.SlugField('Slug', unique=True, max_length=160)
     title = models.CharField('Заголовок', max_length=300)
     category = models.CharField('Категорія', max_length=120)
     published_at = models.DateField('Дата публікації')
-    image = models.ImageField('Зображення', upload_to='blog/', blank=True)
+    image = WebPImageField('Зображення', upload_to='blog/', blank=True)
     excerpt = models.TextField('Короткий опис')
     seo_title = models.CharField('SEO Title', max_length=200, blank=True)
     seo_description = models.TextField('SEO Description', blank=True)

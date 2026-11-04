@@ -1,5 +1,6 @@
 from django.db import models
 
+from src.core.fields import WebPImageField
 from src.core.models import SingletonModel
 
 
@@ -18,12 +19,12 @@ class HomePage(SingletonModel, SEOFields):
         'Hero текст',
         default='Допомагаємо виявляти приховані ризики й ухвалювати обґрунтовані рішення',
     )
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/home/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/home/', blank=True)
     services_title = models.CharField('Заголовок напрямів', max_length=200, default='Напрями')
     advantages_title = models.CharField('Заголовок переваг', max_length=200, default='Переваги')
     mission_title = models.CharField('Заголовок місії', max_length=200, default='Наша місія')
     mission_text = models.TextField('Текст місії', blank=True)
-    mission_image = models.ImageField('Фон місії', upload_to='pages/home/', blank=True)
+    mission_image = WebPImageField('Фон місії', upload_to='pages/home/', blank=True)
     process_title = models.CharField('Заголовок процесу', max_length=200, default='Як ми працюємо')
     blog_title = models.CharField('Заголовок блоку блогу', max_length=200, default='Аналітика')
 
@@ -71,7 +72,7 @@ class HomeProcessStep(models.Model):
 class AboutPage(SingletonModel, SEOFields):
     hero_title = models.CharField('Hero заголовок', max_length=200, default='Про компанію')
     hero_text = models.TextField('Hero текст', blank=True)
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/about/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/about/', blank=True)
     intro_title = models.CharField('Заголовок «Про нас»', max_length=200, default='Про нас')
     intro_text = models.TextField('Текст «Про нас»', blank=True)
     principles_title = models.CharField('Заголовок принципів', max_length=200, default='Принципи')
@@ -142,7 +143,7 @@ class TeamMember(models.Model):
     regalia = models.CharField('Регалії', max_length=400, blank=True)
     email = models.EmailField('Email', blank=True)
     bio = models.TextField('Біографія', blank=True)
-    photo = models.ImageField('Фото', upload_to='pages/team/', blank=True)
+    photo = WebPImageField('Фото', upload_to='pages/team/', blank=True)
     photo_position = models.CharField('Позиція фото', max_length=32, blank=True, default='50% 20%')
     expertise = models.JSONField('Ключова експертиза', default=list, blank=True)
     career_path = models.JSONField('Професійний шлях', default=list, blank=True)
@@ -211,7 +212,7 @@ class ServicesIndex(SingletonModel, SEOFields):
             'до стратегічного аналізу та управління ризиками'
         ),
     )
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/services/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/services/', blank=True)
 
     class Meta:
         verbose_name = 'Каталог послуг'
@@ -238,7 +239,7 @@ class ServicePage(SEOFields):
     title = models.CharField('Назва', max_length=200)
     short = models.CharField('Короткий опис', max_length=200, blank=True)
     hero_text = models.TextField('Hero текст', blank=True)
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/services/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/services/', blank=True)
     scope_title = models.CharField('Заголовок опису', max_length=200, default='Опис напряму')
     scope_text = models.TextField('Текст опису', blank=True)
     method_title = models.CharField('Заголовок методології', max_length=200, default='Методологія')
@@ -252,7 +253,7 @@ class ServicePage(SEOFields):
     is_published = models.BooleanField('Опубліковано', default=True)
     order = models.PositiveIntegerField('Порядок', default=0)
     icon = models.CharField('Іконка', max_length=80, blank=True)
-    card_image = models.ImageField('Зображення картки', upload_to='pages/services/', blank=True)
+    card_image = WebPImageField('Зображення картки', upload_to='pages/services/', blank=True)
     card_text = models.TextField('Текст картки', blank=True)
     tags = models.CharField('Теги (через |)', max_length=300, blank=True)
 
@@ -324,7 +325,7 @@ class AnalysisPage(SingletonModel, SEOFields):
         'Hero текст',
         default='Власний сервіс швидкої перевірки контрагентів',
     )
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/analysis/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/analysis/', blank=True)
     steps_title = models.CharField(
         'Заголовок кроків',
         max_length=200,
@@ -368,7 +369,7 @@ class AnalysisPage(SingletonModel, SEOFields):
     )
     order_text = models.TextField('Текст форми', blank=True)
     short = models.CharField('Короткий опис у меню', max_length=200, blank=True)
-    card_image = models.ImageField('Зображення картки', upload_to='pages/analysis/', blank=True)
+    card_image = WebPImageField('Зображення картки', upload_to='pages/analysis/', blank=True)
     card_text = models.TextField('Текст картки', blank=True)
     tags = models.CharField('Теги (через |)', max_length=300, blank=True)
     icon = models.CharField('Іконка', max_length=80, blank=True, default='HiconOutlineShieldTick')
@@ -474,7 +475,7 @@ class AnalysisPriceRow(models.Model):
 class ContactsPage(SingletonModel, SEOFields):
     hero_title = models.CharField('Hero заголовок', max_length=200, default='Контакти')
     hero_text = models.TextField('Hero текст', blank=True)
-    hero_image = models.ImageField('Hero зображення', upload_to='pages/contacts/', blank=True)
+    hero_image = WebPImageField('Hero зображення', upload_to='pages/contacts/', blank=True)
     info_title = models.CharField('Заголовок блоку', max_length=200, default='Контактні дані')
 
     class Meta:

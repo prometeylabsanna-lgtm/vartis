@@ -66,6 +66,9 @@ class LeadForm(forms.ModelForm):
                 'placeholder': '+380 XX XXX XX XX',
                 'class': 'lead-form__input',
                 'data-validate': 'phone',
+                # +380XXXXXXXXX / 0XXXXXXXXX (+ пробіли в масці) — більше не вводити
+                'maxlength': '17',
+                'data-phone-max-digits': '12',
             }),
             'email': forms.EmailInput(attrs={
                 'autocomplete': 'email',

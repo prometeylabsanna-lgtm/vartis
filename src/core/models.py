@@ -1,5 +1,6 @@
 from django.db import models
 
+from src.core.fields import WebPImageField
 from src.core.models_cms import PageStyle, SiteBlock
 
 __all__ = [
@@ -34,11 +35,11 @@ class SiteSettings(SingletonModel):
         max_length=300,
         default='Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків',
     )
-    logo = models.ImageField(
+    logo = WebPImageField(
         'Логотип сайту',
         upload_to='site/',
         blank=True,
-        help_text='PNG/SVG/WebP. Якщо порожньо — стандартний логотип із статичних файлів.',
+        help_text='PNG/JPG → WebP автоматично. SVG без змін. Якщо порожньо — логотип зі static.',
     )
     phone = models.CharField('Телефон', max_length=50, blank=True)
     email = models.EmailField('Email', blank=True)
