@@ -16,7 +16,7 @@ def resolve_page_style(page: str) -> dict[str, str]:
             "--page-bg": PageStyle.DEFAULT_BACKGROUND,
             "--page-text": PageStyle.DEFAULT_TEXT,
             "--page-accent": PageStyle.DEFAULT_ACCENT,
-            "glass_enabled": "1",
+            "glass_enabled": "0",
             "background_image_url": "",
         }
     bg_url = ""
@@ -37,7 +37,32 @@ def resolve_page_style(page: str) -> dict[str, str]:
 def ensure_all_page_styles() -> int:
     created = 0
     for value, _label in SiteBlock.Page.choices:
-        _, was_created = PageStyle.objects.get_or_create(page=value, defaults={"glass_enabled": True})
+        _, was_created = PageStyle.objects.get_or_create(
+            page=value,
+            defaults={"glass_enabled": False},
+        )
         if was_created:
             created += 1
     return created
+
+
+def reset_page_styles_to_layout_defaults() -> int:
+    """Повертає стилі до світлого макета (якщо адмін не задав власні кольори)."""
+    updated = 0
+    for row in PageStyle.objects.all():
+        changed = False
+        if row.glass_enabled:
+            row.glass_enabled = False
+            changed = True
+        # Порожні кольори вже беруть нові світлі DEFAULT_*;
+        # якщо лишились старі темні дефолти як збережені значення — скидаємо.
+        if (row.background_color or "").strip().lower() in {"#0b1626", "0b1626"}:
+            row.background_color = ""
+            changed = True
+        if (row.text_color or "").strip().lower() in {"#f6f0e6", "f6f0e6", "#e8edf4", "e8edf4"}:
+            row.text_color = ""
+            changed = True
+        if changed:
+            row.save(update_fields=["glass_enabled", "background_color", "text_color"])
+            updated += 1
+    return updated

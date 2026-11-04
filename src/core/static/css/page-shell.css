@@ -1,6 +1,17 @@
 .page-shell {
-  background-color: var(--page-bg, var(--color-bg, #0b1626));
-  color: var(--page-text, var(--color-text, #e8edf4));
+  background-color: var(--page-bg, #ffffff);
+  color: var(--page-text, #12263a);
+  --color-ink: var(--page-text, #12263a);
+  --color-gold: var(--page-accent, #b58b4a);
+}
+
+.page-shell[data-theme="light"] {
+  --color-ink-soft: #5a6270;
+}
+
+.page-shell[data-theme="dark"] {
+  --color-ink: var(--page-text, #f6f0e6);
+  --color-ink-soft: color-mix(in srgb, var(--page-text, #f6f0e6) 72%, transparent);
 }
 
 .page-shell .gold-text,

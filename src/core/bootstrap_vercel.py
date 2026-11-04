@@ -10,6 +10,15 @@ logger = logging.getLogger(__name__)
 DEMO_USERNAME = 'admin'
 DEMO_PASSWORD = 'admin'
 DEMO_EMAIL = 'admin@vartis.local'
+# Фіксований salt → однаковий password hash на кожному cold start,
+# інакше Django інвалідує cookie-сесію (_auth_user_hash) і викидає на login.
+_DEMO_PASSWORD_SALT = 'vartisdemofixed01'
+
+
+def _demo_password_hash() -> str:
+    from django.contrib.auth.hashers import make_password
+
+    return make_password(DEMO_PASSWORD, salt=_DEMO_PASSWORD_SALT, hasher='pbkdf2_sha256')
 
 
 def ensure_demo_superuser() -> None:
@@ -18,6 +27,7 @@ def ensure_demo_superuser() -> None:
     from django.contrib.auth import get_user_model
 
     user_model = get_user_model()
+    desired_hash = _demo_password_hash()
     user, created = user_model.objects.get_or_create(
         username=DEMO_USERNAME,
         defaults={
@@ -25,6 +35,7 @@ def ensure_demo_superuser() -> None:
             'is_staff': True,
             'is_superuser': True,
             'is_active': True,
+            'password': desired_hash,
         },
     )
     changed = created
@@ -33,14 +44,19 @@ def ensure_demo_superuser() -> None:
         user.is_superuser = True
         user.is_active = True
         changed = True
-    # Завжди синхронізуємо демо-пароль: /tmp БД нова на cold start
-    user.set_password(DEMO_PASSWORD)
+    if user.password != desired_hash:
+        user.password = desired_hash
+        changed = True
     if not user.email:
         user.email = DEMO_EMAIL
-    user.save()
-    logger.info('vercel demo superuser %s (%s)', DEMO_USERNAME, 'created' if created else 'updated')
+        changed = True
     if changed:
-        pass
+        user.save()
+    logger.info(
+        'vercel demo superuser %s (%s)',
+        DEMO_USERNAME,
+        'created' if created else ('updated' if changed else 'ok'),
+    )
 
 
 def bootstrap_vercel_demo() -> None:
@@ -70,3 +86,10 @@ def bootstrap_vercel_demo() -> None:
         call_command('seed_site_blocks', verbosity=0)
     except Exception:
         logger.exception('vercel seed_site_blocks failed')
+
+    try:
+        from src.core.page_styles import reset_page_styles_to_layout_defaults
+
+        reset_page_styles_to_layout_defaults()
+    except Exception:
+        logger.exception('vercel page style reset failed')

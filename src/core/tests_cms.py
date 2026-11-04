@@ -50,6 +50,9 @@ class CmsAdminSmokeTests(TestCase):
         about_titles = [i['title'] for i in groups['Про компанію']]
         self.assertIn('Команда (список)', about_titles)
         self.assertNotIn('Списки', groups)
+        self.assertNotIn('Оболонка', groups)
+        self.assertIn('Шапка', groups)
+        self.assertIn('Підвал', groups)
 
     def test_recent_actions_page(self):
         response = self.client.get('/admin/recent-actions/')
@@ -57,6 +60,22 @@ class CmsAdminSmokeTests(TestCase):
         body = response.content.decode()
         self.assertIn('Недавні дії', body)
         self.assertIn('recent-actions-page', body)
+
+    def test_site_settings_has_seo_tab_and_url_wrap(self):
+        response = self.client.get('/admin/core/sitesettings/1/change/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('activeFieldsetTab', body)
+        self.assertIn('SEO', body)
+        self.assertIn('vartis-url-field', body)
+
+    def test_admin_branding_logo_and_favicon(self):
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('/static/images/logo.png', body)
+        self.assertIn('/static/images/favicon', body)
+        self.assertIn('vartis-admin-logo', body)
 
     def test_admin_index_hides_sidebar_recent_actions(self):
         response = self.client.get('/admin/')

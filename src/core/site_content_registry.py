@@ -10,6 +10,7 @@ from src.core.site_content_registry_pages import CONTENT_SECTIONS_PAGES
 
 CONTENT_SECTIONS: tuple[ContentSection, ...] = CONTENT_SECTIONS_HOME + CONTENT_SECTIONS_PAGES
 
+# Групи сайдбару. Для site-секцій див. _SITE_SECTION_GROUPS нижче.
 _SIDEBAR_GROUPS: tuple[tuple[str, frozenset[str]], ...] = (
     ("Головна", frozenset({"home"})),
     ("Про компанію", frozenset({"about"})),
@@ -17,8 +18,15 @@ _SIDEBAR_GROUPS: tuple[tuple[str, frozenset[str]], ...] = (
     ("VI Analysis", frozenset({"analysis"})),
     ("Контакти", frozenset({"contacts"})),
     ("Політика", frozenset({"privacy"})),
-    ("Оболонка", frozenset({"site"})),
+    ("Шапка", frozenset({"__site_header__"})),
+    ("Підвал", frozenset({"__site_footer__"})),
 )
+
+# site/header і site/footer — окремі підменю зліва
+_SITE_SECTION_GROUPS: dict[str, str] = {
+    "header": "Шапка",
+    "footer": "Підвал",
+}
 
 # Списки моделей поруч із секціями сторінки: (after_section_slug, item)
 _PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
@@ -152,6 +160,8 @@ def _sidebar_item_title(section: ContentSection) -> str:
 
 
 def _section_group_title(section: ContentSection) -> str:
+    if section.page_slug == "site":
+        return _SITE_SECTION_GROUPS.get(section.slug, "Інше")
     for group_title, page_slugs in _SIDEBAR_GROUPS:
         if section.page_slug in page_slugs:
             return group_title
@@ -180,19 +190,18 @@ def _build_page_items(page_slug: str, sections: list[ContentSection]) -> list[di
 
 
 def build_content_sidebar_groups() -> list[dict]:
-    by_page: dict[str, list[ContentSection]] = {}
-    for section in CONTENT_SECTIONS:
-        by_page.setdefault(section.page_slug, []).append(section)
-
     buckets: dict[str, list[dict]] = {title: [] for title, _ in _SIDEBAR_GROUPS}
     buckets["Інше"] = []
 
+    by_page: dict[str, list[ContentSection]] = {}
+    for section in CONTENT_SECTIONS:
+        if section.page_slug == "site":
+            buckets[_section_group_title(section)].append(_section_to_item(section))
+            continue
+        by_page.setdefault(section.page_slug, []).append(section)
+
     for page_slug, sections in by_page.items():
-        group_title = "Інше"
-        for title, page_slugs in _SIDEBAR_GROUPS:
-            if page_slug in page_slugs:
-                group_title = title
-                break
+        group_title = _section_group_title(sections[0]) if sections else "Інше"
         buckets[group_title].extend(_build_page_items(page_slug, sections))
 
     groups: list[dict] = []

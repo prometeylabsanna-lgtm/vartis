@@ -195,8 +195,8 @@ class AboutProcessStep(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
-        verbose_name = 'Крок'
-        verbose_name_plural = 'Кроки'
+        verbose_name = 'Крок процесу (про нас)'
+        verbose_name_plural = 'Кроки процесу (про нас)'
 
     def __str__(self):
         return f'{self.number} {self.title}'
@@ -397,6 +397,8 @@ class AnalysisStep(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Крок VI Analysis'
+        verbose_name_plural = 'Кроки VI Analysis'
 
     def bullet_list(self):
         return [b.strip() for b in self.bullets.splitlines() if b.strip()]
@@ -413,6 +415,8 @@ class AnalysisRisk(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Ризик VI Analysis'
+        verbose_name_plural = 'Ризики VI Analysis'
 
     def __str__(self):
         return self.title
@@ -426,6 +430,8 @@ class AnalysisInclude(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Що входить (VI Analysis)'
+        verbose_name_plural = 'Що входить (VI Analysis)'
 
     def __str__(self):
         return self.title
@@ -440,6 +446,8 @@ class AnalysisWhy(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Чому вигідно (VI Analysis)'
+        verbose_name_plural = 'Чому вигідно (VI Analysis)'
 
     def __str__(self):
         return f'{self.number} {self.title}'
@@ -456,6 +464,8 @@ class AnalysisPriceRow(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Тариф VI Analysis'
+        verbose_name_plural = 'Тарифи VI Analysis'
 
     def __str__(self):
         return self.title

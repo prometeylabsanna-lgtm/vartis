@@ -55,15 +55,15 @@ class HomeBlogSettings(SiteSettings):
 class SiteHeaderSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Оболонка — Хедер"
-        verbose_name_plural = "Оболонка — Хедер"
+        verbose_name = "Шапка сайту"
+        verbose_name_plural = "Шапка сайту"
 
 
 class SiteFooterSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Оболонка — Футер"
-        verbose_name_plural = "Оболонка — Футер"
+        verbose_name = "Підвал сайту"
+        verbose_name_plural = "Підвал сайту"
 
 
 class AboutHeroSettings(SiteSettings):

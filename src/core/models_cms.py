@@ -67,8 +67,9 @@ class SiteBlock(models.Model):
 
 
 class PageStyle(models.Model):
-    DEFAULT_BACKGROUND = '#0b1626'
-    DEFAULT_TEXT = '#f6f0e6'
+    # Світла тема як у макеті Home.dc (білий фон + темний текст).
+    DEFAULT_BACKGROUND = '#ffffff'
+    DEFAULT_TEXT = '#12263a'
     DEFAULT_ACCENT = '#b58b4a'
 
     page = models.CharField(
@@ -100,7 +101,7 @@ class PageStyle(models.Model):
         upload_to='blocks/page-style/',
         blank=True,
     )
-    glass_enabled = models.BooleanField('Скло (glass)', default=True)
+    glass_enabled = models.BooleanField('Скло (glass)', default=False)
 
     class Meta:
         ordering = ['page']
@@ -114,7 +115,7 @@ class PageStyle(models.Model):
     def for_page(cls, page: str) -> PageStyle:
         obj, _ = cls.objects.get_or_create(
             page=page,
-            defaults={'glass_enabled': True},
+            defaults={'glass_enabled': False},
         )
         return obj
 

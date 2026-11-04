@@ -13,12 +13,15 @@ patch_admin_urls()
 class SiteSettingsAdmin(ModelAdmin):
     fieldsets = (
         ('Компанія', {
+            'classes': ('tab',),
             'fields': ('company_name', 'tagline'),
         }),
         ('Контакти', {
+            'classes': ('tab',),
             'fields': ('phone', 'email', 'address', 'map_embed_url', 'facebook_url'),
         }),
-        ('SEO за замовчуванням', {
+        ('SEO', {
+            'classes': ('tab',),
             'fields': ('default_seo_title', 'default_seo_description'),
         }),
     )

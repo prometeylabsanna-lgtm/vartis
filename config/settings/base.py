@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+    'django.forms',
     'django_htmx',
     'csp',
     'src.core',
@@ -65,6 +66,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# Щоб admin/unfold віджети брали overrides з templates/ (URL, file input тощо).
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -183,7 +187,29 @@ def _vartis_unfold_navigation():
 UNFOLD = {
     'SITE_TITLE': 'Vartis Intelligence',
     'SITE_HEADER': 'Vartis Intelligence',
-    'SITE_SYMBOL': 'shield',
+    'SITE_URL': '/',
+    'SITE_LOGO': {
+        'light': '/static/images/logo.png',
+        'dark': '/static/images/logo.png',
+    },
+    'SITE_FAVICONS': [
+        {
+            'rel': 'icon',
+            'sizes': 'any',
+            'href': '/static/images/favicon.ico',
+        },
+        {
+            'rel': 'icon',
+            'type': 'image/png',
+            'sizes': '32x32',
+            'href': '/static/images/favicon.png',
+        },
+        {
+            'rel': 'apple-touch-icon',
+            'sizes': '180x180',
+            'href': '/static/images/apple-touch-icon.png',
+        },
+    ],
     'SHOW_HISTORY': True,
     'COLORS': {
         'primary': {

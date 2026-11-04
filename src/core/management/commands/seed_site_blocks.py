@@ -10,7 +10,7 @@ from src.core.block_defaults import (
     get_block_label,
 )
 from src.core.models import PageStyle, SiteBlock, SiteSettings
-from src.core.page_styles import ensure_all_page_styles
+from src.core.page_styles import ensure_all_page_styles, reset_page_styles_to_layout_defaults
 from src.core.site_content_registry import all_registry_block_keys
 from src.pages.models import (
     AboutPage,
@@ -148,9 +148,11 @@ class Command(BaseCommand):
                 copied += 1
 
         styles_created = ensure_all_page_styles()
+        styles_reset = reset_page_styles_to_layout_defaults()
         self.stdout.write(
             self.style.SUCCESS(
-                f"seed_site_blocks: +{created} blocks, copied {copied}, +{styles_created} PageStyle"
+                f"seed_site_blocks: +{created} blocks, copied {copied}, "
+                f"+{styles_created} PageStyle, reset {styles_reset}"
             )
         )
 

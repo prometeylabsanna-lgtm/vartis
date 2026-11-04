@@ -32,9 +32,57 @@ body {
 input[type="text"],
 input[type="url"],
 input[type="email"],
-textarea {
+textarea,
+.vURLField,
+.vartis-url-field,
+.vartis-url-field input {
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
+}
+
+.form-row,
+.fieldBox,
+.form-field,
+.form-field > .flex,
+.flex.grow,
+.aligned .form-row > div,
+.aligned label + div,
+.fieldset-row,
+[class*="field-map_embed"],
+[class*="field-facebook"] {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.form-field > .flex > *:not(label) {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.vartis-url-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.vartis-url-field__current {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.vartis-url-field__link {
+  display: inline;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .help,
@@ -137,6 +185,25 @@ html:not(.dark) body:not(.login) .sidebar {
 a.site-content-editor__preview:hover {
   border-color: var(--vartis-gold);
   color: var(--vartis-gold);
+}
+
+/* Логотип у шапці сайдбару адмінки */
+.vartis-admin-logo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  text-decoration: none;
+}
+
+.vartis-admin-logo__img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 11.5rem);
+  height: auto;
+  max-height: 3.1rem;
+  object-fit: contain;
+  object-position: left center;
 }
 
 @media (max-width: 1023px) {

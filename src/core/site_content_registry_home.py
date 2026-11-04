@@ -146,8 +146,8 @@ CONTENT_SECTIONS_HOME: tuple[ContentSection, ...] = (
     ContentSection(
         slug="header",
         page_slug="site",
-        title="Оболонка — Хедер",
-        sidebar_title="Хедер",
+        title="Шапка сайту",
+        sidebar_title="Шапка",
         sidebar_icon="web",
         preview_url="/",
         blocks=_b("site", "header_cta_label", "header_services_label"),
@@ -159,8 +159,8 @@ CONTENT_SECTIONS_HOME: tuple[ContentSection, ...] = (
     ContentSection(
         slug="footer",
         page_slug="site",
-        title="Оболонка — Футер",
-        sidebar_title="Футер",
+        title="Підвал сайту",
+        sidebar_title="Підвал",
         sidebar_icon="call_to_action",
         preview_url="/",
         blocks=_b(

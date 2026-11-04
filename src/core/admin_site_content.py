@@ -258,7 +258,7 @@ class SitePageContentForm(forms.Form):
             style.background_color = self.cleaned_data.get("style_background", "")
             style.text_color = self.cleaned_data.get("style_text", "")
             style.accent_color = self.cleaned_data.get("style_accent", "")
-            style.glass_enabled = bool(self.cleaned_data.get("style_glass", True))
+            style.glass_enabled = bool(self.cleaned_data.get("style_glass", False))
             img = self.cleaned_data.get("style_background_image")
             if img:
                 style.background_image = img
