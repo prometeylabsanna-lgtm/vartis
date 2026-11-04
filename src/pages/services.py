@@ -26,13 +26,29 @@ CARD_IMAGE_STATIC = {
 }
 
 
+def _is_seed_card_filename(name: str) -> bool:
+    """Seed/design-файли (dir-1…4, lock/law) — завжди зі static, не з /tmp media."""
+    base = (name or '').rsplit('/', 1)[-1].lower()
+    if base in {'lock.jpg', 'law.jpg', 'lock.jpeg', 'law.jpeg'}:
+        return True
+    for i in ('1', '2', '3', '4'):
+        if base == f'dir-{i}.png' or base.startswith(f'dir-{i}_'):
+            return True
+    return False
+
+
 def _card_image_url(field, key):
-    if field:
+    """
+    Картки напрямів з дизайну — зі static (надійно на Vercel).
+    Кастомний upload з адмінки — з media, якщо файл є.
+    """
+    path = CARD_IMAGE_STATIC.get(key)
+    if field and getattr(field, 'name', None) and not _is_seed_card_filename(field.name):
         try:
-            return field.url
+            if field.storage.exists(field.name):
+                return field.url
         except (ValueError, OSError):
             pass
-    path = CARD_IMAGE_STATIC.get(key)
     return static(path) if path else ''
 
 

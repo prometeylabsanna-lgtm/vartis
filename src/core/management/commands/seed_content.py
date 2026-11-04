@@ -37,8 +37,15 @@ STATIC = Path(__file__).resolve().parents[2] / 'static' / 'images'
 
 def assign_image(field, relative):
     src = STATIC / relative
-    if not src.exists() or field.name:
+    if not src.exists():
         return
+    # Перезаписати, якщо в БД є шлях, а файлу в storage немає (типово після /tmp на Vercel)
+    if field.name:
+        try:
+            if field.storage.exists(field.name):
+                return
+        except (ValueError, OSError):
+            pass
     with src.open('rb') as fh:
         field.save(src.name, File(fh), save=False)
 

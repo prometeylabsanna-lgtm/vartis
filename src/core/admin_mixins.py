@@ -4,12 +4,11 @@ from __future__ import annotations
 
 from django.db import models
 
-from unfold.contrib.filters.admin import RangeDateFilter, RangeDateTimeFilter
-
 from .admin_filters import (
     VartisAllValuesDropdownFilter,
     VartisBooleanDropdownFilter,
     VartisChoicesDropdownFilter,
+    VartisRangeDateFilter,
     VartisRelatedDropdownFilter,
 )
 
@@ -88,10 +87,8 @@ class TopDropdownFiltersMixin:
             return VartisRelatedDropdownFilter
         if isinstance(field, models.BooleanField):
             return VartisBooleanDropdownFilter
-        if isinstance(field, models.DateTimeField):
-            return RangeDateTimeFilter
-        if isinstance(field, models.DateField):
-            return RangeDateFilter
+        if isinstance(field, (models.DateTimeField, models.DateField)):
+            return VartisRangeDateFilter
         if getattr(field, 'choices', None):
             return VartisChoicesDropdownFilter
         return VartisAllValuesDropdownFilter

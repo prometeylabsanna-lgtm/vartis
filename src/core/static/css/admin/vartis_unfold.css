@@ -221,18 +221,135 @@ html.dark .vartis-admin-logo__img--dark {
   display: block;
 }
 
-/* Фільтри changelist — зверху, компактні select */
-#changelist form[oninput] {
+/* Toolbar changelist: пошу + фільтри в один ряд, одна базова лінія */
+.vartis-changelist-toolbar {
+  display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
+  gap: 12px 16px;
+  margin-bottom: 1rem;
+  padding: 12px;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.5rem;
+  background: rgb(255 255 255);
 }
 
-#changelist form[oninput] .form-row,
-#changelist form[oninput] .flex.flex-col {
+html.dark .vartis-changelist-toolbar {
+  border-color: rgb(55 65 81);
+  background: transparent;
+}
+
+.vartis-changelist-toolbar #toolbar {
+  margin: 0;
+  flex: 0 1 18rem;
   min-width: min(100%, 14rem);
 }
 
-#changelist form[oninput] label {
+.vartis-changelist-toolbar #toolbar > form > div {
+  width: 100%;
+  min-height: 42px;
+}
+
+.vartis-filters-row {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin: 0;
+  min-width: 0;
+}
+
+.vartis-filter {
+  flex: 0 1 14rem;
+  min-width: min(100%, 11rem);
+  margin: 0;
+}
+
+.vartis-filter__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.vartis-filter__label {
+  display: block;
+  margin: 0;
+  font-size: 0.8125rem;
   font-weight: 600;
+  line-height: 1.25;
+  color: rgb(17 24 39);
+}
+
+html.dark .vartis-filter__label {
+  color: rgb(243 244 246);
+}
+
+.vartis-filter__control,
+.vartis-filter__date-field {
+  margin: 0;
+  min-width: 0;
+}
+
+.vartis-filter__control select,
+.vartis-filter__control .admin-autocomplete,
+.vartis-filter__control .select2-container {
+  width: 100%;
+  min-width: 0;
+}
+
+.vartis-filter__control .select2-container .select2-selection--single {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.vartis-filter__dates {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.vartis-filter__dates-sep {
+  flex: 0 0 auto;
+  color: rgb(156 163 175);
+  font-weight: 600;
+}
+
+.vartis-filter__date-field {
+  flex: 1 1 0;
+  min-width: 7.5rem;
+}
+
+.vartis-filter__date-field input {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+}
+
+.vartis-filter__inner--date {
+  min-width: min(100%, 18rem);
+}
+
+@media (max-width: 767px) {
+  .vartis-changelist-toolbar {
+    align-items: stretch;
+  }
+
+  .vartis-changelist-toolbar #toolbar,
+  .vartis-filter {
+    flex: 1 1 100%;
+  }
+
+  .vartis-filter__dates {
+    flex-wrap: wrap;
+  }
+
+  .vartis-filter__date-field {
+    flex: 1 1 calc(50% - 16px);
+  }
 }
 
 @media (max-width: 1023px) {

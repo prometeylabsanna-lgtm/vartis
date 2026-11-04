@@ -94,6 +94,29 @@ class CmsAdminSmokeTests(TestCase):
         self.assertNotIn('filter-open-button', body)
         self.assertIn('name="category"', body)
         self.assertIn('name="is_published__exact"', body)
+        self.assertIn('vartis-changelist-toolbar', body)
+        self.assertIn('vartis-filters-row', body)
+
+    def test_leads_date_filter_uk_placeholders(self):
+        response = self.client.get('/admin/leads/lead/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('Створено', body)
+        self.assertIn('placeholder="Від"', body)
+        self.assertIn('placeholder="До"', body)
+        self.assertNotIn('Date from', body)
+        self.assertNotIn('Date to', body)
+        self.assertIn('vartis-filter__dates', body)
+        self.assertNotIn('name="created_at_from_0"', body)
+
+    def test_empty_results_uk(self):
+        response = self.client.get('/admin/blog/article/', {'q': '__no_such_article__'})
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('Нічого не знайдено', body)
+        self.assertIn('Скинути фільтри', body)
+        self.assertNotIn('No results found', body)
+        self.assertNotIn('Reset filters', body)
 
     def test_admin_index_hides_sidebar_recent_actions(self):
         response = self.client.get('/admin/')

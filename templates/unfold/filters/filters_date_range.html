@@ -1,18 +1,20 @@
 {% load i18n %}
 
 {% with choices.0 as choice %}
-    <div class="flex flex-col">
-        <h3 class="font-semibold mb-2 text-font-important-light dark:text-font-important-dark">
-            {% if has_label and label %}{{ label }}{% else %}{{ title }}{% endif %}
-        </h3>
-
-        <div class="flex flex-col space-y-2">
-            {% for field in choice.form %}
-                <div class="flex flex-row flex-wrap group relative{% if field.errors %} errors{% endif %}">
-                    {{ field }}
-                    {% include "unfold/helpers/form_errors.html" with errors=field.errors %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+<div class="vartis-filter__inner vartis-filter__inner--date">
+  <span class="vartis-filter__label">
+    {% if has_label and label %}{{ label }}{% else %}{{ title }}{% endif %}
+  </span>
+  <div class="vartis-filter__dates">
+    {% for field in choice.form %}
+      <div class="vartis-filter__date-field{% if field.errors %} errors{% endif %}">
+        {{ field }}
+        {% include "unfold/helpers/form_errors.html" with errors=field.errors %}
+      </div>
+      {% if not forloop.last %}
+        <span class="vartis-filter__dates-sep" aria-hidden="true">—</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
 {% endwith %}

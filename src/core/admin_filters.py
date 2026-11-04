@@ -1,20 +1,53 @@
-"""Dropdown-фільтри Unfold без префікса «За»."""
+"""Dropdown- та date-фільтри Unfold без префікса «За»."""
 
 from collections.abc import Iterator
 
 from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 from django.core.validators import EMPTY_VALUES
-from django.db.models import QuerySet
+from django.db.models import DateTimeField, QuerySet
+from django.forms import ValidationError
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
+from unfold.contrib.filters.admin.datetime_filters import RangeDateFilter
 from unfold.contrib.filters.admin.mixins import DropdownMixin, ValueMixin
 from unfold.contrib.filters.forms import DropdownForm
+from unfold.utils import parse_date_str
+
+from .admin_filter_forms import VartisRangeDateForm
 
 
 def _filter_label(title) -> str:
     return str(title).strip()
+
+
+class VartisRangeDateFilter(RangeDateFilter):
+    """Компактний діапазон дат (і для DateTimeField) з українськими placeholder."""
+
+    form_class = VartisRangeDateForm
+    template = 'unfold/filters/filters_date_range.html'
+
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet | None:
+        filters = {}
+        value_from = self.used_parameters.get(f'{self.parameter_name}_from')
+        value_to = self.used_parameters.get(f'{self.parameter_name}_to')
+
+        if isinstance(self.field, DateTimeField):
+            if value_from not in EMPTY_VALUES and isinstance(value_from, str):
+                filters[f'{self.parameter_name}__date__gte'] = parse_date_str(value_from)
+            if value_to not in EMPTY_VALUES and isinstance(value_to, str):
+                filters[f'{self.parameter_name}__date__lte'] = parse_date_str(value_to)
+        else:
+            if value_from not in EMPTY_VALUES and isinstance(value_from, str):
+                filters[f'{self.parameter_name}__gte'] = parse_date_str(value_from)
+            if value_to not in EMPTY_VALUES and isinstance(value_to, str):
+                filters[f'{self.parameter_name}__lte'] = parse_date_str(value_to)
+
+        try:
+            return queryset.filter(**filters) if filters else queryset
+        except (ValueError, ValidationError):
+            return None
 
 
 class VartisChoicesDropdownFilter(ValueMixin, DropdownMixin, admin.ChoicesFieldListFilter):
