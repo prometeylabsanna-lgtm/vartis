@@ -197,13 +197,42 @@ a.site-content-editor__preview:hover {
 }
 
 .vartis-admin-logo__img {
-  display: block;
   width: auto;
   max-width: min(100%, 11.5rem);
   height: auto;
   max-height: 3.1rem;
   object-fit: contain;
   object-position: left center;
+}
+
+.vartis-admin-logo__img--light {
+  display: block;
+}
+
+.vartis-admin-logo__img--dark {
+  display: none;
+}
+
+html.dark .vartis-admin-logo__img--light {
+  display: none;
+}
+
+html.dark .vartis-admin-logo__img--dark {
+  display: block;
+}
+
+/* Фільтри changelist — зверху, компактні select */
+#changelist form[oninput] {
+  align-items: flex-end;
+}
+
+#changelist form[oninput] .form-row,
+#changelist form[oninput] .flex.flex-col {
+  min-width: min(100%, 14rem);
+}
+
+#changelist form[oninput] label {
+  font-weight: 600;
 }
 
 @media (max-width: 1023px) {

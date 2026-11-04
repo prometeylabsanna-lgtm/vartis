@@ -1,6 +1,8 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 
+from src.core.admin_mixins import TopDropdownFiltersMixin
+
 from .models import CaseBlock, CaseStat, CaseStudy
 
 
@@ -19,7 +21,7 @@ class CaseBlockInline(TabularInline):
 
 
 @admin.register(CaseStudy)
-class CaseStudyAdmin(ModelAdmin):
+class CaseStudyAdmin(TopDropdownFiltersMixin, ModelAdmin):
     list_display = ('title', 'category', 'is_demo', 'is_published')
     list_filter = ('category', 'is_demo', 'is_published')
     search_fields = ('title', 'slug', 'excerpt')

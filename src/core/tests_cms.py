@@ -78,6 +78,22 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('/static/images/logo.png', body)
         self.assertIn('/static/images/favicon', body)
         self.assertIn('vartis-admin-logo', body)
+        self.assertIn('vartis-admin-logo__img--light', body)
+        self.assertIn('vartis-admin-logo__img--dark', body)
+        self.assertNotIn('hidden dark:block', body)
+
+    def test_changelist_filters_are_top_dropdowns(self):
+        response = self.client.get('/admin/blog/article/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertNotIn('За Категорія', body)
+        self.assertNotIn('За Опубліковано', body)
+        self.assertIn('Категорія', body)
+        self.assertIn('Опубліковано', body)
+        self.assertIn('unfold-admin-autocomplete', body)
+        self.assertNotIn('filter-open-button', body)
+        self.assertIn('name="category"', body)
+        self.assertIn('name="is_published__exact"', body)
 
     def test_admin_index_hides_sidebar_recent_actions(self):
         response = self.client.get('/admin/')

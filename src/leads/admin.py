@@ -1,11 +1,13 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
+from src.core.admin_mixins import TopDropdownFiltersMixin
+
 from .models import Lead
 
 
 @admin.register(Lead)
-class LeadAdmin(ModelAdmin):
+class LeadAdmin(TopDropdownFiltersMixin, ModelAdmin):
     list_display = ('name', 'phone', 'email', 'status', 'source_page', 'created_at')
     list_filter = ('status', 'created_at')
     search_fields = ('name', 'phone', 'email')

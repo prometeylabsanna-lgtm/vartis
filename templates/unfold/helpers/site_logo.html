@@ -2,8 +2,16 @@
 
 <a href="{% url "admin:index" %}" class="vartis-admin-logo" aria-label="Vartis Intelligence">
     {% if site_logo.light and site_logo.dark %}
-        <img src="{{ site_logo.dark }}" alt="{% trans 'Home' %}" class="vartis-admin-logo__img hidden dark:block"/>
-        <img src="{{ site_logo.light }}" alt="{% trans 'Home' %}" class="vartis-admin-logo__img block dark:hidden" />
+        <img
+          src="{{ site_logo.light }}"
+          alt="{% trans 'Home' %}"
+          class="vartis-admin-logo__img vartis-admin-logo__img--light"
+        />
+        <img
+          src="{{ site_logo.dark }}"
+          alt="{% trans 'Home' %}"
+          class="vartis-admin-logo__img vartis-admin-logo__img--dark"
+        />
     {% else %}
         <img src="{{ site_logo }}" class="vartis-admin-logo__img" alt="{% trans 'Home' %}" />
     {% endif %}

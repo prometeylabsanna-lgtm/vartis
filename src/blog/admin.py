@@ -1,6 +1,8 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 
+from src.core.admin_mixins import TopDropdownFiltersMixin
+
 from .models import Article, ArticleBlock
 
 
@@ -11,7 +13,7 @@ class ArticleBlockInline(TabularInline):
 
 
 @admin.register(Article)
-class ArticleAdmin(ModelAdmin):
+class ArticleAdmin(TopDropdownFiltersMixin, ModelAdmin):
     list_display = ('title', 'category', 'published_at', 'is_published')
     list_filter = ('category', 'is_published')
     search_fields = ('title', 'slug', 'excerpt')
