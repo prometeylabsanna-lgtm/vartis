@@ -1,53 +1,42 @@
-/* Vartis Unfold: синій #1e3a5f + золото #b58b4a (dark), білий + золото (light) */
+/* Vartis Unfold: синій #1e3a5f + золото #b58b4a — без blur-оверлею на login */
 
 :root {
   --vartis-blue: #1e3a5f;
   --vartis-gold: #b58b4a;
-  --vartis-bg: #0b1626;
-  --vartis-text: #f6f0e6;
 }
 
-html:not(.dark) .bg-base-50,
-html:not(.dark) .bg-white {
+/* CSP/Alpine інколи не ховає #modal-overlay → blur на весь login */
+body.login #modal-overlay {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+html:not(.dark) body:not(.login) .bg-base-50 {
   background-color: #faf8f5;
 }
 
-html:not(.dark) [class*="border-base"] {
-  border-color: rgba(181, 139, 74, 0.2);
-}
-
-.sidebar {
-  backdrop-filter: blur(12px) saturate(1.15);
-  -webkit-backdrop-filter: blur(12px) saturate(1.15);
-}
-
-html.dark .sidebar {
-  background: rgba(11, 22, 38, 0.88);
-  border-right: 1px solid rgba(181, 139, 74, 0.22);
-}
-
-html:not(.dark) .sidebar {
-  background: rgba(255, 255, 255, 0.86);
-  border-right: 1px solid rgba(181, 139, 74, 0.2);
-}
-
-html.dark .bg-primary-600,
-.bg-primary-600 {
+body:not(.login) .bg-primary-600 {
   background-color: var(--vartis-blue);
 }
 
-html:not(.dark) .bg-primary-600 {
-  background-color: var(--vartis-blue);
+html:not(.dark) body:not(.login) .bg-primary-600 {
   box-shadow: 0 8px 20px rgba(181, 139, 74, 0.22);
 }
 
-.text-primary-600 {
+body:not(.login) .text-primary-600 {
   color: var(--vartis-blue);
 }
 
-html.dark .text-primary-500,
-html.dark a:hover {
-  color: var(--vartis-gold);
+html.dark body:not(.login) .sidebar {
+  background: #0b1626;
+  border-right: 1px solid rgba(181, 139, 74, 0.22);
+}
+
+html:not(.dark) body:not(.login) .sidebar {
+  background: #ffffff;
+  border-right: 1px solid rgba(181, 139, 74, 0.2);
 }
 
 a.site-content-editor__preview:hover {
@@ -56,7 +45,7 @@ a.site-content-editor__preview:hover {
 }
 
 @media (max-width: 1023px) {
-  .sidebar {
+  body:not(.login) .sidebar {
     -webkit-overflow-scrolling: touch;
   }
 }

@@ -121,6 +121,8 @@ CRM_WEBHOOK_URL = config('CRM_WEBHOOK_URL', default='')
 GTM_ID = config('GTM_ID', default='')
 
 CONTENT_SECURITY_POLICY = {
+    # Unfold/Alpine на /admin/ потребує eval для x-show тощо — інакше #modal-overlay лишається видимим.
+    'EXCLUDE_URL_PREFIXES': ('/admin/',),
     'DIRECTIVES': {
         'default-src': ["'self'"],
         'script-src': ["'self'", 'https://www.googletagmanager.com', 'https://cdn.jsdelivr.net'],
@@ -129,7 +131,7 @@ CONTENT_SECURITY_POLICY = {
         'img-src': ["'self'", 'data:', 'https:'],
         'frame-src': ["'self'", 'https://www.google.com', 'https://maps.google.com'],
         'connect-src': ["'self'", 'https://www.google-analytics.com'],
-    }
+    },
 }
 
 def _vartis_unfold_navigation():
@@ -267,10 +269,9 @@ UNFOLD = {
             '950': 'oklch(12% 0.03 250)',
         },
     },
-    # Рядки (не reverse_lazy / не static() у Promise): Vercel серіалізує settings у JSON.
+    # Лише брендинг адмінки. site_content.css підключається в CMS-шаблоні.
     'STYLES': [
         '/static/css/admin/vartis_unfold.css',
-        '/static/css/admin/site_content.css',
     ],
     'SIDEBAR': {
         'show_search': True,
