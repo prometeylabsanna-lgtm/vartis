@@ -7,3 +7,4 @@ whitenoise==6.12.0
 gunicorn==26.2.0
 psycopg[binary]==3.3.6
 django-csp==4.0
+# TinyMCE в CMS-адмінці — CDN (jsdelivr), окремий пакет не потрібен

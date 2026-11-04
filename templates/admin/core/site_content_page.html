@@ -1,0 +1,68 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  {{ media }}
+  <link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="site-content-editor">
+  <div class="site-content-editor__head">
+    <div>
+      <h1 class="text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+      {% if section_hint %}
+        <p class="site-content-editor__hint">{{ section_hint }}</p>
+      {% elif section.description %}
+        <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__desc">{{ section.description }}</p>
+      {% endif %}
+    </div>
+    {% if preview_url %}
+      <a class="site-content-editor__preview" href="{{ preview_url }}" target="_blank" rel="noopener">Переглянути на сайті</a>
+    {% endif %}
+  </div>
+
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {% for group in field_groups %}
+      <fieldset class="site-content-editor__fieldset">
+        <legend class="text-font-important-light dark:text-font-important-dark">{{ group.title }}</legend>
+        {% if group.description %}
+          <p class="text-font-subtle-light dark:text-font-subtle-dark">{{ group.description }}</p>
+        {% endif %}
+        {% for item in group.fields %}
+          {% with field=item.field %}
+          <div class="site-content-editor__field">
+            <label class="text-font-important-light dark:text-font-important-dark" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% if item.preview_url %}
+              <div class="site-content-editor__img-preview">
+                <img src="{{ item.preview_url }}" alt="" width="240" height="160" loading="lazy" decoding="async">
+                {% if item.preview_fallback %}
+                  <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">Зараз на сайті — стандартне фото. Завантажте своє, щоб замінити.</p>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if field.name == "style_background_image" and style_bg_preview %}
+              <div class="site-content-editor__img-preview">
+                <img src="{{ style_bg_preview }}" alt="" width="240" height="120" loading="lazy" decoding="async">
+              </div>
+            {% endif %}
+            {{ field }}
+            {% if field.help_text %}<p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">{{ field.help_text }}</p>{% endif %}
+            {% for error in field.errors %}<p class="site-content-editor__error">{{ error }}</p>{% endfor %}
+          </div>
+          {% endwith %}
+        {% endfor %}
+      </fieldset>
+    {% endfor %}
+
+    <div class="site-content-editor__actions">
+      <button type="submit" class="bg-primary-600 border border-transparent font-medium px-3 py-2 rounded-default text-white">
+        Зберегти
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

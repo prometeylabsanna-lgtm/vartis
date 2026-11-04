@@ -60,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'src.core.context_processors.site_settings',
+                'src.core.cms_context.site_cms',
             ],
         },
     },
@@ -122,8 +123,8 @@ GTM_ID = config('GTM_ID', default='')
 CONTENT_SECURITY_POLICY = {
     'DIRECTIVES': {
         'default-src': ["'self'"],
-        'script-src': ["'self'", 'https://www.googletagmanager.com'],
-        'style-src': ["'self'", 'https://fonts.googleapis.com'],
+        'script-src': ["'self'", 'https://www.googletagmanager.com', 'https://cdn.jsdelivr.net'],
+        'style-src': ["'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
         'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
         'img-src': ["'self'", 'data:', 'https:'],
         'frame-src': ["'self'", 'https://www.google.com', 'https://maps.google.com'],
@@ -131,82 +132,152 @@ CONTENT_SECURITY_POLICY = {
     }
 }
 
+def _vartis_unfold_navigation():
+    from src.core.site_content_registry import build_content_sidebar_groups
+
+    cms_groups = build_content_sidebar_groups()
+    return [
+        {
+            'title': 'Налаштування',
+            'separator': True,
+            'items': [
+                {
+                    'title': 'Налаштування сайту',
+                    'icon': 'settings',
+                    'link': lambda request: '/admin/core/sitesettings/1/change/',
+                },
+            ],
+        },
+        *cms_groups,
+        {
+            'title': 'Каталог',
+            'separator': False,
+            'collapsible': True,
+            'items': [
+                {
+                    'title': 'Послуги (список)',
+                    'icon': 'work',
+                    'link': lambda request: '/admin/pages/servicepage/',
+                },
+            ],
+        },
+        {
+            'title': 'Списки',
+            'separator': False,
+            'collapsible': True,
+            'items': [
+                {
+                    'title': 'Переваги (головна)',
+                    'icon': 'star',
+                    'link': lambda request: '/admin/pages/homeadvantage/',
+                },
+                {
+                    'title': 'Кроки процесу (головна)',
+                    'icon': 'format_list_numbered',
+                    'link': lambda request: '/admin/pages/homeprocessstep/',
+                },
+                {
+                    'title': 'Принципи (про нас)',
+                    'icon': 'verified',
+                    'link': lambda request: '/admin/pages/aboutprinciple/',
+                },
+                {
+                    'title': 'Команда',
+                    'icon': 'groups',
+                    'link': lambda request: '/admin/pages/teammember/',
+                },
+                {
+                    'title': 'Цифри (про нас)',
+                    'icon': 'pin',
+                    'link': lambda request: '/admin/pages/aboutstat/',
+                },
+                {
+                    'title': 'Процес (про нас)',
+                    'icon': 'route',
+                    'link': lambda request: '/admin/pages/aboutprocessstep/',
+                },
+                {
+                    'title': 'Кроки VI Analysis',
+                    'icon': 'stairs',
+                    'link': lambda request: '/admin/pages/analysisstep/',
+                },
+                {
+                    'title': 'Ризики VI Analysis',
+                    'icon': 'warning',
+                    'link': lambda request: '/admin/pages/analysisrisk/',
+                },
+                {
+                    'title': 'Що входить (VI Analysis)',
+                    'icon': 'checklist',
+                    'link': lambda request: '/admin/pages/analysisinclude/',
+                },
+                {
+                    'title': 'Чому вигідно (VI Analysis)',
+                    'icon': 'thumb_up',
+                    'link': lambda request: '/admin/pages/analysiswhy/',
+                },
+                {
+                    'title': 'Тарифи VI Analysis',
+                    'icon': 'payments',
+                    'link': lambda request: '/admin/pages/analysispricerow/',
+                },
+            ],
+        },
+        {
+            'title': 'Контент',
+            'separator': True,
+            'items': [
+                {
+                    'title': 'Блог',
+                    'icon': 'article',
+                    'link': lambda request: '/admin/blog/article/',
+                },
+                {
+                    'title': 'Кейси',
+                    'icon': 'folder',
+                    'link': lambda request: '/admin/cases/casestudy/',
+                },
+                {
+                    'title': 'Заявки',
+                    'icon': 'mail',
+                    'link': lambda request: '/admin/leads/lead/',
+                },
+            ],
+        },
+    ]
+
+
 UNFOLD = {
     'SITE_TITLE': 'Vartis Intelligence',
     'SITE_HEADER': 'Vartis Intelligence',
     'SITE_SYMBOL': 'shield',
     'SHOW_HISTORY': True,
+    'COLORS': {
+        'primary': {
+            '50': 'oklch(97% 0.01 250)',
+            '100': 'oklch(94% 0.02 250)',
+            '200': 'oklch(86% 0.04 250)',
+            '300': 'oklch(74% 0.06 250)',
+            '400': 'oklch(58% 0.08 250)',
+            '500': 'oklch(42% 0.08 250)',
+            '600': 'oklch(34% 0.07 250)',
+            '700': 'oklch(28% 0.06 250)',
+            '800': 'oklch(22% 0.05 250)',
+            '900': 'oklch(16% 0.04 250)',
+            '950': 'oklch(12% 0.03 250)',
+        },
+    },
+    'STYLES': [
+        lambda request: __import__('django.templatetags.static', fromlist=['static']).static(
+            'css/admin/vartis_unfold.css'
+        ),
+        lambda request: __import__('django.templatetags.static', fromlist=['static']).static(
+            'css/admin/site_content.css'
+        ),
+    ],
     'SIDEBAR': {
         'show_search': True,
         'show_all_applications': False,
-        'navigation': [
-            {
-                'title': 'Сайт',
-                'separator': True,
-                'items': [
-                    {
-                        'title': 'Налаштування',
-                        'icon': 'settings',
-                        'link': lambda request: '/admin/core/sitesettings/1/change/',
-                    },
-                    {
-                        'title': 'Головна',
-                        'icon': 'home',
-                        'link': lambda request: '/admin/pages/homepage/1/change/',
-                    },
-                    {
-                        'title': 'Про компанію',
-                        'icon': 'apartment',
-                        'link': lambda request: '/admin/pages/aboutpage/1/change/',
-                    },
-                    {
-                        'title': 'Каталог послуг',
-                        'icon': 'grid_view',
-                        'link': lambda request: '/admin/pages/servicesindex/1/change/',
-                    },
-                    {
-                        'title': 'Послуги',
-                        'icon': 'work',
-                        'link': lambda request: '/admin/pages/servicepage/',
-                    },
-                    {
-                        'title': 'VI Analysis',
-                        'icon': 'analytics',
-                        'link': lambda request: '/admin/pages/analysispage/1/change/',
-                    },
-                    {
-                        'title': 'Контакти',
-                        'icon': 'call',
-                        'link': lambda request: '/admin/pages/contactspage/1/change/',
-                    },
-                    {
-                        'title': 'Політика',
-                        'icon': 'policy',
-                        'link': lambda request: '/admin/pages/privacypage/1/change/',
-                    },
-                ],
-            },
-            {
-                'title': 'Контент',
-                'separator': True,
-                'items': [
-                    {
-                        'title': 'Блог',
-                        'icon': 'article',
-                        'link': lambda request: '/admin/blog/article/',
-                    },
-                    {
-                        'title': 'Кейси',
-                        'icon': 'folder',
-                        'link': lambda request: '/admin/cases/casestudy/',
-                    },
-                    {
-                        'title': 'Заявки',
-                        'icon': 'mail',
-                        'link': lambda request: '/admin/leads/lead/',
-                    },
-                ],
-            },
-        ],
+        'navigation': _vartis_unfold_navigation(),
     },
 }

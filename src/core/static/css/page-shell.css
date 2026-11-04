@@ -1,0 +1,81 @@
+.page-shell {
+  background-color: var(--page-bg, var(--color-bg, #0b1626));
+  color: var(--page-text, var(--color-text, #e8edf4));
+}
+
+.page-shell .gold-text,
+.page-shell .btn--outline,
+.page-shell a:not(.btn):not(.dir-card):not(.split-item__media) {
+  --accent-fallback: var(--page-accent, #b58b4a);
+}
+
+.page-shell--glass .adv-card,
+.page-shell--glass .dir-card,
+.page-shell--glass .process-box,
+.page-shell--glass .mission__panel,
+.page-shell--glass .science-card,
+.page-shell--glass .vi-step-card,
+.page-shell--glass .vi-risk-card,
+.page-shell--glass .vi-rec-panel,
+.page-shell--glass .vi-paket-card,
+.page-shell--glass .vi-incl__item,
+.page-shell--glass .vi-why-card,
+.page-shell--glass .vi-tariff,
+.page-shell--glass .split-item,
+.page-shell--glass .contacts-tile,
+.page-shell--glass .home-article-card,
+.page-shell--glass .team-card {
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  background: rgba(30, 58, 95, 0.42);
+  border: 1px solid rgba(181, 139, 74, 0.35);
+  box-shadow: 0 12px 40px rgba(11, 22, 38, 0.22);
+}
+
+.page-shell--glass[data-theme="light"] .adv-card,
+.page-shell--glass[data-theme="light"] .dir-card,
+.page-shell--glass[data-theme="light"] .process-box,
+.page-shell--glass[data-theme="light"] .mission__panel,
+.page-shell--glass[data-theme="light"] .science-card,
+.page-shell--glass[data-theme="light"] .vi-step-card,
+.page-shell--glass[data-theme="light"] .vi-risk-card,
+.page-shell--glass[data-theme="light"] .vi-rec-panel,
+.page-shell--glass[data-theme="light"] .vi-paket-card,
+.page-shell--glass[data-theme="light"] .vi-incl__item,
+.page-shell--glass[data-theme="light"] .vi-why-card,
+.page-shell--glass[data-theme="light"] .vi-tariff,
+.page-shell--glass[data-theme="light"] .split-item,
+.page-shell--glass[data-theme="light"] .contacts-tile,
+.page-shell--glass[data-theme="light"] .home-article-card,
+.page-shell--glass[data-theme="light"] .team-card {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(181, 139, 74, 0.45);
+  box-shadow: 0 12px 36px rgba(30, 58, 95, 0.08);
+}
+
+.page-shell[style*="--page-bg-image"] {
+  background-image: var(--page-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+}
+
+@media (max-width: 767px) {
+  .page-shell--glass .adv-card,
+  .page-shell--glass .dir-card,
+  .page-shell--glass .process-box,
+  .page-shell--glass .mission__panel,
+  .page-shell--glass .science-card,
+  .page-shell--glass .vi-step-card,
+  .page-shell--glass .vi-risk-card,
+  .page-shell--glass .vi-rec-panel,
+  .page-shell--glass .vi-paket-card,
+  .page-shell--glass .vi-incl__item,
+  .page-shell--glass .vi-why-card,
+  .page-shell--glass .vi-tariff,
+  .page-shell--glass .split-item,
+  .page-shell--glass .contacts-tile {
+    -webkit-backdrop-filter: blur(8px) saturate(1.1);
+    backdrop-filter: blur(8px) saturate(1.1);
+  }
+}

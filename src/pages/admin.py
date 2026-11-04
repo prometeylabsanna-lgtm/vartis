@@ -1,5 +1,9 @@
+from django import forms
 from django.contrib import admin
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
+from unfold.widgets import UnfoldAdminFileFieldWidget
+
+from src.core.admin_site_content_widgets import CmsTinyMCEWidget
 
 from .models import (
     AboutPage,
@@ -12,112 +16,55 @@ from .models import (
     AnalysisRisk,
     AnalysisStep,
     AnalysisWhy,
-    ContactsPage,
     HomeAdvantage,
     HomePage,
     HomeProcessStep,
-    PrivacyPage,
     ServiceAdvantage,
     ServiceMethodStep,
     ServicePage,
     ServiceScopeItem,
-    ServicesIndex,
     TeamMember,
 )
 
 
-class SingletonAdmin(ModelAdmin):
-    def has_add_permission(self, request):
-        return not self.model.objects.exists()
+class _ParentPageMixin:
+    """Автоматично прив'язує ListItem до singleton-сторінки."""
 
-    def has_delete_permission(self, request, obj=None):
-        return False
+    parent_model = None
+    parent_field = 'page'
 
-    def changelist_view(self, request, extra_context=None):
-        self.model.load()
-        return super().changelist_view(request, extra_context)
+    def save_model(self, request, obj, form, change):
+        if self.parent_model is not None and not getattr(obj, f'{self.parent_field}_id', None):
+            setattr(obj, self.parent_field, self.parent_model.load())
+        super().save_model(request, obj, form, change)
 
+    def get_exclude(self, request, obj=None):
+        excluded = list(super().get_exclude(request, obj) or [])
+        if self.parent_field not in excluded:
+            excluded.append(self.parent_field)
+        return excluded
 
-class HomeAdvantageInline(TabularInline):
-    model = HomeAdvantage
-    extra = 0
+SERVICE_RICH_FIELDS = (
+    'hero_text',
+    'scope_text',
+    'order_text',
+    'card_text',
+)
 
-
-class HomeProcessStepInline(TabularInline):
-    model = HomeProcessStep
-    extra = 0
-
-
-@admin.register(HomePage)
-class HomePageAdmin(SingletonAdmin):
-    inlines = [HomeAdvantageInline, HomeProcessStepInline]
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Hero', {'fields': ('hero_title', 'hero_text', 'hero_image')}),
-        ('Секції', {
-            'fields': (
-                'services_title', 'advantages_title',
-                'mission_title', 'mission_text', 'mission_image',
-                'process_title', 'blog_title',
-            ),
-        }),
-    )
+SERVICE_IMAGE_FIELDS = (
+    'hero_image',
+    'card_image',
+)
 
 
-class AboutPrincipleInline(TabularInline):
-    model = AboutPrinciple
-    extra = 0
-    fields = ('icon', 'title', 'text', 'order')
-
-
-class TeamMemberInline(StackedInline):
-    model = TeamMember
-    extra = 0
-    fields = (
-        'name', 'role', 'regalia', 'email', 'bio',
-        'photo', 'photo_position', 'expertise', 'career_path', 'order',
-    )
-
-
-class AboutStatInline(TabularInline):
-    model = AboutStat
-    extra = 0
-    fields = ('block', 'value', 'label', 'order')
-
-
-class AboutProcessStepInline(TabularInline):
-    model = AboutProcessStep
-    extra = 0
-
-
-@admin.register(AboutPage)
-class AboutPageAdmin(SingletonAdmin):
-    inlines = [
-        AboutPrincipleInline, TeamMemberInline,
-        AboutStatInline, AboutProcessStepInline,
-    ]
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Hero', {'fields': ('hero_title', 'hero_text', 'hero_image')}),
-        ('Контент', {
-            'fields': (
-                'intro_title', 'intro_text', 'principles_title',
-                'team_title', 'team_lead',
-                'science_eyebrow', 'science_title', 'science_text',
-                'science_doi_url', 'science_doi_label',
-                'partners_eyebrow', 'partners_title', 'partners_text',
-                'stats_title', 'process_title',
-            ),
-        }),
-    )
-
-
-@admin.register(ServicesIndex)
-class ServicesIndexAdmin(SingletonAdmin):
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Hero', {'fields': ('hero_title', 'hero_text', 'hero_image')}),
-    )
+class ServicePageForm(forms.ModelForm):
+    class Meta:
+        model = ServicePage
+        fields = '__all__'
+        widgets = {
+            **{name: CmsTinyMCEWidget(attrs={'rows': 10}) for name in SERVICE_RICH_FIELDS},
+            **{name: UnfoldAdminFileFieldWidget() for name in SERVICE_IMAGE_FIELDS},
+        }
 
 
 class ServiceScopeItemInline(TabularInline):
@@ -137,6 +84,7 @@ class ServiceAdvantageInline(TabularInline):
 
 @admin.register(ServicePage)
 class ServicePageAdmin(ModelAdmin):
+    form = ServicePageForm
     list_display = ('title', 'slug', 'order', 'is_published')
     list_editable = ('order', 'is_published')
     prepopulated_fields = {}
@@ -159,68 +107,103 @@ class ServicePageAdmin(ModelAdmin):
     )
 
 
-class AnalysisStepInline(TabularInline):
-    model = AnalysisStep
-    extra = 0
+@admin.register(HomeAdvantage)
+class HomeAdvantageAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = HomePage
+    list_display = ('title', 'order', 'icon')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+    search_fields = ('title',)
 
 
-class AnalysisRiskInline(TabularInline):
-    model = AnalysisRisk
-    extra = 0
+@admin.register(HomeProcessStep)
+class HomeProcessStepAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = HomePage
+    list_display = ('number', 'title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+    search_fields = ('title',)
 
 
-class AnalysisIncludeInline(TabularInline):
-    model = AnalysisInclude
-    extra = 0
+@admin.register(AboutPrinciple)
+class AboutPrincipleAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AboutPage
+    list_display = ('title', 'order', 'icon')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
 
 
-class AnalysisWhyInline(TabularInline):
-    model = AnalysisWhy
-    extra = 0
+class TeamMemberForm(forms.ModelForm):
+    class Meta:
+        model = TeamMember
+        fields = '__all__'
+        widgets = {
+            'bio': CmsTinyMCEWidget(attrs={'rows': 10}),
+            'photo': UnfoldAdminFileFieldWidget(),
+        }
 
 
-class AnalysisPriceRowInline(TabularInline):
-    model = AnalysisPriceRow
-    extra = 0
+@admin.register(TeamMember)
+class TeamMemberAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AboutPage
+    form = TeamMemberForm
+    list_display = ('name', 'role', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+    search_fields = ('name', 'role')
 
 
-@admin.register(AnalysisPage)
-class AnalysisPageAdmin(SingletonAdmin):
-    inlines = [
-        AnalysisStepInline, AnalysisRiskInline, AnalysisIncludeInline,
-        AnalysisWhyInline, AnalysisPriceRowInline,
-    ]
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Картка / меню', {
-            'fields': ('title', 'short', 'icon', 'tags', 'card_image', 'card_text'),
-        }),
-        ('Hero', {'fields': ('hero_title', 'hero_text', 'hero_image')}),
-        ('Секції', {
-            'fields': (
-                'steps_title', 'risks_title',
-                'recommendation_title', 'recommendation_text',
-                'result_title', 'result_text',
-                'paket_title', 'paket_subtitle', 'paket_text',
-                'include_title', 'why_title', 'price_title',
-                'order_title', 'order_text',
-            ),
-        }),
-    )
+@admin.register(AboutStat)
+class AboutStatAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AboutPage
+    list_display = ('value', 'label', 'block', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
 
 
-@admin.register(ContactsPage)
-class ContactsPageAdmin(SingletonAdmin):
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Hero', {'fields': ('hero_title', 'hero_text', 'hero_image')}),
-        ('Контент', {'fields': ('info_title',)}),
-    )
+@admin.register(AboutProcessStep)
+class AboutProcessStepAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AboutPage
+    list_display = ('number', 'title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
 
 
-@admin.register(PrivacyPage)
-class PrivacyPageAdmin(SingletonAdmin):
-    fieldsets = (
-        ('SEO', {'fields': ('seo_title', 'seo_description', 'h1')}),
-        ('Контент', {'fields': ('hero_title', 'body')}),
-    )
+@admin.register(AnalysisStep)
+class AnalysisStepAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AnalysisPage
+    list_display = ('number', 'title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+
+
+@admin.register(AnalysisRisk)
+class AnalysisRiskAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AnalysisPage
+    list_display = ('title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+
+
+@admin.register(AnalysisInclude)
+class AnalysisIncludeAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AnalysisPage
+    list_display = ('title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+
+
+@admin.register(AnalysisWhy)
+class AnalysisWhyAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AnalysisPage
+    list_display = ('title', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')
+
+
+@admin.register(AnalysisPriceRow)
+class AnalysisPriceRowAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = AnalysisPage
+    list_display = ('number', 'title', 'price_note', 'order')
+    list_editable = ('order',)
+    ordering = ('order', 'id')

@@ -55,6 +55,8 @@ class Command(BaseCommand):
         self.seed_contacts_privacy()
         self.seed_articles()
         self.seed_cases()
+        from django.core.management import call_command
+        call_command('seed_site_blocks')
         self.stdout.write(self.style.SUCCESS('seed_content OK'))
 
     def seed_settings(self):

@@ -1,7 +1,10 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
+from .admin_site_content_proxies import register_site_content_section_admins
 from .models import SiteSettings
+
+register_site_content_section_admins()
 
 
 @admin.register(SiteSettings)

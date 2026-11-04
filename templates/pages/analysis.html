@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static vartis_content %}
 
 {% block content %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/services/dir-1.png' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+  {% section_visible 'analysis' 'hero_section_visible' as show_hero %}
+  {% if show_hero %}
+    {% block_text 'analysis' 'h1' as analysis_h1 %}
+    {% block_plain 'analysis' 'hero_text' as analysis_hero_text %}
+    {% block_image_url 'analysis' 'hero_image' 'images/services/dir-1.png' as analysis_hero_img %}
+    {% include 'partials/hero.html' with title=analysis_h1 text=analysis_hero_text image=analysis_hero_img shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
   {% endif %}
 
+  {% section_visible 'analysis' 'steps_section_visible' as show_steps %}
+  {% if show_steps %}
   <section id="checks" class="section" aria-labelledby="checks-title">
     <div class="container vi-steps">
       <div class="vi-steps__intro">
         {% if copy.steps_eyebrow %}
         <p class="vi-steps__eyebrow">{{ copy.steps_eyebrow }}</p>
         {% endif %}
-        <h2 id="checks-title" class="section__title">{{ page.steps_title }}</h2>
+        <h2 id="checks-title" class="section__title">{% block_text 'analysis' 'steps_title' %}</h2>
         {% for p in copy.steps_leads %}
         <p class="section__lead">{{ p }}</p>
         {% endfor %}
@@ -38,11 +42,14 @@
       </ol>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'risks_section_visible' as show_risks %}
+  {% if show_risks %}
   <section class="band-dark vi-risks" aria-labelledby="risk-title">
     <div class="container vi-risks__inner">
       <div class="vi-risks__intro">
-        <h2 id="risk-title" class="section__title section__title--light">{{ copy.risks_title }}</h2>
+        <h2 id="risk-title" class="section__title section__title--light">{% block_text 'analysis' 'risks_title' %}</h2>
         <p class="vi-risks__lead">{{ copy.risks_lead }}</p>
       </div>
       <div class="vi-risks__types">
@@ -72,12 +79,16 @@
       </p>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'recommendation_section_visible' as show_rec %}
+  {% if show_rec %}
   <section class="section vi-rec" aria-labelledby="rec-title">
     <div class="container vi-rec__grid">
       <div class="vi-rec__copy">
-        <h2 id="rec-title" class="section__title">{{ copy.recommendation_title }}</h2>
-        <p class="vi-rec__lead">{{ copy.recommendation_text }}</p>
+        <h2 id="rec-title" class="section__title">{% block_text 'analysis' 'recommendation_title' %}</h2>
+        {% block_plain 'analysis' 'recommendation_text' as rec_block %}
+        <p class="vi-rec__lead">{% if rec_block %}{{ rec_block|linebreaksbr }}{% else %}{{ copy.recommendation_text }}{% endif %}</p>
         <ul class="vi-rec__list">
           {% for r in copy.recs %}
           <li class="vi-rec__item">
@@ -116,13 +127,17 @@
       </figure>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'result_section_visible' as show_result %}
+  {% if show_result %}
   <section class="section vi-get" aria-labelledby="get-title">
     <div class="container">
       <div class="vi-get__panel">
-        <h2 id="get-title" class="vi-get__title">{{ copy.result_title }}</h2>
+        <h2 id="get-title" class="vi-get__title">{% block_text 'analysis' 'result_title' %}</h2>
         <div class="vi-get__body">
-          <p class="vi-get__lead">{{ copy.result_text }}</p>
+          {% block_plain 'analysis' 'result_text' as result_block %}
+          <p class="vi-get__lead">{% if result_block %}{{ result_block|linebreaksbr }}{% else %}{{ copy.result_text }}{% endif %}</p>
           <p class="vi-get__method">
             {{ copy.result_method_prefix }}<a href="{{ copy.result_doi_href }}" target="_blank" rel="noopener">{{ copy.result_doi_label }}</a>{{ copy.result_method_suffix }}
           </p>
@@ -130,13 +145,18 @@
       </div>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'paket_section_visible' as show_paket %}
+  {% if show_paket %}
   <section id="paket" class="section vi-paket" aria-labelledby="paket-title">
     <div class="container vi-paket__inner">
       <div class="vi-paket__intro">
         <p class="vi-paket__eyebrow">{{ copy.paket_eyebrow }}</p>
-        <h2 id="paket-title" class="section__title">{{ copy.paket_title }}</h2>
-        <p class="vi-paket__lead">{{ copy.paket_lead }}</p>
+        <h2 id="paket-title" class="section__title">{% block_text 'analysis' 'paket_title' %}</h2>
+        <p class="vi-paket__sub">{% block_text 'analysis' 'paket_subtitle' %}</p>
+        {% block_plain 'analysis' 'paket_text' as paket_block %}
+        <p class="vi-paket__lead">{% if paket_block %}{{ paket_block|linebreaksbr }}{% else %}{{ copy.paket_lead }}{% endif %}</p>
       </div>
       <ol class="vi-paket__grid">
         {% for s in copy.paket_steps %}
@@ -149,11 +169,14 @@
       </ol>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'include_section_visible' as show_include %}
+  {% if show_include %}
   <section class="section vi-incl" aria-labelledby="inc-title">
     <div class="container vi-incl__inner">
       <div class="vi-incl__intro">
-        <h2 id="inc-title" class="section__title">{{ copy.include_title }}</h2>
+        <h2 id="inc-title" class="section__title">{% block_text 'analysis' 'include_title' %}</h2>
         <p class="vi-incl__lead">{{ copy.include_lead }}</p>
       </div>
       <ul class="vi-incl__grid">
@@ -176,10 +199,13 @@
       </aside>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'why_section_visible' as show_why %}
+  {% if show_why %}
   <section class="section vi-why" aria-labelledby="why-title">
     <div class="container vi-why__inner">
-      <h2 id="why-title" class="section__title">{{ copy.why_title }}</h2>
+      <h2 id="why-title" class="section__title">{% block_text 'analysis' 'why_title' %}</h2>
       <ul class="vi-why__grid">
         {% for item in copy.why_items %}
         <li class="vi-why-card">
@@ -193,11 +219,14 @@
       </ul>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'price_section_visible' as show_price %}
+  {% if show_price %}
   <section class="section vi-price" aria-labelledby="price-title">
     <div class="container vi-price__inner">
       <div class="vi-price__intro">
-        <h2 id="price-title" class="section__title">{{ copy.price_title }}</h2>
+        <h2 id="price-title" class="section__title">{% block_text 'analysis' 'price_title' %}</h2>
         <p class="vi-price__lead">{{ copy.price_lead }}</p>
       </div>
       <div class="vi-price-parts" role="list">
@@ -246,18 +275,23 @@
       <p class="vi-price__note">{{ copy.price_note }}</p>
     </div>
   </section>
+  {% endif %}
 
+  {% section_visible 'analysis' 'order_section_visible' as show_order %}
+  {% if show_order %}
   <section id="order" class="band-dark" aria-labelledby="order-title">
     <div class="container order-grid">
       <div class="order-grid__copy">
-        <h2 id="order-title" class="section__title section__title--light">{{ copy.order_title|linebreaksbr }}</h2>
-        <p class="section__lead section__lead--light">{{ copy.order_text }}</p>
+        <h2 id="order-title" class="section__title section__title--light">{% block_text 'analysis' 'order_title' %}</h2>
+        {% block_plain 'analysis' 'order_text' as order_block %}
+        <p class="section__lead section__lead--light">{% if order_block %}{{ order_block|linebreaksbr }}{% else %}{{ copy.order_text }}{% endif %}</p>
       </div>
       <div class="order-grid__form">
         {% include 'leads/partials/form.html' with form_variant='analysis' form_id='lead-form-analysis' %}
       </div>
     </div>
   </section>
+  {% endif %}
 
   <section class="section section--end" aria-labelledby="other-title">
     <div class="container">

@@ -1,8 +1,9 @@
+{% load vartis_content %}
 <footer id="site-footer" class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__top">
-      <h2 class="site-footer__title">Залишити <span class="gold-text">заявку</span></h2>
-      <p class="site-footer__lead">{{ site_settings.footer_cta_text }}</p>
+      <h2 class="site-footer__title">{% block_text 'site' 'footer_cta_title' %}</h2>
+      <div class="site-footer__lead">{% block_rich 'site' 'footer_cta_text' %}</div>
     </div>
     <div class="site-footer__grid">
       <div class="site-footer__left">
