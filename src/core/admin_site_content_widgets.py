@@ -63,6 +63,10 @@ class CmsImageFieldWidget(UnfoldAdminFileFieldWidget):
         super().__init__(attrs=attrs)
 
     def render(self, name, value, attrs=None, renderer=None):
+        attrs = {} if attrs is None else dict(attrs)
+        # Щоб Unfold не малював друге превʼю поруч із нашим.
+        if attrs.get("accept") == "image/*":
+            attrs["accept"] = "image/png,image/jpeg,image/webp,image/svg+xml"
         html = super().render(name, value, attrs=attrs, renderer=renderer)
         preview = ""
         url = self.preview_url

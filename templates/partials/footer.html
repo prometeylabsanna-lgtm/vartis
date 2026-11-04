@@ -1,3 +1,4 @@
+{% load static %}
 <footer id="site-footer" class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__top">
@@ -7,12 +8,13 @@
     <div class="site-footer__grid">
       <div class="site-footer__left">
         <div class="site-footer__brand">
-          <a
-            href="{% url 'pages:home' %}"
-            class="site-footer__logo{% if site_settings.logo %} has-upload{% endif %}"
-            aria-label="VARTIS INTELLIGENCE — на головну"
-            {% if site_settings.logo %}style="--site-logo: url('{{ site_settings.logo.url }}')"{% endif %}
-          ></a>
+          <a href="{% url 'pages:home' %}" class="site-footer__logo" aria-label="VARTIS INTELLIGENCE — на головну">
+            {% if site_settings.logo %}
+              <img src="{{ site_settings.logo.url }}" alt="" width="200" height="121" decoding="async">
+            {% else %}
+              <img src="{% static 'images/logo.png' %}" alt="" width="200" height="121" decoding="async">
+            {% endif %}
+          </a>
           <p class="site-footer__tagline">{{ site_settings.tagline }}</p>
         </div>
         <div class="site-footer__cols">

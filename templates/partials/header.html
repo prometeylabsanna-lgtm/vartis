@@ -1,13 +1,14 @@
-{% load vartis_icons %}
+{% load static vartis_icons %}
 <header id="site-header" class="site-header">
   <div class="site-header__inner">
     <div class="site-header__bar">
-      <a
-        href="{% url 'pages:home' %}"
-        class="site-header__logo{% if site_settings.logo %} has-upload{% endif %}"
-        aria-label="VARTIS INTELLIGENCE — на головну"
-        {% if site_settings.logo %}style="--site-logo: url('{{ site_settings.logo.url }}')"{% endif %}
-      ></a>
+      <a href="{% url 'pages:home' %}" class="site-header__logo" aria-label="VARTIS INTELLIGENCE — на головну">
+        {% if site_settings.logo %}
+          <img src="{{ site_settings.logo.url }}" alt="" width="88" height="49" decoding="async">
+        {% else %}
+          <img src="{% static 'images/logo.png' %}" alt="" width="88" height="49" decoding="async">
+        {% endif %}
+      </a>
 
       <nav class="site-header__nav" aria-label="Основна навігація">
         <a href="{% url 'pages:about' %}" class="site-header__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">Про компанію</a>
