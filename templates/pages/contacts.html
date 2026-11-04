@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+{% endblock %}
+
 {% block content %}
 <div id="top">
   {% if page.hero_image %}
     {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
   {% else %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.webp' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
   {% endif %}
 
   <section id="info" class="contacts-info" aria-labelledby="info-title">

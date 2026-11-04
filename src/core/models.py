@@ -48,13 +48,13 @@ class SiteSettings(SingletonModel):
     default_seo_title = models.CharField(
         'SEO Title за замовчуванням',
         max_length=200,
-        default='VARTIS INTELLIGENCE — стратегічна аналітика та перевірка контрагентів',
+        default='Перевірка контрагентів та стратегічна аналітика | VARTIS INTELLIGENCE',
     )
     default_seo_description = models.TextField(
         'SEO Description за замовчуванням',
         default=(
-            'Стратегічна аналітика, перевірка контрагентів та захист бізнесу. '
-            'Допомагаємо виявляти приховані ризики й ухвалювати обґрунтовані рішення.'
+            'Перевірка контрагентів, OSINT і стратегічна аналітика для бізнесу. '
+            'Виявляємо приховані ризики та допомагаємо ухвалювати обґрунтовані рішення.'
         ),
     )
     footer_cta_title = models.CharField(

@@ -6,7 +6,7 @@
   {% if case.image %}
     {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt image=case.image.url shade=True %}
   {% else %}
-    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt fallback_static='images/hero.png' shade=True %}
+    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt fallback_static='images/hero.webp' shade=True crumbs=crumbs %}
   {% endif %}
 
   <section class="section section--end" aria-label="Опис кейсу">

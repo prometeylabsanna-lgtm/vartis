@@ -1,6 +1,8 @@
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
+from src.core.seo import absolute_url, media_or_static_absolute
+from src.core.seo_copy import SEO
 from src.leads.forms import LeadForm
 
 from .models import Article
@@ -54,18 +56,18 @@ class ArticleListView(ListView):
             'current_cat': cat,
             'categories': _ordered_categories(),
             'lead_form': LeadForm(),
-            'seo_title': 'Блог — VARTIS INTELLIGENCE',
-            'seo_description': (
-                'Аналітика та експертні матеріали про перевірку контрагентів, '
-                'стратегічну розвідку, корпоративну безпеку та управління ризиками.'
-            ),
+            'seo_title': SEO['blog']['title'],
+            'seo_description': SEO['blog']['description'],
             'h1': 'Блог',
             'hero_text': (
                 'Аналітика та експертні матеріали про перевірку контрагентів, '
                 'стратегічну розвідку, корпоративну безпеку та управління ризиками'
             ),
             'crumbs': [{'label': 'Блог', 'url': ''}],
+            'canonical_url': absolute_url(self.request, reverse('blog:list')),
         })
+        if cat or page_obj.number > 1:
+            ctx['seo_robots'] = 'noindex, follow'
         if self.request.htmx:
             ctx['partial'] = True
         return ctx
@@ -101,11 +103,14 @@ class ArticleDetailView(DetailView):
             same.extend(extra)
         ctx['related'] = same
         ctx['lead_form'] = LeadForm()
-        ctx['share_url'] = self.request.build_absolute_uri()
+        ctx['share_url'] = self.request.build_absolute_uri(article.get_absolute_url())
         ctx['crumbs'] = [
             {'label': 'Блог', 'url': reverse('blog:list')},
             {'label': article.category, 'url': ''},
         ]
         ctx['seo_title'] = article.seo_title or f'{article.title} — VARTIS INTELLIGENCE'
         ctx['seo_description'] = article.seo_description or article.excerpt
+        if article.image:
+            ctx['og_image'] = media_or_static_absolute(self.request, article.image.url)
+        ctx['og_type'] = 'article'
         return ctx

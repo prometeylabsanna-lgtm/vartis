@@ -3,6 +3,9 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 
 from src.blog.models import Article
+from src.cases.models import CaseStudy
+from src.core.seo import media_or_static_absolute
+from src.core.seo_copy import SEO, SERVICE_SEO, SERVICE_TO_CASES
 from src.leads.forms import LeadForm
 
 from . import design_copy
@@ -25,6 +28,23 @@ def _crumbs_service(label):
         {'label': 'Послуги', 'url': reverse('pages:services')},
         {'label': label, 'url': ''},
     ]
+
+
+def _og_image(request, image_field):
+    if image_field:
+        return media_or_static_absolute(request, image_field.url)
+    return None
+
+
+def _related_cases_for(service_key: str):
+    slugs = SERVICE_TO_CASES.get(service_key) or []
+    if not slugs:
+        return []
+    cases = {
+        c.slug: c
+        for c in CaseStudy.objects.filter(is_published=True, slug__in=slugs)
+    }
+    return [cases[s] for s in slugs if s in cases]
 
 
 class HomeView(TemplateView):
@@ -51,6 +71,7 @@ class HomeView(TemplateView):
         ]
         ctx['articles'] = Article.objects.filter(is_published=True)[:3]
         ctx['lead_form'] = LeadForm()
+        ctx['og_image'] = _og_image(self.request, page.hero_image)
         return ctx
 
 
@@ -59,9 +80,11 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['page'] = AboutPage.load()
+        page = AboutPage.load()
+        ctx['page'] = page
         ctx['crumbs'] = [{'label': 'Про компанію', 'url': ''}]
         ctx['lead_form'] = LeadForm()
+        ctx['og_image'] = _og_image(self.request, page.hero_image)
         return ctx
 
 
@@ -70,10 +93,12 @@ class ServicesIndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['page'] = ServicesIndex.load()
+        page = ServicesIndex.load()
+        ctx['page'] = page
         ctx['catalog'] = service_nav_items()
         ctx['crumbs'] = [{'label': 'Послуги', 'url': ''}]
         ctx['lead_form'] = LeadForm()
+        ctx['og_image'] = _og_image(self.request, page.hero_image)
         return ctx
 
 
@@ -89,6 +114,12 @@ class ServiceDetailView(TemplateView):
         ctx['page'] = page
         ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug]
         ctx['lead_form'] = LeadForm()
+        ctx['og_image'] = _og_image(self.request, page.hero_image)
+        ctx['related_cases'] = _related_cases_for(page.slug)
+        svc_seo = SERVICE_SEO.get(page.slug)
+        if svc_seo:
+            page.seo_title = svc_seo['title']
+            page.seo_description = svc_seo['description']
 
         if page.slug == DEEP_SLUG:
             ctx['d'] = design_copy.DEEP_ANALYTICS
@@ -151,6 +182,8 @@ class AnalysisView(TemplateView):
         ctx['crumbs'] = _crumbs_service(a['crumb'])
         ctx['others'] = [s for s in service_nav_items() if not s['is_analysis']]
         ctx['lead_form'] = LeadForm()
+        ctx['og_image'] = _og_image(self.request, page.hero_image)
+        ctx['related_cases'] = _related_cases_for('analysis')
         return ctx
 
 

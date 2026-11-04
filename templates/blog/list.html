@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+
 {% block content %}
 <div id="top">
-  {% include 'partials/hero.html' with title=h1 text=hero_text fallback_static='images/blog/meet.jpg' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#feed' secondary_label='До статей' crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=h1 text=hero_text fallback_static='images/blog/meet.webp' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#feed' secondary_label='До статей' crumbs=crumbs %}
 
   <section id="feed" class="section section--end blog-feed" aria-label="Стрічка статей">
     <div class="container">

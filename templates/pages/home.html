@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 {% load static vartis_icons %}
 
+{% block preload_lcp %}
+{% if page.hero_image %}
+<link rel="preload" as="image" href="{{ page.hero_image.url }}" fetchpriority="high">
+{% else %}
+<link rel="preload" as="image" href="{% static 'images/hero.webp' %}" type="image/webp" fetchpriority="high">
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <div id="top">
   {% if page.hero_image %}
     {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
   {% else %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/hero.png' home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/hero.webp' home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
   {% endif %}
 
   <section id="services" class="section" aria-labelledby="services-title">
@@ -19,7 +27,7 @@
         {% for s in services %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">
-            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="Ілюстрація послуги: {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </div>
           <div class="dir-card__body">
             <h3 class="dir-card__title">{{ s.title }}</h3>

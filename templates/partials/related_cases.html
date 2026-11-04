@@ -1,0 +1,28 @@
+{% if related_cases %}
+<section class="section" aria-labelledby="related-cases-title">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="related-cases-title" class="section__title">Повʼязані кейси</h2>
+      <p class="section__lead">Приклади реалізованих завдань у цьому напрямі</p>
+    </div>
+    <div class="dir-grid mt-40">
+      {% for case in related_cases %}
+      <a href="{{ case.get_absolute_url }}" class="dir-card">
+        <div class="dir-card__media">
+          {% if case.image %}
+          <img src="{{ case.image.url }}" alt="Обкладинка кейсу: {{ case.title }}" loading="lazy" width="640" height="360" decoding="async">
+          {% endif %}
+        </div>
+        <div class="dir-card__body">
+          <h3 class="dir-card__title">{{ case.title }}</h3>
+          <p class="dir-card__text">{{ case.excerpt|truncatewords:28 }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <p class="mt-40">
+      <a href="{% url 'cases:list' %}" class="btn btn--outline">Усі кейси →</a>
+    </p>
+  </div>
+</section>
+{% endif %}

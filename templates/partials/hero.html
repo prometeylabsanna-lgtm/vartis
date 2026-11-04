@@ -4,9 +4,11 @@
   aria-labelledby="hero-title"
 >
   {% if image %}
-  <img class="hero__bg" src="{{ image }}" alt="" width="1600" height="900" decoding="async">
+  <img class="hero__bg" src="{{ image }}" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
   {% elif not home and fallback_static %}
-  <img class="hero__bg" src="{% static fallback_static %}" alt="" width="1600" height="900" decoding="async">
+  <img class="hero__bg" src="{% static fallback_static %}" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+  {% elif home and fallback_static %}
+  <img class="hero__bg" src="{% static fallback_static %}" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
   {% endif %}
   <div class="hero__panel">
     {% if crumbs %}

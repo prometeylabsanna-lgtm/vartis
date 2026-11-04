@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from src.core.seo_copy import SEO
 from src.pages import design_copy
 
 from .block_defaults import _reg, STATIC_FALLBACKS
@@ -11,14 +12,11 @@ HOME = design_copy.HOME
 
 def register_home_blocks() -> None:
     _reg("home", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("home", "seo_title", "VARTIS INTELLIGENCE — стратегічна аналітика та перевірка контрагентів", label="SEO Title", inline=True)
+    _reg("home", "seo_title", SEO["home"]["title"], label="SEO Title", inline=True)
     _reg(
         "home",
         "seo_description",
-        (
-            "Стратегічна аналітика, перевірка контрагентів та захист бізнесу. "
-            "Допомагаємо виявляти приховані ризики й ухвалювати обґрунтовані рішення."
-        ),
+        SEO["home"]["description"],
         label="SEO Description",
         multiline=True,
     )
@@ -26,7 +24,7 @@ def register_home_blocks() -> None:
     _reg("home", "hero_title", HOME["h1"].replace("\n", " "), label="Hero заголовок", inline=True)
     _reg("home", "hero_text", HOME["hero_text"], label="Hero текст", richtext=True)
     _reg("home", "hero_image", "", label="Hero зображення", content_type="image")
-    STATIC_FALLBACKS[("home", "hero_image")] = "images/hero.png"
+    STATIC_FALLBACKS[("home", "hero_image")] = "images/hero.webp"
     _reg("home", "hero_cta", HOME["hero_cta"], label="Текст CTA", inline=True)
 
     _reg("home", "services_section_visible", "1", label="Показувати напрями")
@@ -41,7 +39,7 @@ def register_home_blocks() -> None:
     _reg("home", "mission_title", HOME["mission_title"], label="Заголовок місії", inline=True)
     _reg("home", "mission_text", HOME["mission_text"], label="Текст місії", richtext=True)
     _reg("home", "mission_image", "", label="Фон місії", content_type="image")
-    STATIC_FALLBACKS[("home", "mission_image")] = "images/about-bg.png"
+    STATIC_FALLBACKS[("home", "mission_image")] = "images/about-bg.webp"
 
     _reg("home", "process_section_visible", "1", label="Показувати процес")
     _reg("home", "process_title", HOME["process_title"], label="Заголовок процесу", inline=True)

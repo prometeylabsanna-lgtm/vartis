@@ -17,6 +17,20 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
+# Прод завжди індексується. На Vercel (develop/base) лишається auto-noindex.
+SEO_ALLOW_INDEXING = True
+
+# Канонічний origin: PUBLIC_SITE_URL з env, інакше https://<перший ALLOWED_HOSTS>
+_public = config('PUBLIC_SITE_URL', default='').rstrip('/')
+if _public:
+    PUBLIC_SITE_URL = _public
+else:
+    _host = next(
+        (h.strip() for h in ALLOWED_HOSTS if h and h not in ('*', 'localhost', '127.0.0.1')),
+        '',
+    )
+    PUBLIC_SITE_URL = f'https://{_host}' if _host else ''
+
 database_url = config('DATABASE_URL', default='')
 if database_url:
     # postgres://user:pass@host:5432/db

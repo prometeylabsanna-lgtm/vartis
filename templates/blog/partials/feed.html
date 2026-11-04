@@ -28,7 +28,7 @@
   {% if featured %}
   <article class="article-featured">
     <a href="{{ featured.get_absolute_url }}" class="article-featured__media" aria-label="{{ featured.title }}">
-      {% if featured.image %}<img src="{{ featured.image.url }}" alt="" loading="lazy" width="960" height="540">{% endif %}
+      {% if featured.image %}<img src="{{ featured.image.url }}" alt="Обкладинка: {{ featured.title }}" loading="lazy" width="960" height="540" decoding="async">{% endif %}
     </a>
     <div class="article-featured__body">
       <div class="article-featured__meta">
@@ -52,7 +52,7 @@
     {% for article in grid %}
     <article class="blog-card">
       <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
-        {% if article.image %}<img src="{{ article.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+        {% if article.image %}<img src="{{ article.image.url }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
       </a>
       <div class="blog-card__meta">
         <span class="article-card__cat">{{ article.category }}</span>

@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+from src.core.seo_copy import SEO
+
 from .block_defaults import _reg, STATIC_FALLBACKS
 
 
 def register_page_blocks() -> None:
     # --- About ---
     _reg("about", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("about", "seo_title", "Про компанію — VARTIS INTELLIGENCE", label="SEO Title", inline=True)
-    _reg("about", "seo_description", "Історія, команда, принципи та методологія Vartis Intelligence.", label="SEO Description", multiline=True)
+    _reg("about", "seo_title", SEO["about"]["title"], label="SEO Title", inline=True)
+    _reg("about", "seo_description", SEO["about"]["description"], label="SEO Description", multiline=True)
     _reg("about", "h1", "Про компанію", label="H1", inline=True)
     _reg("about", "hero_title", "Про компанію", label="Hero заголовок", inline=True)
     _reg(
@@ -20,7 +22,7 @@ def register_page_blocks() -> None:
         richtext=True,
     )
     _reg("about", "hero_image", "", label="Hero зображення", content_type="image")
-    STATIC_FALLBACKS[("about", "hero_image")] = "images/about-bg.png"
+    STATIC_FALLBACKS[("about", "hero_image")] = "images/about-bg.webp"
 
     _reg("about", "intro_section_visible", "1", label="Показувати «Про нас»")
     _reg("about", "intro_title", "Аналітика та безпека для вашого бізнесу", label="Заголовок «Про нас»", inline=True)
@@ -80,11 +82,11 @@ def register_page_blocks() -> None:
 
     # --- Services index ---
     _reg("services", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("services", "seo_title", "Послуги — VARTIS INTELLIGENCE", label="SEO Title", inline=True)
+    _reg("services", "seo_title", SEO["services"]["title"], label="SEO Title", inline=True)
     _reg(
         "services",
         "seo_description",
-        "Комплексні рішення для бізнесу — від перевірки інформації до стратегічного аналізу.",
+        SEO["services"]["description"],
         label="SEO Description",
         multiline=True,
     )
@@ -104,8 +106,8 @@ def register_page_blocks() -> None:
 
     # --- Analysis ---
     _reg("analysis", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("analysis", "seo_title", "VI Analysis — VARTIS INTELLIGENCE", label="SEO Title", inline=True)
-    _reg("analysis", "seo_description", "Власний сервіс швидкої перевірки контрагентів.", label="SEO Description", multiline=True)
+    _reg("analysis", "seo_title", SEO["analysis"]["title"], label="SEO Title", inline=True)
+    _reg("analysis", "seo_description", SEO["analysis"]["description"], label="SEO Description", multiline=True)
     _reg("analysis", "h1", "VI Analysis", label="H1", inline=True)
     _reg("analysis", "title", "VI Analysis", label="Назва в меню", inline=True)
     _reg("analysis", "hero_title", "VI Analysis", label="Hero заголовок", inline=True)
@@ -147,8 +149,8 @@ def register_page_blocks() -> None:
 
     # --- Contacts ---
     _reg("contacts", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("contacts", "seo_title", "Контакти — VARTIS INTELLIGENCE", label="SEO Title", inline=True)
-    _reg("contacts", "seo_description", "Звʼяжіться з Vartis Intelligence.", label="SEO Description", multiline=True)
+    _reg("contacts", "seo_title", SEO["contacts"]["title"], label="SEO Title", inline=True)
+    _reg("contacts", "seo_description", SEO["contacts"]["description"], label="SEO Description", multiline=True)
     _reg("contacts", "h1", "Контакти", label="H1", inline=True)
     _reg("contacts", "hero_title", "Контакти", label="Hero заголовок", inline=True)
     _reg("contacts", "hero_text", "", label="Hero текст", richtext=True)
@@ -157,8 +159,8 @@ def register_page_blocks() -> None:
 
     # --- Privacy ---
     _reg("privacy", "hero_section_visible", "1", label="Показувати Hero")
-    _reg("privacy", "seo_title", "Політика конфіденційності — VARTIS INTELLIGENCE", label="SEO Title", inline=True)
-    _reg("privacy", "seo_description", "Політика конфіденційності Vartis Intelligence.", label="SEO Description", multiline=True)
+    _reg("privacy", "seo_title", SEO["privacy"]["title"], label="SEO Title", inline=True)
+    _reg("privacy", "seo_description", SEO["privacy"]["description"], label="SEO Description", multiline=True)
     _reg("privacy", "h1", "Політика конфіденційності", label="H1", inline=True)
     _reg("privacy", "hero_title", "Політика конфіденційності", label="Hero заголовок", inline=True)
     _reg("privacy", "body", "", label="Текст політики", richtext=True)

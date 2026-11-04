@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand
 from src.blog.models import Article, ArticleBlock
 from src.cases.models import CaseBlock, CaseStat, CaseStudy
 from src.core.models import SiteSettings
+from src.core.seo_copy import SEO, SERVICE_SEO
 from src.pages.models import (
     AboutPage,
     AboutPrinciple,
@@ -86,11 +87,8 @@ class Command(BaseCommand):
 
     def seed_home(self):
         page = HomePage.load()
-        page.seo_title = 'VARTIS INTELLIGENCE — стратегічна аналітика та перевірка контрагентів'
-        page.seo_description = (
-            'Стратегічна аналітика, перевірка контрагентів та захист бізнесу. '
-            'Допомагаємо виявляти приховані ризики й ухвалювати обґрунтовані рішення.'
-        )
+        page.seo_title = SEO['home']['title']
+        page.seo_description = SEO['home']['description']
         page.h1 = 'Інформація, що перетворює ризики на переваги'
         page.hero_title = 'Інформація, що перетворює ризики на переваги'
         page.hero_text = (
@@ -132,8 +130,8 @@ class Command(BaseCommand):
 
     def seed_about(self):
         page = AboutPage.load()
-        page.seo_title = 'Про компанію — VARTIS INTELLIGENCE'
-        page.seo_description = 'Історія, команда, принципи та методологія Vartis Intelligence.'
+        page.seo_title = SEO['about']['title']
+        page.seo_description = SEO['about']['description']
         page.h1 = 'Про компанію'
         page.hero_title = 'Про компанію'
         page.hero_text = 'Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів'
@@ -355,8 +353,8 @@ class Command(BaseCommand):
 
     def seed_services(self):
         idx = ServicesIndex.load()
-        idx.seo_title = 'Послуги — VARTIS INTELLIGENCE'
-        idx.seo_description = 'Комплексні рішення для бізнесу — від перевірки інформації до стратегічного аналізу.'
+        idx.seo_title = SEO['services']['title']
+        idx.seo_description = SEO['services']['description']
         idx.h1 = 'Послуги'
         idx.hero_title = 'Послуги'
         idx.hero_text = (
@@ -450,8 +448,12 @@ class Command(BaseCommand):
                     'tags': data['tags'],
                     'hero_text': data['hero'],
                     'scope_text': data['scope'],
-                    'seo_title': f"{data['title']} — VARTIS INTELLIGENCE",
-                    'seo_description': data['card_text'],
+                    'seo_title': SERVICE_SEO.get(data['slug'], {}).get(
+                        'title', f"{data['title']} — VARTIS INTELLIGENCE"
+                    ),
+                    'seo_description': SERVICE_SEO.get(data['slug'], {}).get(
+                        'description', data['card_text']
+                    ),
                     'h1': data['title'],
                     'order': data['order'],
                     'is_published': True,
@@ -522,11 +524,8 @@ class Command(BaseCommand):
             'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
             'рекомендації для бізнесу'
         )
-        page.seo_title = 'VI Analysis — експрес-перевірка контрагентів | VARTIS INTELLIGENCE'
-        page.seo_description = (
-            'Достатньо назви компанії та коду ЄДРПОУ. За лічені хвилини ви бачите, '
-            'які ризики з ним повʼязані.'
-        )
+        page.seo_title = SEO['analysis']['title']
+        page.seo_description = SEO['analysis']['description']
         page.h1 = 'VI Analysis'
         page.card_text = (
             'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
@@ -624,8 +623,8 @@ class Command(BaseCommand):
 
     def seed_contacts_privacy(self):
         c = ContactsPage.load()
-        c.seo_title = 'Контакти — VARTIS INTELLIGENCE'
-        c.seo_description = 'Адреса, телефони, email та форма зворотного звʼязку.'
+        c.seo_title = SEO['contacts']['title']
+        c.seo_description = SEO['contacts']['description']
         c.h1 = 'Контакти'
         c.hero_title = 'Контакти'
         c.hero_text = (
@@ -637,11 +636,8 @@ class Command(BaseCommand):
         c.save()
 
         p = PrivacyPage.load()
-        p.seo_title = 'Політика конфіденційності — VARTIS INTELLIGENCE'
-        p.seo_description = (
-            'Політика конфіденційності ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»: '
-            'які дані ми збираємо, як їх використовуємо та захищаємо.'
-        )
+        p.seo_title = SEO['privacy']['title']
+        p.seo_description = SEO['privacy']['description']
         p.h1 = 'Політика конфіденційності'
         p.hero_title = 'Політика конфіденційності'
         p.body = (

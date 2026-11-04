@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
-{% load static vartis_icons %}
+{% load static vartis_icons vartis_seo %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/scope-bento.css' %}">
+{% endblock %}
+
+{% block structured_data %}
+{{ block.super }}
+{% service_json_ld page %}
+{% endblock %}
 
 {% block content %}
 <div id="top">
   {% if page.hero_image %}
     {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
   {% else %}
-    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
+    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text fallback_static='images/hero.webp' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
   {% endif %}
 
   {% if copy.scope_variant == 'bento' %}
@@ -158,6 +167,8 @@
   </section>
   {% endif %}
 
+  {% include 'partials/related_cases.html' %}
+
   <section class="section section--end" aria-labelledby="other-title">
     <div class="container">
       <h2 id="other-title" class="section__title">Профільні послуги</h2>
@@ -165,7 +176,7 @@
         {% for s in others %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">
-            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="Ілюстрація послуги: {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </div>
           <div class="dir-card__body">
             <h3 class="dir-card__title">{{ s.title }}</h3>

@@ -1,5 +1,8 @@
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
+from src.core.seo import absolute_url, media_or_static_absolute
+from src.core.seo_copy import SEO
 from src.leads.forms import LeadForm
 
 from .models import CaseStudy
@@ -30,10 +33,14 @@ class CaseListView(ListView):
             'current_cat': cat,
             'categories': categories,
             'lead_form': LeadForm(),
-            'seo_title': 'Кейси — VARTIS INTELLIGENCE',
-            'seo_description': 'Реалізовавані проєкти та демонстраційні приклади.',
+            'seo_title': SEO['cases']['title'],
+            'seo_description': SEO['cases']['description'],
             'h1': 'Кейси',
+            'crumbs': [{'label': 'Кейси', 'url': ''}],
+            'canonical_url': absolute_url(self.request, reverse('cases:list')),
         })
+        if cat:
+            ctx['seo_robots'] = 'noindex, follow'
         return ctx
 
     def get_template_names(self):
@@ -53,5 +60,14 @@ class CaseDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        case = ctx['case']
         ctx['lead_form'] = LeadForm()
+        ctx['seo_title'] = case.seo_title or f'{case.title} — VARTIS INTELLIGENCE'
+        ctx['seo_description'] = case.seo_description or case.excerpt
+        ctx['crumbs'] = [
+            {'label': 'Кейси', 'url': reverse('cases:list')},
+            {'label': case.title, 'url': ''},
+        ]
+        if case.image:
+            ctx['og_image'] = media_or_static_absolute(self.request, case.image.url)
         return ctx

@@ -8,27 +8,30 @@ from src.pages.models import ServicePage
 
 class StaticSitemap(Sitemap):
     changefreq = 'weekly'
-    priority = 0.8
 
     def items(self):
+        # (url_name, priority)
         return [
-            'pages:home',
-            'pages:about',
-            'pages:services',
-            'pages:analysis',
-            'pages:contacts',
-            'pages:privacy',
-            'blog:list',
-            'cases:list',
+            ('pages:home', 1.0),
+            ('pages:services', 0.9),
+            ('pages:analysis', 0.9),
+            ('pages:about', 0.7),
+            ('pages:contacts', 0.7),
+            ('blog:list', 0.6),
+            ('cases:list', 0.6),
+            ('pages:privacy', 0.3),
         ]
 
     def location(self, item):
-        return reverse(item)
+        return reverse(item[0])
+
+    def priority(self, item):
+        return item[1]
 
 
 class ServiceSitemap(Sitemap):
     changefreq = 'weekly'
-    priority = 0.7
+    priority = 0.8
 
     def items(self):
         return ServicePage.objects.filter(is_published=True)
@@ -50,7 +53,7 @@ class ArticleSitemap(Sitemap):
 
 class CaseSitemap(Sitemap):
     changefreq = 'weekly'
-    priority = 0.6
+    priority = 0.5
 
     def items(self):
         return CaseStudy.objects.filter(is_published=True)

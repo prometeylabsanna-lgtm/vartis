@@ -12,7 +12,7 @@
             {% if site_settings.logo %}
               <img src="{{ site_settings.logo.url }}" alt="" width="200" height="121" decoding="async">
             {% else %}
-              <img src="{% static 'images/logo.png' %}" alt="" width="200" height="121" decoding="async">
+              <img src="{% static 'images/logo-sm.webp' %}" alt="" width="200" height="121" decoding="async">
             {% endif %}
           </a>
           <p class="site-footer__tagline">{{ site_settings.tagline }}</p>
@@ -23,6 +23,7 @@
             <a href="{% url 'pages:about' %}">Про компанію</a>
             <a href="{% url 'pages:services' %}">Послуги</a>
             <a href="{% url 'blog:list' %}">Блог</a>
+            <a href="{% url 'cases:list' %}">Кейси</a>
             <a href="{% url 'pages:contacts' %}">Контакти</a>
           </nav>
           <nav class="site-footer__nav" aria-label="Послуги у футері">

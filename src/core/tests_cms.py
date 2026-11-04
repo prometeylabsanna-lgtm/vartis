@@ -78,7 +78,7 @@ class CmsAdminSmokeTests(TestCase):
         response = self.client.get('/admin/')
         self.assertEqual(response.status_code, 200)
         body = response.content.decode()
-        self.assertIn('/static/images/logo.png', body)
+        self.assertIn('/static/images/logo-sm.webp', body)
         self.assertIn('/static/images/favicon', body)
         self.assertIn('vartis-admin-logo', body)
         self.assertIn('vartis-admin-logo__img--light', body)

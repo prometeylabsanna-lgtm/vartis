@@ -6,7 +6,7 @@
   {% if page.hero_image %}
     {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
   {% else %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.webp' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
   {% endif %}
 
   <section id="catalog" class="section section--end" aria-label="Каталог послуг">
@@ -15,7 +15,7 @@
         {% for c in catalog %}
         <article id="{{ c.key }}" class="split-item">
           <a href="{{ c.href }}" class="split-item__media" aria-label="{{ c.title }}">
-            {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="" loading="lazy" width="800" height="500">{% endif %}
+            {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="Фото напряму: {{ c.title }}" loading="lazy" width="800" height="500" decoding="async">{% endif %}
           </a>
           <div class="split-item__body">
             <span class="split-item__num">0{{ forloop.counter }}</span>

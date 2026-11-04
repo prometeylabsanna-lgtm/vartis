@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/privacy.css' %}">
+{% endblock %}
+
 {% block content %}
 <div id="top">
-  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=hero_text fallback_static='images/hero.png' shade=True crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=hero_text fallback_static='images/hero.webp' shade=True crumbs=crumbs %}
 
   <section class="privacy-section" aria-label="Текст політики">
     <div class="privacy-body">

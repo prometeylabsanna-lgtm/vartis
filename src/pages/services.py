@@ -17,12 +17,12 @@ SERVICES_NAV_ORDER = (
 
 # Статичні запасні зображення карток (як у seed_content), якщо media відсутнє
 CARD_IMAGE_STATIC = {
-    'perevirka-kontrahentiv': 'images/services/dir-1.png',
-    'kompleksna-dopomoha-biznesu': 'images/services/dir-2.png',
-    'konsaltynh': 'images/services/dir-3.png',
-    'zbir-ta-analiz-informatsiyi': 'images/services/dir-4.png',
-    'zakhyst-vid-vytoku': 'images/blog/lock.jpg',
-    'kryminalni-provadzhennia': 'images/blog/law.jpg',
+    'perevirka-kontrahentiv': 'images/services/dir-1.webp',
+    'kompleksna-dopomoha-biznesu': 'images/services/dir-2.webp',
+    'konsaltynh': 'images/services/dir-3.webp',
+    'zbir-ta-analiz-informatsiyi': 'images/services/dir-4.webp',
+    'zakhyst-vid-vytoku': 'images/blog/lock.webp',
+    'kryminalni-provadzhennia': 'images/blog/law.webp',
 }
 
 

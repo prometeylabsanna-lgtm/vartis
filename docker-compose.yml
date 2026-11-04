@@ -20,6 +20,8 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
       DATABASE_URL: postgres://vartis:vartis@db:5432/vartis
+      # SEO: індексація й canonical вмикаються в config.settings.production
+      # За потреби перевизначте: PUBLIC_SITE_URL=https://example.com
     volumes:
       - media_data:/app/media
       - static_data:/app/staticfiles

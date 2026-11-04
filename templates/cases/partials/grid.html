@@ -24,7 +24,7 @@
     {% for case in cases %}
     <a href="{{ case.get_absolute_url }}" class="article-card">
       <div class="article-card__media">
-        {% if case.image %}<img src="{{ case.image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
+        {% if case.image %}<img src="{{ case.image.url }}" alt="Обкладинка кейсу: {{ case.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
       </div>
       <div class="article-card__body">
         <div class="article-card__meta">

@@ -2,10 +2,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
-from django.http import HttpResponse
 from django.urls import include, path
 
 from src.core.sitemaps import sitemaps
+from src.core.views_seo import LlmsTxtView, RobotsTxtView
 from src.pages.views import page_not_found
 
 urlpatterns = [
@@ -15,14 +15,8 @@ urlpatterns = [
     path('keisy/', include('src.cases.urls')),
     path('leads/', include('src.leads.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
-    path(
-        'robots.txt',
-        lambda r: HttpResponse(
-            'User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: /sitemap.xml\n',
-            content_type='text/plain',
-        ),
-        name='robots',
-    ),
+    path('robots.txt', RobotsTxtView.as_view(), name='robots'),
+    path('llms.txt', LlmsTxtView.as_view(), name='llms'),
 ]
 
 handler404 = page_not_found

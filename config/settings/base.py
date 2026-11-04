@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'csp.middleware.CSPMiddleware',
+    'src.core.middleware_seo.SeoRobotsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -124,14 +125,23 @@ TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID', default='')
 CRM_WEBHOOK_URL = config('CRM_WEBHOOK_URL', default='')
 GTM_ID = config('GTM_ID', default='')
 
+# Канонічний origin без слеша в кінці, напр. https://vartis.ua
+PUBLIC_SITE_URL = config('PUBLIC_SITE_URL', default='').rstrip('/')
+# None = авто (noindex на vercel/localhost); True/False = примусово
+_seo_index_raw = config('SEO_ALLOW_INDEXING', default='')
+if _seo_index_raw == '':
+    SEO_ALLOW_INDEXING = None
+else:
+    SEO_ALLOW_INDEXING = config('SEO_ALLOW_INDEXING', default=False, cast=bool)
+
 CONTENT_SECURITY_POLICY = {
     # Unfold/Alpine на /admin/ потребує eval для x-show тощо — інакше #modal-overlay лишається видимим.
     'EXCLUDE_URL_PREFIXES': ('/admin/',),
     'DIRECTIVES': {
         'default-src': ["'self'"],
         'script-src': ["'self'", 'https://www.googletagmanager.com', 'https://cdn.jsdelivr.net'],
-        'style-src': ["'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net'],
-        'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
+        'style-src': ["'self'", 'https://cdn.jsdelivr.net'],
+        'font-src': ["'self'", 'data:'],
         'img-src': ["'self'", 'data:', 'https:'],
         'frame-src': ["'self'", 'https://www.google.com', 'https://maps.google.com'],
         'connect-src': ["'self'", 'https://www.google-analytics.com'],
@@ -189,8 +199,8 @@ UNFOLD = {
     'SITE_HEADER': 'Vartis Intelligence',
     'SITE_URL': '/',
     'SITE_LOGO': {
-        'light': '/static/images/logo.png',
-        'dark': '/static/images/logo.png',
+        'light': '/static/images/logo-sm.webp',
+        'dark': '/static/images/logo-sm.webp',
     },
     'SITE_FAVICONS': [
         {
