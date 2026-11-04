@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/contacts.css' %}">
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/hero.webp' as contacts_hero %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.webp' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=contacts_hero shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
 
   <section id="info" class="contacts-info" aria-labelledby="info-title">
     <div class="container contacts-info__inner">

@@ -1,6 +1,8 @@
+{% load vartis_media %}
 <a href="{{ article.get_absolute_url }}" class="article-card">
   <div class="article-card__media">
-    {% if article.image %}<img src="{{ article.image.url }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+    {% public_img article.image 'images/blog/article.webp' as article_src %}
+    {% if article_src %}<img src="{{ article_src }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
   </div>
   <div class="article-card__body">
     <div class="article-card__meta">

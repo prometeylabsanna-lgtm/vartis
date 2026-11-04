@@ -1,10 +1,11 @@
 import os
+import re
 
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.static import serve
 
 from src.core.sitemaps import sitemaps
 from src.core.views_seo import LlmsTxtView, RobotsTxtView
@@ -23,11 +24,17 @@ urlpatterns = [
 
 handler404 = page_not_found
 
-# Media: локально при DEBUG; на Vercel — завжди (DEBUG=False там навмисно,
-# але картинки лежать у /tmp і мають віддаватися Django).
-_serve_media = settings.DEBUG or bool(os.environ.get('VERCEL'))
-if _serve_media:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# django.conf.urls.static.static() при DEBUG=False повертає [] — тому serve напряму.
+# Потрібно і локально (DEBUG), і на Vercel (media в /tmp).
+if settings.DEBUG or os.environ.get('VERCEL'):
+    media_url = settings.MEDIA_URL if settings.MEDIA_URL.endswith('/') else f'{settings.MEDIA_URL}/'
+    urlpatterns += [
+        re_path(
+            r'^%s(?P<path>.*)$' % re.escape(media_url.lstrip('/')),
+            serve,
+            {'document_root': str(settings.MEDIA_ROOT)},
+        ),
+    ]
 
 if settings.DEBUG:
     urlpatterns += [

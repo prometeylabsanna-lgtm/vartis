@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_seo %}
+{% load static vartis_icons vartis_seo vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -12,12 +12,9 @@
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/about-bg.webp' as about_hero %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/about-bg.webp' shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=about_hero shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
 
   <section id="intro" class="section" aria-labelledby="intro-title">
     <div class="container about-intro">
@@ -65,10 +62,11 @@
         {% for m in page.team.all %}
         <article class="founder-card">
           <div class="founder-card__media">
-            {% if m.photo %}
+            {% public_img m.photo as photo_src %}
+            {% if photo_src %}
             <img
               class="founder-card__photo"
-              src="{{ m.photo.url }}"
+              src="{{ photo_src }}"
               alt="{{ m.name }} — {{ m.role }}, VARTIS INTELLIGENCE"
               loading="lazy"
               decoding="async"
@@ -76,7 +74,7 @@
               height="600"
               style="object-position: {{ m.photo_position|default:'50% 20%' }}"
               data-action="zoom-photo"
-              data-src="{{ m.photo.url }}"
+              data-src="{{ photo_src }}"
               data-title="{{ m.name }}"
             >
             {% endif %}

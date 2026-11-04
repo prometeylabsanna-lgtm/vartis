@@ -1,21 +1,16 @@
 {% extends 'base.html' %}
-{% load static vartis_icons %}
+{% load static vartis_icons vartis_media %}
 
 {% block preload_lcp %}
-{% if page.hero_image %}
-<link rel="preload" as="image" href="{{ page.hero_image.url }}" fetchpriority="high">
-{% else %}
-<link rel="preload" as="image" href="{% static 'images/hero.webp' %}" type="image/webp" fetchpriority="high">
-{% endif %}
+{% public_img page.hero_image 'images/hero.webp' as hero_src %}
+<link rel="preload" as="image" href="{{ hero_src }}" type="image/webp" fetchpriority="high">
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/hero.webp' as hero_src %}
+{% public_img page.mission_image 'images/about-bg.webp' as mission_src %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
-  {% else %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/hero.webp' home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=hero_src home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
 
   <section id="services" class="section" aria-labelledby="services-title">
     <div class="container">
@@ -60,9 +55,9 @@
   </section>
 
   <section
-    class="mission{% if page.mission_image %} has-upload{% endif %}"
+    class="mission{% if mission_src %} has-upload{% endif %}"
     aria-labelledby="mission-title"
-    {% if page.mission_image %}style="--mission-upload: url('{{ page.mission_image.url }}')"{% endif %}
+    {% if mission_src %}style="--mission-upload: url('{{ mission_src }}')"{% endif %}
   >
     <div class="mission__panel">
       <div class="mission__inner">

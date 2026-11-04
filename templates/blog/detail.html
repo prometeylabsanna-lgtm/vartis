@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_seo %}
+{% load static vartis_seo vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/article-detail.css' %}">
@@ -13,12 +13,9 @@
 {% endblock %}
 
 {% block content %}
+{% public_img article.image 'images/blog/article.webp' as article_hero %}
 <div id="top">
-  {% if article.image %}
-    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article.image.url shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt fallback_static='images/blog/article.webp' shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article_hero shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
 
   <section id="article" class="art-section" aria-label="Текст статті">
     <div class="art-layout">
@@ -86,7 +83,8 @@
         {% for article in related %}
         <article class="blog-card">
           <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
-            {% if article.image %}<img src="{{ article.image.url }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+            {% public_img article.image 'images/blog/article.webp' as related_src %}
+            {% if related_src %}<img src="{{ related_src }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </a>
           <div class="blog-card__meta">
             <span class="article-card__cat">{{ article.category }}</span>

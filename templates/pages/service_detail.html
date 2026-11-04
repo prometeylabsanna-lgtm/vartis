@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_seo %}
+{% load static vartis_icons vartis_seo vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/scope-bento.css' %}">
@@ -11,12 +11,9 @@
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/hero.webp' as service_hero %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text fallback_static='images/hero.webp' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=copy.h1|default:page.h1 text=copy.hero_text|default:page.hero_text image=service_hero shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
 
   {% if copy.scope_variant == 'bento' %}
   <section class="section" aria-labelledby="scope-title">

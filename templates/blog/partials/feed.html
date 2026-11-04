@@ -1,3 +1,4 @@
+{% load vartis_media %}
 <div id="feed-partial" class="feed">
   <div class="feed-head">
     <h2 class="feed-head__title">Усі публікації</h2>
@@ -28,7 +29,8 @@
   {% if featured %}
   <article class="article-featured">
     <a href="{{ featured.get_absolute_url }}" class="article-featured__media" aria-label="{{ featured.title }}">
-      {% if featured.image %}<img src="{{ featured.image.url }}" alt="Обкладинка: {{ featured.title }}" loading="lazy" width="960" height="540" decoding="async">{% endif %}
+      {% public_img featured.image 'images/blog/article.webp' as featured_src %}
+      {% if featured_src %}<img src="{{ featured_src }}" alt="Обкладинка: {{ featured.title }}" loading="lazy" width="960" height="540" decoding="async">{% endif %}
     </a>
     <div class="article-featured__body">
       <div class="article-featured__meta">
@@ -52,7 +54,8 @@
     {% for article in grid %}
     <article class="blog-card">
       <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
-        {% if article.image %}<img src="{{ article.image.url }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+        {% public_img article.image 'images/blog/article.webp' as article_src %}
+        {% if article_src %}<img src="{{ article_src }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
       </a>
       <div class="blog-card__meta">
         <span class="article-card__cat">{{ article.category }}</span>

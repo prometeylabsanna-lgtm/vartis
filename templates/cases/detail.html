@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static vartis_media %}
 
 {% block content %}
+{% public_img case.image 'images/hero.webp' as case_hero %}
 <div id="top">
-  {% if case.image %}
-    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt image=case.image.url shade=True %}
-  {% else %}
-    {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt fallback_static='images/hero.webp' shade=True crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=case.display_h1 text=case.excerpt image=case_hero shade=True crumbs=crumbs %}
 
   <section class="section section--end" aria-label="Опис кейсу">
     <div class="container">

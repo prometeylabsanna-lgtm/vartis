@@ -1,8 +1,10 @@
+{% load vartis_media %}
 <article class="home-article">
-  {% if article.image %}
+  {% public_img article.image 'images/blog/article.webp' as article_src %}
+  {% if article_src %}
   <img
     class="home-article__media"
-    src="{{ article.image.url }}"
+    src="{{ article_src }}"
     alt="{{ article.title }}"
     loading="lazy"
     width="640"

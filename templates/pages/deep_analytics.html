@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_seo %}
+{% load static vartis_seo vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/scope-bento.css' %}">
@@ -12,12 +12,9 @@
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/services/dir-4.webp' as deep_hero %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=d.h1 text=d.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=d.cta_primary secondary_href=d.cta_secondary_href secondary_label=d.cta_secondary crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=d.h1 text=d.hero_text fallback_static='images/services/dir-4.webp' shade=True show_cta=True cta_primary=d.cta_primary secondary_href=d.cta_secondary_href secondary_label=d.cta_secondary crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=d.h1 text=d.hero_text image=deep_hero shade=True show_cta=True cta_primary=d.cta_primary secondary_href=d.cta_secondary_href secondary_label=d.cta_secondary crumbs=crumbs %}
 
   {% include 'pages/partials/deep_strategy.html' %}
   {% include 'pages/partials/deep_nda_get.html' %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_seo %}
+{% load static vartis_seo vartis_media %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/analysis.css' %}">
@@ -14,12 +14,9 @@
 {% endblock %}
 
 {% block content %}
+{% public_img page.hero_image 'images/services/dir-1.webp' as analysis_hero %}
 <div id="top">
-  {% if page.hero_image %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
-  {% else %}
-    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/services/dir-1.webp' shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=analysis_hero shade=True show_cta=True cta_primary=copy.cta_primary secondary_href=copy.cta_secondary_href secondary_label=copy.cta_secondary crumbs=crumbs %}
 
   <section id="checks" class="section" aria-labelledby="checks-title">
     <div class="container vi-steps">
