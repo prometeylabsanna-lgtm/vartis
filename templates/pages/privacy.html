@@ -1,23 +1,13 @@
 {% extends 'base.html' %}
-{% load static vartis_content %}
+{% load static %}
 
 {% block content %}
 <div id="top">
-  {% section_visible 'privacy' 'hero_section_visible' as show_hero %}
-  {% if show_hero %}
-    {% block_text 'privacy' 'h1' as privacy_h1 %}
-    {% block_image_url 'privacy' 'hero_image' 'images/hero.png' as privacy_hero_img %}
-    {% include 'partials/hero.html' with title=privacy_h1 text='' image=privacy_hero_img shade=True crumbs=crumbs %}
-  {% endif %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=hero_text fallback_static='images/hero.png' shade=True crumbs=crumbs %}
 
   <section class="privacy-section" aria-label="Текст політики">
     <div class="privacy-body">
-      {% block_plain 'privacy' 'body' as privacy_body_plain %}
-      {% if privacy_body_plain %}
-        {% block_rich 'privacy' 'body' %}
-      {% else %}
-        {{ page.body|safe }}
-      {% endif %}
+      {{ page.body|safe }}
     </div>
   </section>
 </div>

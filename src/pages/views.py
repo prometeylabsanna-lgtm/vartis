@@ -6,7 +6,6 @@ from src.blog.models import Article
 from src.leads.forms import LeadForm
 
 from . import design_copy
-from .cms import apply_page_shell
 from .models import (
     AboutPage,
     AnalysisPage,
@@ -19,20 +18,6 @@ from .models import (
 from .services import home_direction_items, service_nav_items
 
 DEEP_SLUG = 'zbir-ta-analiz-informatsiyi'
-
-_HOME_ADVANTAGES_FALLBACK = [
-    {'icon': 'HiconOutlineScan5', 'title': 'Аналітичний підхід', 'text': 'Рішення на основі перевірених відомостей'},
-    {'icon': 'HiconOutlineShieldTick', 'title': 'Оцінка ризиків', 'text': 'Виявлення потенційних загроз до ухвалення важливих рішень'},
-    {'icon': 'HiconOutlineLock3', 'title': 'Конфіденційність', 'text': 'Захист інформації та факту звернення'},
-    {'icon': 'HiconOutlineCalling1', 'title': 'Експертна підтримка', 'text': 'Фаховий аналіз і пояснення отриманих результатів'},
-]
-
-_HOME_PROCESS_FALLBACK = [
-    {'num': '01', 'title': 'Вивчаємо завдання', 'text': "З'ясовуємо, яку інформацію потрібно отримати та на які питання відповісти."},
-    {'num': '02', 'title': 'Проводимо дослідження', 'text': 'Збираємо, перевіряємо й аналізуємо відомості відповідно до погодженого завдання'},
-    {'num': '03', 'title': 'Формуємо висновки', 'text': 'Систематизуємо результати та визначаємо встановлені факти й можливі ризики'},
-    {'num': '04', 'title': 'Передаємо результат', 'text': 'Надаємо матеріали, необхідні для подальшого аналізу та ухвалення рішень'},
-]
 
 
 def _crumbs_service(label):
@@ -48,19 +33,22 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         page = HomePage.load()
-        apply_page_shell(ctx, 'home')
+        copy = design_copy.HOME
         ctx['page'] = page
+        ctx['copy'] = copy
         ctx['services'] = home_direction_items()
-        db_adv = [
-            {'icon': a.icon or 'HiconOutlineScan5', 'title': a.title, 'text': a.text}
-            for a in page.advantages.all()
+        ctx['advantages'] = [
+            {'icon': 'HiconOutlineScan5', 'title': 'Аналітичний підхід', 'text': 'Рішення на основі перевірених відомостей'},
+            {'icon': 'HiconOutlineShieldTick', 'title': 'Оцінка ризиків', 'text': 'Виявлення потенційних загроз до ухвалення важливих рішень'},
+            {'icon': 'HiconOutlineLock3', 'title': 'Конфіденційність', 'text': 'Захист інформації та факту звернення'},
+            {'icon': 'HiconOutlineCalling1', 'title': 'Експертна підтримка', 'text': 'Фаховий аналіз і пояснення отриманих результатів'},
         ]
-        ctx['advantages'] = db_adv or _HOME_ADVANTAGES_FALLBACK
-        db_steps = [
-            {'num': s.number, 'title': s.title, 'text': s.text}
-            for s in page.process_steps.all()
+        ctx['process_steps'] = [
+            {'num': '01', 'title': 'Вивчаємо завдання', 'text': "З'ясовуємо, яку інформацію потрібно отримати та на які питання відповісти."},
+            {'num': '02', 'title': 'Проводимо дослідження', 'text': 'Збираємо, перевіряємо й аналізуємо відомості відповідно до погодженого завдання'},
+            {'num': '03', 'title': 'Формуємо висновки', 'text': 'Систематизуємо результати та визначаємо встановлені факти й можливі ризики'},
+            {'num': '04', 'title': 'Передаємо результат', 'text': 'Надаємо матеріали, необхідні для подальшого аналізу та ухвалення рішень'},
         ]
-        ctx['process_steps'] = db_steps or _HOME_PROCESS_FALLBACK
         ctx['articles'] = Article.objects.filter(is_published=True)[:3]
         ctx['lead_form'] = LeadForm()
         return ctx
@@ -71,7 +59,6 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        apply_page_shell(ctx, 'about')
         ctx['page'] = AboutPage.load()
         ctx['crumbs'] = [{'label': 'Про компанію', 'url': ''}]
         ctx['lead_form'] = LeadForm()
@@ -83,7 +70,6 @@ class ServicesIndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        apply_page_shell(ctx, 'services')
         ctx['page'] = ServicesIndex.load()
         ctx['catalog'] = service_nav_items()
         ctx['crumbs'] = [{'label': 'Послуги', 'url': ''}]
@@ -160,7 +146,6 @@ class AnalysisView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         page = AnalysisPage.load()
         a = design_copy.ANALYSIS
-        apply_page_shell(ctx, 'analysis')
         ctx['page'] = page
         ctx['copy'] = a
         ctx['crumbs'] = _crumbs_service(a['crumb'])
@@ -182,7 +167,6 @@ class ContactsView(TemplateView):
         from src.core.models import SiteSettings
 
         ctx = super().get_context_data(**kwargs)
-        apply_page_shell(ctx, 'contacts')
         ctx['page'] = ContactsPage.load()
         ctx['crumbs'] = [{'label': 'Контакти', 'url': ''}]
         ctx['lead_form'] = LeadForm()
@@ -214,9 +198,11 @@ class PrivacyView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        apply_page_shell(ctx, 'privacy')
         ctx['page'] = PrivacyPage.load()
         ctx['crumbs'] = [{'label': 'Політика конфіденційності', 'url': ''}]
+        ctx['hero_text'] = (
+            'Як ми обробляємо та захищаємо персональні дані, які ви залишаєте на сайті'
+        )
         ctx['lead_form'] = LeadForm()
         return ctx
 

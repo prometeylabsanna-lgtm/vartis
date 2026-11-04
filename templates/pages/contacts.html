@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
-{% load static vartis_content %}
+{% load static %}
 
 {% block content %}
 <div id="top">
-  {% section_visible 'contacts' 'hero_section_visible' as show_hero %}
-  {% if show_hero %}
-    {% block_text 'contacts' 'h1' as contacts_h1 %}
-    {% block_plain 'contacts' 'hero_text' as contacts_hero_text %}
-    {% block_image_url 'contacts' 'hero_image' 'images/hero.png' as contacts_hero_img %}
-    {% include 'partials/hero.html' with title=contacts_h1 text=contacts_hero_text image=contacts_hero_img shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
   {% endif %}
 
   <section id="info" class="contacts-info" aria-labelledby="info-title">
     <div class="container contacts-info__inner">
-      <h2 id="info-title" class="section__title">{% block_text 'contacts' 'info_title' %}</h2>
+      <h2 id="info-title" class="section__title">{{ page.info_title }}</h2>
 
       <div class="contacts-grid">
         {% if phone_href %}
@@ -62,9 +60,11 @@
           ></iframe>
           {% endif %}
         </div>
-        <div class="contacts-office__addr">
+        <div class="contacts-office__card">
           <span class="contacts-office__label">Адреса офісу</span>
-          <p class="contacts-office__value">{{ address_display }}</p>
+          <p class="contacts-office__address">{{ address_display }}</p>
+          <p class="contacts-office__note">Першу розмову щодо захисту інформації ми радимо проводити поза приміщенням, про яке йдеться.</p>
+          <button type="button" class="btn btn--primary" data-action="open-form">Залишити заявку</button>
         </div>
       </div>
     </div>

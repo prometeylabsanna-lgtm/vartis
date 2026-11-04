@@ -1,4 +1,4 @@
-{% load vartis_icons vartis_content %}
+{% load vartis_icons %}
 <header id="site-header" class="site-header">
   <div class="site-header__inner">
     <div class="site-header__bar">
@@ -8,7 +8,7 @@
         <a href="{% url 'pages:about' %}" class="site-header__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">Про компанію</a>
         <div class="svc-wrap" data-svc>
           <button type="button" class="svc-btn" data-action="toggle-svc" aria-expanded="false" aria-haspopup="true" aria-controls="svc-menu">
-            {% block_text 'site' 'header_services_label' %}
+            Послуги
             <svg class="svc-btn__chev" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#B58B4A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <div id="svc-menu" class="svc-menu">
@@ -30,10 +30,10 @@
         <a href="{% url 'pages:contacts' %}" class="site-header__link{% if request.resolver_match.url_name == 'contacts' %} is-active{% endif %}">Контакти</a>
       </nav>
 
-      <button type="button" class="site-header__cta" data-action="open-form">{% block_text 'site' 'header_cta_label' %}</button>
+      <button type="button" class="site-header__cta" data-action="open-form">Залишити заявку</button>
 
       <div class="site-header__actions">
-        <button type="button" class="site-header__cta-tablet" data-action="open-form">{% block_text 'site' 'header_cta_label' %}</button>
+        <button type="button" class="site-header__cta-tablet" data-action="open-form">Залишити заявку</button>
         <button type="button" class="burger" data-action="toggle-menu" aria-expanded="false" aria-controls="mobile-nav" aria-label="Відкрити меню">
           <span class="burger__bar"></span>
           <span class="burger__bar"></span>

@@ -1,22 +1,20 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_content %}
+{% load static vartis_icons %}
 
 {% block content %}
 <div id="top">
-  {% section_visible 'about' 'hero_section_visible' as show_hero %}
-  {% if show_hero %}
-    {% block_text 'about' 'h1' as about_h1 %}
-    {% block_plain 'about' 'hero_text' as about_hero_text %}
-    {% block_image_url 'about' 'hero_image' 'images/about-bg.png' as about_hero_img %}
-    {% include 'partials/hero.html' with title=about_h1 text=about_hero_text image=about_hero_img shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/about-bg.png' shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
   {% endif %}
 
-  {% section_visible 'about' 'intro_section_visible' as show_intro %}
-  {% if show_intro %}
   <section id="intro" class="section" aria-labelledby="intro-title">
     <div class="container about-intro">
-      <h2 id="intro-title" class="section__title">{% block_text 'about' 'intro_title' %}</h2>
-      <div class="about-intro__copy section__lead--ink">{% block_rich 'about' 'intro_text' %}</div>
+      <h2 id="intro-title" class="section__title">{{ page.intro_title }}</h2>
+      <div class="about-intro__copy section__lead--ink">
+        {{ page.intro_text|linebreaks }}
+      </div>
     </div>
     {% if page.intro_figures %}
     <div class="container about-figures" role="list">
@@ -29,13 +27,10 @@
     </div>
     {% endif %}
   </section>
-  {% endif %}
 
-  {% section_visible 'about' 'principles_section_visible' as show_principles %}
-  {% if show_principles %}
   <section class="section" aria-labelledby="pr-title">
     <div class="container about-principles">
-      <h2 id="pr-title" class="section__title">{% block_text 'about' 'principles_title' %}</h2>
+      <h2 id="pr-title" class="section__title">{{ page.principles_title }}</h2>
       <div class="adv-grid">
         {% for p in page.principles.all %}
         <article class="adv-card">
@@ -49,15 +44,12 @@
       </div>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'about' 'team_section_visible' as show_team %}
-  {% if show_team %}
   <section id="team" class="band-dark" aria-labelledby="team-title">
     <div class="container founders">
       <div class="founders__head">
-        <h2 id="team-title" class="section__title section__title--light">{% block_text 'about' 'team_title' %}</h2>
-        <div class="founders__lead">{% block_rich 'about' 'team_lead' %}</div>
+        <h2 id="team-title" class="section__title section__title--light">{{ page.team_title }}</h2>
+        {% if page.team_lead %}<p class="founders__lead">{{ page.team_lead }}</p>{% endif %}
       </div>
       <div class="founders__list">
         {% for m in page.team.all %}
@@ -122,7 +114,6 @@
       </div>
     </div>
   </section>
-  {% endif %}
 
   <div
     class="photo-lb"
@@ -141,32 +132,29 @@
   <section class="section" aria-labelledby="sci-title">
     <div class="container science-grid">
       <article class="science-card">
-        <span class="science-card__eyebrow">{% block_text 'about' 'science_eyebrow' %}</span>
-        <h2 id="sci-title" class="science-card__title">{% block_text 'about' 'science_title' %}</h2>
-        <div class="science-card__text">{% block_rich 'about' 'science_text' %}</div>
-        {% block_text 'about' 'science_doi_url' as science_doi_url %}
-        {% if science_doi_url %}
+        {% if page.science_eyebrow %}<span class="science-card__eyebrow">{{ page.science_eyebrow }}</span>{% endif %}
+        <h2 id="sci-title" class="science-card__title">{{ page.science_title }}</h2>
+        {% if page.science_text %}<p class="science-card__text">{{ page.science_text }}</p>{% endif %}
+        {% if page.science_doi_url %}
         <a
           class="science-card__link"
-          href="{{ science_doi_url }}"
+          href="{{ page.science_doi_url }}"
           target="_blank"
           rel="noopener noreferrer"
-        >{% block_text 'about' 'science_doi_label' %} →</a>
+        >{{ page.science_doi_label|default:page.science_doi_url }} →</a>
         {% endif %}
       </article>
       <article class="science-card science-card--lift">
-        <span class="science-card__eyebrow">{% block_text 'about' 'partners_eyebrow' %}</span>
-        <h2 class="science-card__title">{% block_text 'about' 'partners_title' %}</h2>
-        <div class="science-card__text">{% block_rich 'about' 'partners_text' %}</div>
+        {% if page.partners_eyebrow %}<span class="science-card__eyebrow">{{ page.partners_eyebrow }}</span>{% endif %}
+        {% if page.partners_title %}<h2 class="science-card__title">{{ page.partners_title }}</h2>{% endif %}
+        {% if page.partners_text %}<p class="science-card__text">{{ page.partners_text }}</p>{% endif %}
       </article>
     </div>
   </section>
 
-  {% section_visible 'about' 'stats_section_visible' as show_stats %}
-  {% if show_stats %}
   <section class="section" aria-labelledby="num-title">
     <div class="container about-stats">
-      <h2 id="num-title" class="section__title">{% block_text 'about' 'stats_title' %}</h2>
+      <h2 id="num-title" class="section__title">{{ page.stats_title }}</h2>
       <div class="about-stats__grid">
         {% for s in page.key_stats %}
         <div class="about-stats__card">
@@ -177,13 +165,10 @@
       </div>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'about' 'process_section_visible' as show_process %}
-  {% if show_process %}
   <section class="section section--end" aria-labelledby="how-title">
     <div class="container about-how">
-      <h2 id="how-title" class="section__title">{% block_text 'about' 'process_title' %}</h2>
+      <h2 id="how-title" class="section__title">{{ page.process_title }}</h2>
       <ol class="about-how__list">
         {% for step in page.process_steps.all %}
         <li class="about-how__item">
@@ -199,6 +184,5 @@
       </ol>
     </div>
   </section>
-  {% endif %}
 </div>
 {% endblock %}

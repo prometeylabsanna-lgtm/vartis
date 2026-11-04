@@ -1,32 +1,25 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_content %}
+{% load static vartis_icons %}
 
 {% block content %}
 <div id="top">
-  {% section_visible 'home' 'hero_section_visible' as show_hero %}
-  {% if show_hero %}
-    {% block_text 'home' 'h1' as hero_h1 %}
-    {% block_plain 'home' 'hero_text' as hero_text %}
-    {% block_text 'home' 'hero_cta' as hero_cta %}
-    {% block_image_url 'home' 'hero_image' 'images/hero.png' as hero_img %}
-    {% include 'partials/hero.html' with title=hero_h1 text=hero_text image=hero_img home=True show_cta=True cta_style='light' cta_primary=hero_cta %}
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text image=page.hero_image.url home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
+  {% else %}
+    {% include 'partials/hero.html' with title=copy.h1 text=copy.hero_text fallback_static='images/hero.png' home=True show_cta=True cta_style='light' cta_primary=copy.hero_cta %}
   {% endif %}
 
-  {% section_visible 'home' 'services_section_visible' as show_services %}
-  {% if show_services %}
   <section id="services" class="section" aria-labelledby="services-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="services-title" class="section__title">{% block_text 'home' 'services_title' %}</h2>
-        <p class="section__lead">{% block_text 'home' 'services_lead' %}</p>
+        <h2 id="services-title" class="section__title">{{ copy.services_title }}</h2>
+        <p class="section__lead">{{ copy.services_lead }}</p>
       </div>
       <div class="dir-grid mt-40">
         {% for s in services %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">
-            {% if s.card_image_url %}
-              <img src="{{ s.card_image_url }}" alt="" loading="lazy" width="640" height="360" decoding="async">
-            {% endif %}
+            {% if s.card_image %}<img src="{{ s.card_image.url }}" alt="" loading="lazy" width="640" height="360">{% endif %}
           </div>
           <div class="dir-card__body">
             <h3 class="dir-card__title">{{ s.title }}</h3>
@@ -37,15 +30,12 @@
       </div>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'home' 'advantages_section_visible' as show_adv %}
-  {% if show_adv %}
   <section id="about" class="section" aria-labelledby="adv-title">
     <div class="container adv-stack">
       <div class="section__head section__head--center">
-        <h2 id="adv-title" class="section__title">{% block_text 'home' 'advantages_title' %}</h2>
-        <p class="section__tagline">{% block_text 'home' 'advantages_lead' %}</p>
+        <h2 id="adv-title" class="section__title">{{ copy.advantages_title }}</h2>
+        <p class="section__tagline">{{ copy.advantages_lead }}</p>
       </div>
       <div class="adv-grid">
         {% for a in advantages %}
@@ -60,33 +50,26 @@
       </div>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'home' 'mission_section_visible' as show_mission %}
-  {% if show_mission %}
-  {% block_image_url 'home' 'mission_image' 'images/about-bg.png' as mission_img %}
   <section
-    class="mission has-upload"
+    class="mission{% if page.mission_image %} has-upload{% endif %}"
     aria-labelledby="mission-title"
-    style="--mission-upload: url('{{ mission_img }}')"
+    {% if page.mission_image %}style="--mission-upload: url('{{ page.mission_image.url }}')"{% endif %}
   >
     <div class="mission__panel">
       <div class="mission__inner">
-        <h2 id="mission-title" class="mission__title">{% block_text 'home' 'mission_title' %}</h2>
-        <div class="mission__text">{% block_rich 'home' 'mission_text' %}</div>
+        <h2 id="mission-title" class="mission__title">{{ copy.mission_title|linebreaksbr }}</h2>
+        <p class="mission__text">{{ copy.mission_text|linebreaksbr }}</p>
       </div>
-      <button type="button" class="mission__cta" data-action="open-form">{% block_text 'home' 'hero_cta' %}</button>
+      <button type="button" class="mission__cta" data-action="open-form">{{ copy.hero_cta }}</button>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'home' 'process_section_visible' as show_process %}
-  {% if show_process %}
   <section id="cases" class="section" aria-labelledby="process-title">
     <div class="container process-stack">
       <div class="section__head">
-        <h2 id="process-title" class="section__title">{% block_text 'home' 'process_title' %}</h2>
-        <p class="section__lead">{% block_text 'home' 'process_lead' %}</p>
+        <h2 id="process-title" class="section__title">{{ copy.process_title }}</h2>
+        <p class="section__lead">{{ copy.process_lead }}</p>
       </div>
       <ol class="process-grid process-grid--boxes">
         {% for step in process_steps %}
@@ -101,16 +84,13 @@
       </ol>
     </div>
   </section>
-  {% endif %}
 
-  {% section_visible 'home' 'blog_section_visible' as show_blog %}
-  {% if show_blog %}
   <section id="blog" class="section section--end" aria-labelledby="blog-title">
     <div class="container process-stack">
       <div class="section__head section__head--split">
         <div class="section__head">
-          <h2 id="blog-title" class="section__title">{% block_text 'home' 'blog_title' %}</h2>
-          <p class="section__lead section__lead--blog">{% block_text 'home' 'blog_lead' %}</p>
+          <h2 id="blog-title" class="section__title">{{ copy.blog_title }}</h2>
+          <p class="section__lead section__lead--blog">{{ copy.blog_lead }}</p>
         </div>
         <a href="{% url 'blog:list' %}" class="btn btn--outline">Усі статті →</a>
       </div>
@@ -121,6 +101,5 @@
       </div>
     </div>
   </section>
-  {% endif %}
 </div>
 {% endblock %}

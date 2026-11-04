@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
-{% load static vartis_content %}
+{% load static %}
 
 {% block content %}
 <div id="top">
-  {% section_visible 'services' 'hero_section_visible' as show_hero %}
-  {% if show_hero %}
-    {% block_text 'services' 'h1' as services_h1 %}
-    {% block_plain 'services' 'hero_text' as services_hero_text %}
-    {% block_image_url 'services' 'hero_image' 'images/hero.png' as services_hero_img %}
-    {% include 'partials/hero.html' with title=services_h1 text=services_hero_text image=services_hero_img shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+  {% if page.hero_image %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=page.hero_image.url shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+  {% else %}
+    {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text fallback_static='images/hero.png' shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
   {% endif %}
 
   <section id="catalog" class="section section--end" aria-label="Каталог послуг">

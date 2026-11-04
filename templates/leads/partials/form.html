@@ -1,4 +1,3 @@
-{% load vartis_content %}
 {% with form=lead_form %}
 <form
   id="{{ form_id|default:'lead-form' }}"
@@ -22,41 +21,34 @@
   <input type="hidden" name="source_page" value="{{ request.path }}">
   {{ form.honeypot }}
 
-  <label class="lead-form__label">{{ form.name.label }}
+  <label class="lead-form__label">Ім'я
     {{ form.name }}
     <span class="lead-form__error">{{ form.name.errors|striptags }}</span>
   </label>
 
   <div class="lead-form__row">
-    <label class="lead-form__label">{{ form.phone.label }}
+    <label class="lead-form__label">Телефон
       {{ form.phone }}
       <span class="lead-form__error">{{ form.phone.errors|striptags }}</span>
     </label>
-    <label class="lead-form__label">{{ form.email.label }}
+    <label class="lead-form__label">Email
       {{ form.email }}
       <span class="lead-form__error">{{ form.email.errors|striptags }}</span>
     </label>
   </div>
 
-  <label class="lead-form__label">{{ form.message.label }}
+  <label class="lead-form__label">Коротко про завдання
     {{ form.message }}
     <span class="lead-form__error">{{ form.message.errors|striptags }}</span>
   </label>
 
   <label class="lead-form__consent">
     {{ form.consent }}
-    <span>
-      {% block_plain 'site' 'form_consent_text' as consent_plain %}
-      {% if consent_plain %}
-        {% block_rich 'site' 'form_consent_text' %}
-      {% else %}
-        Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики
-        конфіденційності</a>
-      {% endif %}
-    </span>
+    <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики
+        конфіденційності</a></span>
   </label>
   <span class="lead-form__error" data-error-for="consent">{{ form.consent.errors|striptags }}</span>
 
-  <button type="submit" class="btn btn--primary">{% block_text 'site' 'form_submit_label' %}</button>
+  <button type="submit" class="btn btn--primary">Надіслати заявку</button>
 </form>
 {% endwith %}
