@@ -27,6 +27,8 @@
   border-radius: 0;
   padding: 0;
   gap: 16px;
+  /* outline/box-shadow чекбокса не обрізати */
+  overflow: visible;
 }
 
 .lead-form__label {
@@ -83,8 +85,8 @@
 }
 
 .lead-form__checkbox.is-invalid {
-  outline: 2px solid var(--color-danger);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-danger);
 }
 
 .lead-form__error {
@@ -109,18 +111,22 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  padding: 4px;
+  margin: -4px;
   font-size: 14px;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
+  overflow: visible;
 }
 
 .lead-form__checkbox {
   width: 20px;
   height: 20px;
-  margin: 0;
+  margin: 2px 0 0;
   flex-shrink: 0;
   accent-color: var(--color-gold);
+  border-radius: 3px;
 }
 
 .lead-form__consent a {
