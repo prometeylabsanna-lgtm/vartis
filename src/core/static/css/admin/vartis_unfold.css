@@ -1,16 +1,25 @@
-/* Vartis Unfold: синій #1e3a5f + золото #b58b4a — без blur-оверлею на login */
+/* Vartis Unfold: синій #1e3a5f + золото #b58b4a */
 
 :root {
   --vartis-blue: #1e3a5f;
   --vartis-gold: #b58b4a;
 }
 
-/* CSP/Alpine інколи не ховає #modal-overlay → blur на весь login */
-body.login #modal-overlay {
+/*
+  Login: Unfold modal shell (fixed inset-0 z-1000 + #modal-overlay)
+  інколи лишається видимим, якщо Alpine/x-show не відпрацював → блокує кліки.
+*/
+body.login #modal-overlay,
+body.login #modal-content,
+body.login .fixed.inset-0:has(#modal-content) {
   display: none;
   visibility: hidden;
   pointer-events: none;
   opacity: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
 }
 
 html:not(.dark) body:not(.login) .bg-base-50 {

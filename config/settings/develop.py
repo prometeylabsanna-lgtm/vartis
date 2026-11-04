@@ -43,13 +43,25 @@ STORAGES = {
 }
 
 CONTENT_SECURITY_POLICY = {
+    # Unfold Alpine (x-show/openModal) ламається без eval → оверлей блокує login.
+    'EXCLUDE_URL_PREFIXES': ('/admin/',),
     'DIRECTIVES': {
         'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
-        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'script-src': [
+            "'self'",
+            "'unsafe-inline'",
+            'https://www.googletagmanager.com',
+            'https://cdn.jsdelivr.net',
+        ],
+        'style-src': [
+            "'self'",
+            "'unsafe-inline'",
+            'https://fonts.googleapis.com',
+            'https://cdn.jsdelivr.net',
+        ],
         'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
         'img-src': ["'self'", 'data:', 'https:'],
         'frame-src': ["'self'", 'https://www.google.com', 'https://maps.google.com'],
         'connect-src': ["'self'"],
-    }
+    },
 }
