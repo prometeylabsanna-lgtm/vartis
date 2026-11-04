@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from .contact_defaults import resolve_public_contacts
 from .models import SiteSettings
 from .seo import (
     absolute_url,
@@ -47,9 +48,11 @@ def site_settings(request):
         request,
         f'{settings.STATIC_URL}images/og-default.webp',
     )
+    public_contacts = resolve_public_contacts(settings_obj)
 
     return {
         'site_settings': settings_obj,
+        'public_contacts': public_contacts,
         'nav_services': services,
         'footer_services': footer_services,
         'gtm_id': settings.GTM_ID,

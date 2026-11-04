@@ -93,23 +93,18 @@ def organization_schema(request, site_settings) -> dict[str, Any]:
         'knowsLanguage': ['uk', 'en'],
         'priceRange': '$$',
     }
-    if site_settings:
-        if site_settings.phone and '[' not in site_settings.phone:
-            data['telephone'] = site_settings.phone
-        if site_settings.email and '[' not in site_settings.email:
-            data['email'] = site_settings.email
-        if site_settings.address and '[' not in site_settings.address:
-            data['address'] = {
-                '@type': 'PostalAddress',
-                'streetAddress': site_settings.address,
-                'addressLocality': 'Київ',
-                'addressCountry': 'UA',
-            }
-        same_as = []
-        if site_settings.facebook_url:
-            same_as.append(site_settings.facebook_url)
-        if same_as:
-            data['sameAs'] = same_as
+    from src.core.contact_defaults import resolve_public_contacts
+
+    contacts = resolve_public_contacts(site_settings)
+    data['telephone'] = contacts['phone']
+    data['email'] = contacts['email']
+    data['address'] = {
+        '@type': 'PostalAddress',
+        'streetAddress': contacts['address'],
+        'addressLocality': 'Київ',
+        'addressCountry': 'UA',
+    }
+    data['sameAs'] = [contacts['facebook_url']]
     return data
 
 

@@ -27,13 +27,35 @@
 
   var burger = document.querySelector('[data-action="toggle-menu"]');
   var mobileNav = document.getElementById('mobile-nav');
+  var lockScrollY = 0;
+
+  function lockBodyScroll(on) {
+    if (on) {
+      if (document.body.classList.contains('modal-open') ||
+          document.body.classList.contains('nav-open')) {
+        return;
+      }
+      lockScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.top = '-' + lockScrollY + 'px';
+      return;
+    }
+    if (document.body.classList.contains('modal-open') ||
+        document.body.classList.contains('nav-open')) {
+      return;
+    }
+    document.body.style.top = '';
+    window.scrollTo(0, lockScrollY);
+  }
+
   function setMenu(open) {
     if (!burger || !mobileNav) return;
+    if (open) lockBodyScroll(true);
     burger.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     mobileNav.classList.toggle('is-open', open);
     mobileNav.setAttribute('aria-hidden', open ? 'false' : 'true');
     document.body.classList.toggle('nav-open', open);
+    if (!open) lockBodyScroll(false);
   }
   if (burger) {
     burger.addEventListener('click', function () {
@@ -76,9 +98,11 @@
       modalPanel.innerHTML = modalPanelInitial;
       if (window.htmx) window.htmx.process(modalPanel);
     }
+    if (open) lockBodyScroll(true);
     modal.classList.toggle('is-open', open);
     modal.setAttribute('aria-hidden', open ? 'false' : 'true');
     document.body.classList.toggle('modal-open', open);
+    if (!open) lockBodyScroll(false);
   }
   document.querySelectorAll('[data-action="open-form"]').forEach(function (el) {
     el.addEventListener('click', function () {
@@ -127,6 +151,7 @@
   function setPhotoLb(open, src, title) {
     if (!photoLb) return;
     if (open && photoImg) {
+      lockBodyScroll(true);
       photoImg.src = src || '';
       photoImg.alt = title || '';
       if (photoCap) photoCap.textContent = title || '';
@@ -140,6 +165,7 @@
       photoLb.setAttribute('aria-hidden', 'true');
       if (photoImg) photoImg.removeAttribute('src');
       document.body.classList.remove('modal-open');
+      lockBodyScroll(false);
     }
   }
   document.querySelectorAll('[data-action="zoom-photo"]').forEach(function (el) {

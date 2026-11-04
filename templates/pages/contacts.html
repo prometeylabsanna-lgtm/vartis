@@ -18,33 +18,17 @@
       <h2 id="info-title" class="section__title">{{ page.info_title }}</h2>
 
       <div class="contacts-grid">
-        {% if phone_href %}
         <a href="{{ phone_href }}" class="contacts-tile">
           <span class="contacts-tile__label">Телефон</span>
           <span class="contacts-tile__value">{{ phone_display }}</span>
           <span class="contacts-tile__hint">Натисніть, щоб зателефонувати</span>
         </a>
-        {% else %}
-        <div class="contacts-tile">
-          <span class="contacts-tile__label">Телефон</span>
-          <span class="contacts-tile__value">{{ phone_display }}</span>
-          <span class="contacts-tile__hint">Натисніть, щоб зателефонувати</span>
-        </div>
-        {% endif %}
 
-        {% if email_href %}
         <a href="{{ email_href }}" class="contacts-tile">
           <span class="contacts-tile__label">Email</span>
           <span class="contacts-tile__value">{{ email_display }}</span>
           <span class="contacts-tile__hint">Відкриє поштову програму</span>
         </a>
-        {% else %}
-        <div class="contacts-tile">
-          <span class="contacts-tile__label">Email</span>
-          <span class="contacts-tile__value">{{ email_display }}</span>
-          <span class="contacts-tile__hint">Відкриє поштову програму</span>
-        </div>
-        {% endif %}
 
         <a href="{{ facebook_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
           <span class="contacts-tile__label">Facebook</span>

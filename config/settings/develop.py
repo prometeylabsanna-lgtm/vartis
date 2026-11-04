@@ -24,6 +24,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 if os.environ.get('VERCEL'):
     from pathlib import Path as _Path
 
+    # Публічний preview не повинен віддавати technical 404 / DEBUG-сторінки.
+    DEBUG = False
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

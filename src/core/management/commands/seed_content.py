@@ -68,21 +68,26 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('seed_content OK'))
 
     def seed_settings(self):
+        from src.core.contact_defaults import (
+            DEMO_ADDRESS,
+            DEMO_EMAIL,
+            DEMO_FACEBOOK_URL,
+            DEMO_MAP_EMBED_URL,
+            DEMO_PHONE,
+        )
+
         s = SiteSettings.load()
         s.company_name = 'ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»'
         s.tagline = 'Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків'
-        # Як у Home.dc.html — плейсхолдери, доки немає реальних даних
-        if s.phone in ('', '+380'):
-            s.phone = ''
-        if s.email in ('', 'info@vartis.ua'):
-            s.email = ''
-        if s.address in ('', 'Україна'):
-            s.address = 'Київ, вул. Хрещатик, 1'
-        s.facebook_url = s.facebook_url or 'https://facebook.com/vartisintelligence'
-        s.map_embed_url = (
-            'https://maps.google.com/maps?q=%D0%9A%D0%B8%D1%97%D0%B2,+%D0%B2%D1%83%D0%BB.+'
-            '%D0%A5%D1%80%D0%B5%D1%89%D0%B0%D1%82%D0%B8%D0%BA,+1&hl=uk&z=16&output=embed'
-        )
+        # Демо-контакти для здачі; клієнт замінить реальними в адмінці.
+        if s.phone in ('', '+380', '[Телефон]'):
+            s.phone = DEMO_PHONE
+        if s.email in ('', '[Email]'):
+            s.email = DEMO_EMAIL
+        if s.address in ('', 'Україна', '[Адреса офісу]'):
+            s.address = DEMO_ADDRESS
+        s.facebook_url = s.facebook_url or DEMO_FACEBOOK_URL
+        s.map_embed_url = s.map_embed_url or DEMO_MAP_EMBED_URL
         s.save()
 
     def seed_home(self):

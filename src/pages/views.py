@@ -176,13 +176,8 @@ class AnalysisView(TemplateView):
 class ContactsView(TemplateView):
     template_name = 'pages/contacts.html'
 
-    MAP_EMBED_DEFAULT = (
-        'https://maps.google.com/maps?q=%D0%9A%D0%B8%D1%97%D0%B2,+%D0%B2%D1%83%D0%BB.+'
-        '%D0%A5%D1%80%D0%B5%D1%89%D0%B0%D1%82%D0%B8%D0%BA,+1&hl=uk&z=16&output=embed'
-    )
-    FB_DEFAULT = 'https://facebook.com/vartisintelligence'
-
     def get_context_data(self, **kwargs):
+        from src.core.contact_defaults import resolve_public_contacts
         from src.core.models import SiteSettings
 
         ctx = super().get_context_data(**kwargs)
@@ -190,25 +185,16 @@ class ContactsView(TemplateView):
         ctx['crumbs'] = [{'label': 'Контакти', 'url': ''}]
         ctx['lead_form'] = LeadForm()
 
-        s = SiteSettings.load()
-        phone = (s.phone or '').strip()
-        email = (s.email or '').strip()
-        address = (s.address or '').strip()
-        fb = (s.facebook_url or '').strip() or self.FB_DEFAULT
-        handle = fb.rstrip('/').split('/')[-1] or 'vartisintelligence'
-
-        ctx['phone_display'] = phone or '[Телефон]'
-        ctx['phone_href'] = (
-            f"tel:{''.join(ch for ch in phone if ch.isdigit() or ch == '+')}"
-            if phone else ''
-        )
-        ctx['email_display'] = email or '[Email]'
-        ctx['email_href'] = f'mailto:{email}' if email else ''
-        ctx['address_display'] = address or '[Адреса офісу]'
-        ctx['facebook_url'] = fb
-        ctx['facebook_handle'] = handle
-        ctx['facebook_hint'] = f'facebook.com/{handle}'
-        ctx['map_embed_url'] = (s.map_embed_url or '').strip() or self.MAP_EMBED_DEFAULT
+        contacts = resolve_public_contacts(SiteSettings.load())
+        ctx['phone_display'] = contacts['phone']
+        ctx['phone_href'] = contacts['phone_href']
+        ctx['email_display'] = contacts['email']
+        ctx['email_href'] = contacts['email_href']
+        ctx['address_display'] = contacts['address']
+        ctx['facebook_url'] = contacts['facebook_url']
+        ctx['facebook_handle'] = contacts['facebook_handle']
+        ctx['facebook_hint'] = contacts['facebook_hint']
+        ctx['map_embed_url'] = contacts['map_embed_url']
         return ctx
 
 

@@ -22,6 +22,7 @@
             <p class="site-footer__nav-title">Компанія</p>
             <a href="{% url 'pages:about' %}">Про компанію</a>
             <a href="{% url 'pages:services' %}">Послуги</a>
+            <a href="{% url 'cases:list' %}">Кейси</a>
             <a href="{% url 'blog:list' %}">Блог</a>
             <a href="{% url 'pages:contacts' %}">Контакти</a>
           </nav>
@@ -35,19 +36,19 @@
         <div class="site-footer__contacts">
           <div class="site-footer__row">
             <span class="site-footer__row-label">Тел</span>
-            <span class="site-footer__row-value{% if not site_settings.phone %} is-placeholder{% endif %}">
-              {% if site_settings.phone %}<a href="tel:{{ site_settings.phone|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ site_settings.phone }}</a>{% else %}[Телефон]{% endif %}
+            <span class="site-footer__row-value">
+              <a href="{{ public_contacts.phone_href }}">{{ public_contacts.phone }}</a>
             </span>
           </div>
           <div class="site-footer__row">
             <span class="site-footer__row-label">Email</span>
-            <span class="site-footer__row-value{% if not site_settings.email %} is-placeholder{% endif %}">
-              {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>{% else %}[Email]{% endif %}
+            <span class="site-footer__row-value">
+              <a href="{{ public_contacts.email_href }}">{{ public_contacts.email }}</a>
             </span>
           </div>
           <div class="site-footer__row">
             <span class="site-footer__row-label">Адр</span>
-            <span class="site-footer__row-value{% if not site_settings.address %} is-placeholder{% endif %}">{{ site_settings.address|default:"[Адреса офісу]" }}</span>
+            <span class="site-footer__row-value">{{ public_contacts.address }}</span>
           </div>
         </div>
       </div>
