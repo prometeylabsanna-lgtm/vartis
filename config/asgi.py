@@ -10,3 +10,11 @@ os.environ.setdefault(
 )
 
 application = get_asgi_application()
+
+if os.environ.get('VERCEL'):
+    try:
+        from src.core.bootstrap_vercel import bootstrap_vercel_demo
+
+        bootstrap_vercel_demo()
+    except Exception:
+        pass

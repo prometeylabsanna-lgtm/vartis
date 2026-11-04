@@ -11,14 +11,11 @@ os.environ.setdefault(
 
 application = get_wsgi_application()
 
-# TODO(prod): прибрати — auto-migrate + seed лише для демо на Vercel (SQLite /tmp)
+# TODO(prod): прибрати — auto-migrate + seed + demo admin лише для Vercel (SQLite /tmp)
 if os.environ.get('VERCEL'):
     try:
-        from django.core.management import call_command
-        from src.pages.models import HomePage
+        from src.core.bootstrap_vercel import bootstrap_vercel_demo
 
-        call_command('migrate', interactive=False, run_syncdb=True, verbosity=0)
-        if not HomePage.objects.exists():
-            call_command('seed_content', verbosity=0)
+        bootstrap_vercel_demo()
     except Exception:
         pass
