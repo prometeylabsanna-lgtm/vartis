@@ -146,85 +146,16 @@ def _vartis_unfold_navigation():
                 {
                     'title': 'Налаштування сайту',
                     'icon': 'settings',
-                    'link': lambda request: '/admin/core/sitesettings/1/change/',
+                    'link': '/admin/core/sitesettings/1/change/',
+                },
+                {
+                    'title': 'Недавні дії',
+                    'icon': 'history',
+                    'link': '/admin/recent-actions/',
                 },
             ],
         },
         *cms_groups,
-        {
-            'title': 'Каталог',
-            'separator': False,
-            'collapsible': True,
-            'items': [
-                {
-                    'title': 'Послуги (список)',
-                    'icon': 'work',
-                    'link': lambda request: '/admin/pages/servicepage/',
-                },
-            ],
-        },
-        {
-            'title': 'Списки',
-            'separator': False,
-            'collapsible': True,
-            'items': [
-                {
-                    'title': 'Переваги (головна)',
-                    'icon': 'star',
-                    'link': lambda request: '/admin/pages/homeadvantage/',
-                },
-                {
-                    'title': 'Кроки процесу (головна)',
-                    'icon': 'format_list_numbered',
-                    'link': lambda request: '/admin/pages/homeprocessstep/',
-                },
-                {
-                    'title': 'Принципи (про нас)',
-                    'icon': 'verified',
-                    'link': lambda request: '/admin/pages/aboutprinciple/',
-                },
-                {
-                    'title': 'Команда',
-                    'icon': 'groups',
-                    'link': lambda request: '/admin/pages/teammember/',
-                },
-                {
-                    'title': 'Цифри (про нас)',
-                    'icon': 'pin',
-                    'link': lambda request: '/admin/pages/aboutstat/',
-                },
-                {
-                    'title': 'Процес (про нас)',
-                    'icon': 'route',
-                    'link': lambda request: '/admin/pages/aboutprocessstep/',
-                },
-                {
-                    'title': 'Кроки VI Analysis',
-                    'icon': 'stairs',
-                    'link': lambda request: '/admin/pages/analysisstep/',
-                },
-                {
-                    'title': 'Ризики VI Analysis',
-                    'icon': 'warning',
-                    'link': lambda request: '/admin/pages/analysisrisk/',
-                },
-                {
-                    'title': 'Що входить (VI Analysis)',
-                    'icon': 'checklist',
-                    'link': lambda request: '/admin/pages/analysisinclude/',
-                },
-                {
-                    'title': 'Чому вигідно (VI Analysis)',
-                    'icon': 'thumb_up',
-                    'link': lambda request: '/admin/pages/analysiswhy/',
-                },
-                {
-                    'title': 'Тарифи VI Analysis',
-                    'icon': 'payments',
-                    'link': lambda request: '/admin/pages/analysispricerow/',
-                },
-            ],
-        },
         {
             'title': 'Контент',
             'separator': True,
@@ -232,17 +163,17 @@ def _vartis_unfold_navigation():
                 {
                     'title': 'Блог',
                     'icon': 'article',
-                    'link': lambda request: '/admin/blog/article/',
+                    'link': '/admin/blog/article/',
                 },
                 {
                     'title': 'Кейси',
                     'icon': 'folder',
-                    'link': lambda request: '/admin/cases/casestudy/',
+                    'link': '/admin/cases/casestudy/',
                 },
                 {
                     'title': 'Заявки',
                     'icon': 'mail',
-                    'link': lambda request: '/admin/leads/lead/',
+                    'link': '/admin/leads/lead/',
                 },
             ],
         },

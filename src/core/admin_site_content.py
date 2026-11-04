@@ -9,7 +9,12 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from unfold.widgets import UnfoldAdminFileFieldWidget, UnfoldBooleanWidget
 
-from src.core.admin_guidelines import help_for_key, help_for_section
+from src.core.admin_guidelines import (
+    help_for_key,
+    help_for_section,
+    image_profile_for_key,
+    text_limit_for_key,
+)
 from src.core.admin_site_content_widgets import (
     CmsAdminColorWidget,
     CmsAdminTextInputWidget,
@@ -99,9 +104,11 @@ class SitePageContentForm(forms.Form):
                 initial=(style.accent_color or "").strip() or PageStyle.DEFAULT_ACCENT,
                 widget=CmsAdminColorWidget(default_color=PageStyle.DEFAULT_ACCENT),
             )
+            style_hint = image_profile_for_key("style_background_image").hint
             self.fields["style_background_image"] = forms.ImageField(
                 required=False,
                 label="Фонове зображення",
+                help_text=style_hint,
                 widget=UnfoldAdminFileFieldWidget(),
             )
             self.fields["style_glass"] = forms.BooleanField(
@@ -148,10 +155,11 @@ class SitePageContentForm(forms.Form):
                 continue
 
             if ctype == "image":
+                profile = image_profile_for_key(key)
                 self.fields[f"block__{page}__{key}__image"] = forms.ImageField(
                     required=False,
                     label=label,
-                    help_text=help_text,
+                    help_text=help_text or profile.hint,
                     widget=UnfoldAdminFileFieldWidget(),
                 )
                 continue
@@ -162,25 +170,44 @@ class SitePageContentForm(forms.Form):
                     initial=block.link_url or block.text_html or get_block_default(page, key),
                     label=label,
                     help_text=help_text,
-                    widget=CmsAdminTextInputWidget(),
+                    widget=CmsAdminTextInputWidget(max_chars=200),
                 )
                 continue
 
+            limit = text_limit_for_key(key)
+            max_chars = limit.max_chars if limit else None
+            hard = bool(limit and not limit.soft)
             pair = (page, key)
             if is_richtext_key(page, key):
-                widget = CmsTinyMCEWidget(attrs={"rows": 14})
+                widget = CmsTinyMCEWidget(
+                    attrs={"rows": 14},
+                    max_chars=max_chars,
+                    hard_limit=False,
+                )
             elif pair in INLINE_KEYS:
-                widget = CmsAdminTextInputWidget()
+                widget = CmsAdminTextInputWidget(
+                    max_chars=max_chars or 120,
+                    hard_limit=hard if limit else True,
+                )
             elif pair in MULTILINE_KEYS:
-                widget = CmsAdminTextareaWidget(attrs={"rows": 6})
+                widget = CmsAdminTextareaWidget(
+                    attrs={"rows": 6},
+                    max_chars=max_chars,
+                    hard_limit=hard,
+                )
             else:
-                widget = CmsAdminTextareaWidget(attrs={"rows": 2})
+                widget = CmsAdminTextareaWidget(
+                    attrs={"rows": 2},
+                    max_chars=max_chars or 200,
+                    hard_limit=hard if limit else False,
+                )
             self.fields[f"block__{page}__{key}__text_html"] = forms.CharField(
                 required=False,
                 initial=block.text_html,
                 label=label,
                 help_text=help_text,
                 widget=widget,
+                max_length=max_chars if (limit and not limit.soft) else None,
             )
 
     def clean_style_background(self):
@@ -269,8 +296,23 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
             "style_glass",
         ):
             if fname in form.fields:
-                style_fields.append({"field": form[fname], "preview_url": "", "preview_fallback": False})
-        field_groups.append({"title": "Оформлення сторінки", "description": "", "fields": style_fields, "keys": ()})
+                style_fields.append({
+                    "field": form[fname],
+                    "preview_url": "",
+                    "preview_fallback": False,
+                    "image_hint": (
+                        image_profile_for_key("style_background_image").hint
+                        if fname == "style_background_image"
+                        else ""
+                    ),
+                })
+        field_groups.append({
+            "title": "Оформлення сторінки",
+            "description": "",
+            "fields": style_fields,
+            "keys": (),
+            "tab": "content",
+        })
 
     for group in section.field_groups:
         bound = []
@@ -281,6 +323,7 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
                         "field": form["section_visible"],
                         "preview_url": "",
                         "preview_fallback": False,
+                        "image_hint": "",
                     })
                 continue
             page = section.page_slug
@@ -297,18 +340,22 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
                 continue
             preview_url = ""
             preview_fallback = False
+            image_hint = ""
             if ctype == "image":
                 preview_url, preview_fallback = _image_preview_url(page, key, blocks.get(key))
+                image_hint = image_profile_for_key(key).hint
             bound.append({
                 "field": form[name],
                 "preview_url": preview_url,
                 "preview_fallback": preview_fallback,
+                "image_hint": image_hint,
             })
         field_groups.append({
             "title": group.title,
             "description": group.description,
             "fields": bound,
             "keys": group.keys,
+            "tab": getattr(group, "tab", "content") or "content",
         })
 
     style_preview = ""
@@ -318,6 +365,7 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
         except Exception:
             style_preview = ""
 
+    has_seo_tab = any(g.get("tab") == "seo" for g in field_groups)
     context = {
         **(model_admin.admin_site.each_context(request) if model_admin else {}),
         "title": section.title,
@@ -325,6 +373,7 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
         "section_hint": help_for_section(section.page_slug, section.slug),
         "form": form,
         "field_groups": field_groups,
+        "has_seo_tab": has_seo_tab,
         "blocks_map": blocks,
         "style_bg_preview": style_preview,
         "opts": SiteSettings._meta,

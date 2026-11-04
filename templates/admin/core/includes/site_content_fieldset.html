@@ -1,0 +1,39 @@
+<fieldset class="site-content-editor__fieldset">
+  <legend class="text-font-important-light dark:text-font-important-dark">{{ group.title }}</legend>
+  {% if group.description %}
+    <p class="text-font-subtle-light dark:text-font-subtle-dark">{{ group.description }}</p>
+  {% endif %}
+  {% for item in group.fields %}
+    {% with field=item.field %}
+    <div class="site-content-editor__field">
+      <label class="text-font-important-light dark:text-font-important-dark" for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% if item.preview_url %}
+        <div class="site-content-editor__img-preview">
+          <img src="{{ item.preview_url }}" alt="" width="240" height="160" loading="lazy" decoding="async">
+          {% if item.preview_fallback %}
+            <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">Зараз на сайті — стандартне фото. Завантажте своє, щоб замінити.</p>
+          {% endif %}
+        </div>
+        {% if item.image_hint %}
+          <p class="site-content-editor__img-hint">{{ item.image_hint }}</p>
+        {% endif %}
+      {% endif %}
+      {% if field.name == "style_background_image" and style_bg_preview %}
+        <div class="site-content-editor__img-preview">
+          <img src="{{ style_bg_preview }}" alt="" width="240" height="120" loading="lazy" decoding="async">
+        </div>
+      {% endif %}
+      {% if item.image_hint and not item.preview_url %}
+        <p class="site-content-editor__img-hint">{{ item.image_hint }}</p>
+      {% endif %}
+      {{ field }}
+      {% if field.help_text and not item.image_hint %}
+        <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">{{ field.help_text }}</p>
+      {% elif field.help_text and item.image_hint and field.help_text != item.image_hint %}
+        <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">{{ field.help_text }}</p>
+      {% endif %}
+      {% for error in field.errors %}<p class="site-content-editor__error">{{ error }}</p>{% endfor %}
+    </div>
+    {% endwith %}
+  {% endfor %}
+</fieldset>

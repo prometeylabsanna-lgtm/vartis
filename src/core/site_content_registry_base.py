@@ -10,6 +10,7 @@ class FieldGroup:
     title: str
     keys: tuple[str, ...]
     description: str = ""
+    tab: str = "content"  # content | seo
 
 
 @dataclass(frozen=True)

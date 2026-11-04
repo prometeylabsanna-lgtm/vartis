@@ -53,15 +53,30 @@
       menubar: false,
       branding: false,
       promotion: false,
-      height: 360,
+      height: 380,
       plugins: "lists link autolink",
-      toolbar: "bold italic | bullist numlist | link | removeformat",
-      valid_elements: "p,br,strong/b,em/i,ul,ol,li,a[href|target|rel|title]",
+      toolbar:
+        "undo redo | fontfamily fontsize | bold italic underline | " +
+        "bullist numlist | link unlink | removeformat",
+      font_family_formats:
+        "Roboto=Roboto, -apple-system, Segoe UI, Arial, sans-serif;" +
+        "Arial=Arial, Helvetica, sans-serif;" +
+        "Georgia=Georgia, serif;" +
+        "Times New Roman='Times New Roman', Times, serif;" +
+        "Courier New='Courier New', Courier, monospace",
+      font_size_formats: "12px 14px 16px 18px 20px 24px",
+      valid_elements:
+        "p[style],br,strong/b,em/i,u,ul,ol,li,a[href|target|rel|title],span[style]",
       forced_root_block: "p",
       convert_urls: false,
+      link_default_target: "_blank",
+      link_assume_external_targets: true,
+      content_css: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap",
       content_style:
-        "body{font-family:system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.55;}" +
-        "p{margin:0 0 0.75em;}p:last-child{margin-bottom:0;}",
+        "body{font-family:Roboto,-apple-system,'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.55;color:#12263a;}" +
+        "p{margin:0 0 0.75em;}p:last-child{margin-bottom:0;}" +
+        "ul,ol{margin:0 0 0.75em;padding-left:1.25em;}" +
+        "a{color:#b58b4a;}",
       setup: function (editor) {
         editor.on("change keyup", function () {
           editor.save();

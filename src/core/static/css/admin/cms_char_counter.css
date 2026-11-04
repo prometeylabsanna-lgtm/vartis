@@ -1,0 +1,31 @@
+.cms-char-counter {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: #5a6270;
+  text-align: right;
+}
+
+html.dark .cms-char-counter {
+  color: #a8b0bc;
+}
+
+.cms-char-counter.is-warn {
+  color: #b58b4a;
+}
+
+.cms-char-counter.is-over {
+  color: #d64545;
+  font-weight: 600;
+}
+
+.site-content-editor__img-hint {
+  margin: 0.35rem 0 0.65rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: #5a6270;
+}
+
+html.dark .site-content-editor__img-hint {
+  color: #a8b0bc;
+}

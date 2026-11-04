@@ -24,7 +24,7 @@ CONTENT_SECTIONS_HOME: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Hero", ("hero_title", "hero_text", "hero_image", "hero_cta")),
         ),
         admin_model_name="homeherosettings",

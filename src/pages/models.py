@@ -275,6 +275,8 @@ class ServiceScopeItem(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Пункт опису'
+        verbose_name_plural = 'Пункти опису'
 
     def __str__(self):
         return self.text
@@ -289,6 +291,8 @@ class ServiceMethodStep(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Крок методології'
+        verbose_name_plural = 'Кроки методології'
 
     def __str__(self):
         return f'{self.number} {self.title}'
@@ -302,6 +306,8 @@ class ServiceAdvantage(models.Model):
 
     class Meta:
         ordering = ['order', 'id']
+        verbose_name = 'Перевага послуги'
+        verbose_name_plural = 'Переваги послуги'
 
     def __str__(self):
         return self.title

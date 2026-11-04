@@ -20,6 +20,114 @@ _SIDEBAR_GROUPS: tuple[tuple[str, frozenset[str]], ...] = (
     ("Оболонка", frozenset({"site"})),
 )
 
+# Списки моделей поруч із секціями сторінки: (after_section_slug, item)
+_PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
+    "home": (
+        (
+            "advantages",
+            {
+                "title": "Картки переваг",
+                "icon": "star",
+                "link": "/admin/pages/homeadvantage/",
+            },
+        ),
+        (
+            "process",
+            {
+                "title": "Кроки процесу",
+                "icon": "format_list_numbered",
+                "link": "/admin/pages/homeprocessstep/",
+            },
+        ),
+    ),
+    "about": (
+        (
+            "principles",
+            {
+                "title": "Принципи (список)",
+                "icon": "verified",
+                "link": "/admin/pages/aboutprinciple/",
+            },
+        ),
+        (
+            "team",
+            {
+                "title": "Команда (список)",
+                "icon": "groups",
+                "link": "/admin/pages/teammember/",
+            },
+        ),
+        (
+            "stats",
+            {
+                "title": "Цифри (список)",
+                "icon": "pin",
+                "link": "/admin/pages/aboutstat/",
+            },
+        ),
+        (
+            "process",
+            {
+                "title": "Кроки процесу",
+                "icon": "route",
+                "link": "/admin/pages/aboutprocessstep/",
+            },
+        ),
+    ),
+    "analysis": (
+        (
+            "steps",
+            {
+                "title": "Кроки (список)",
+                "icon": "stairs",
+                "link": "/admin/pages/analysisstep/",
+            },
+        ),
+        (
+            "risks",
+            {
+                "title": "Ризики (список)",
+                "icon": "warning",
+                "link": "/admin/pages/analysisrisk/",
+            },
+        ),
+        (
+            "include",
+            {
+                "title": "Що входить (список)",
+                "icon": "checklist",
+                "link": "/admin/pages/analysisinclude/",
+            },
+        ),
+        (
+            "why",
+            {
+                "title": "Чому вигідно (список)",
+                "icon": "thumb_up",
+                "link": "/admin/pages/analysiswhy/",
+            },
+        ),
+        (
+            "price",
+            {
+                "title": "Тарифи (список)",
+                "icon": "payments",
+                "link": "/admin/pages/analysispricerow/",
+            },
+        ),
+    ),
+    "services": (
+        (
+            "style",
+            {
+                "title": "Послуги (список)",
+                "icon": "work",
+                "link": "/admin/pages/servicepage/",
+            },
+        ),
+    ),
+}
+
 
 def get_section(page_slug: str, section_slug: str) -> ContentSection | None:
     for section in CONTENT_SECTIONS:
@@ -60,12 +168,32 @@ def _section_to_item(section: ContentSection) -> dict:
     }
 
 
+def _build_page_items(page_slug: str, sections: list[ContentSection]) -> list[dict]:
+    extras = _PAGE_LIST_ITEMS.get(page_slug, ())
+    items: list[dict] = []
+    for section in sections:
+        items.append(_section_to_item(section))
+        for after_slug, extra in extras:
+            if after_slug == section.slug:
+                items.append(dict(extra))
+    return items
+
+
 def build_content_sidebar_groups() -> list[dict]:
+    by_page: dict[str, list[ContentSection]] = {}
+    for section in CONTENT_SECTIONS:
+        by_page.setdefault(section.page_slug, []).append(section)
+
     buckets: dict[str, list[dict]] = {title: [] for title, _ in _SIDEBAR_GROUPS}
     buckets["Інше"] = []
 
-    for section in CONTENT_SECTIONS:
-        buckets[_section_group_title(section)].append(_section_to_item(section))
+    for page_slug, sections in by_page.items():
+        group_title = "Інше"
+        for title, page_slugs in _SIDEBAR_GROUPS:
+            if page_slug in page_slugs:
+                group_title = title
+                break
+        buckets[group_title].extend(_build_page_items(page_slug, sections))
 
     groups: list[dict] = []
     first = True

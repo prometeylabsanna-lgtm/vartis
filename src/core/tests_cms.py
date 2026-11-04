@@ -37,6 +37,33 @@ class CmsAdminSmokeTests(TestCase):
         body = response.content.decode()
         self.assertIn('cms-tinymce', body)
         self.assertIn('site-content-editor__img-preview', body)
+        self.assertIn('site-content-editor__tabs', body)
+        self.assertIn('cmsTab', body)
+
+    def test_sidebar_lists_are_under_pages(self):
+        from src.core.site_content_registry import build_content_sidebar_groups
+
+        groups = {g['title']: g['items'] for g in build_content_sidebar_groups()}
+        home_titles = [i['title'] for i in groups['Головна']]
+        self.assertIn('Картки переваг', home_titles)
+        self.assertIn('Кроки процесу', home_titles)
+        about_titles = [i['title'] for i in groups['Про компанію']]
+        self.assertIn('Команда (список)', about_titles)
+        self.assertNotIn('Списки', groups)
+
+    def test_recent_actions_page(self):
+        response = self.client.get('/admin/recent-actions/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertIn('Недавні дії', body)
+        self.assertIn('recent-actions-page', body)
+
+    def test_admin_index_hides_sidebar_recent_actions(self):
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertNotIn('id="content-related"', body)
+        self.assertNotIn('id="recent-actions-module"', body)
 
     def test_hero_section_post_saves_block(self):
         SiteBlock.objects.update_or_create(

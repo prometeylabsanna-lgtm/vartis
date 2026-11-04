@@ -23,7 +23,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Hero", ("hero_title", "hero_text", "hero_image")),
         ),
         admin_model_name="aboutherosettings",
@@ -180,7 +180,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Hero", ("hero_title", "hero_text", "hero_image")),
         ),
         admin_model_name="servicesherosettings",
@@ -219,7 +219,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Hero", ("title", "hero_title", "hero_text", "hero_image", "short")),
         ),
         admin_model_name="analysisherosettings",
@@ -403,7 +403,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Hero", ("hero_title", "hero_text", "hero_image", "info_title")),
         ),
         admin_model_name="contactsherosettings",
@@ -439,7 +439,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         ),
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
-            FieldGroup("SEO", ("seo_title", "seo_description", "h1")),
+            FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
             FieldGroup("Контент", ("hero_title", "body")),
         ),
         admin_model_name="privacyherosettings",

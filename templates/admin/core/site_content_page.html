@@ -5,10 +5,12 @@
   {{ block.super }}
   {{ media }}
   <link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+  <link rel="stylesheet" href="{% static 'css/admin/cms_char_counter.css' %}">
+  <script src="{% static 'js/admin/cms_char_counter.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
-<div class="site-content-editor">
+<div class="site-content-editor"{% if has_seo_tab %} x-data="{ cmsTab: 'content' }"{% endif %}>
   <div class="site-content-editor__head">
     <div>
       <h1 class="text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
@@ -26,36 +28,35 @@
   <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
 
+    {% if has_seo_tab %}
+      <nav class="site-content-editor__tabs" aria-label="Вкладки редактора">
+        <button
+          type="button"
+          class="site-content-editor__tab"
+          x-on:click="cmsTab = 'content'"
+          x-bind:class="cmsTab === 'content' && 'is-active'"
+          x-bind:aria-selected="cmsTab === 'content'"
+        >Контент</button>
+        <button
+          type="button"
+          class="site-content-editor__tab"
+          x-on:click="cmsTab = 'seo'"
+          x-bind:class="cmsTab === 'seo' && 'is-active'"
+          x-bind:aria-selected="cmsTab === 'seo'"
+        >SEO</button>
+      </nav>
+    {% endif %}
+
     {% for group in field_groups %}
-      <fieldset class="site-content-editor__fieldset">
-        <legend class="text-font-important-light dark:text-font-important-dark">{{ group.title }}</legend>
-        {% if group.description %}
-          <p class="text-font-subtle-light dark:text-font-subtle-dark">{{ group.description }}</p>
+      <div
+        class="site-content-editor__tab-panel"
+        {% if has_seo_tab %}
+          x-show="cmsTab === '{{ group.tab|default:'content' }}'"
+          {% if group.tab == 'seo' %}x-cloak{% endif %}
         {% endif %}
-        {% for item in group.fields %}
-          {% with field=item.field %}
-          <div class="site-content-editor__field">
-            <label class="text-font-important-light dark:text-font-important-dark" for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {% if item.preview_url %}
-              <div class="site-content-editor__img-preview">
-                <img src="{{ item.preview_url }}" alt="" width="240" height="160" loading="lazy" decoding="async">
-                {% if item.preview_fallback %}
-                  <p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">Зараз на сайті — стандартне фото. Завантажте своє, щоб замінити.</p>
-                {% endif %}
-              </div>
-            {% endif %}
-            {% if field.name == "style_background_image" and style_bg_preview %}
-              <div class="site-content-editor__img-preview">
-                <img src="{{ style_bg_preview }}" alt="" width="240" height="120" loading="lazy" decoding="async">
-              </div>
-            {% endif %}
-            {{ field }}
-            {% if field.help_text %}<p class="text-font-subtle-light dark:text-font-subtle-dark site-content-editor__help">{{ field.help_text }}</p>{% endif %}
-            {% for error in field.errors %}<p class="site-content-editor__error">{{ error }}</p>{% endfor %}
-          </div>
-          {% endwith %}
-        {% endfor %}
-      </fieldset>
+      >
+        {% include "admin/core/includes/site_content_fieldset.html" with group=group style_bg_preview=style_bg_preview %}
+      </div>
     {% endfor %}
 
     <div class="site-content-editor__actions">

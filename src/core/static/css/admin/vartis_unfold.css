@@ -45,6 +45,52 @@ p.help {
   max-width: 100%;
 }
 
+/* Інлайни: заголовок + маленький порядок в одному рядку, опис знизу */
+.vartis-inline-card .form-row:has(.field-title):has(.field-order),
+.vartis-inline-card .form-row:has(.field-text):has(.field-order),
+.vartis-inline-card .form-row:has(.field-number):has(.field-title) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+}
+
+.vartis-inline-card .field-title,
+.vartis-inline-card .field-text {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.vartis-inline-card .field-number {
+  flex: 0 0 4.5rem;
+  max-width: 4.5rem;
+}
+
+.vartis-inline-card .field-order {
+  flex: 0 0 5rem;
+  max-width: 5rem;
+}
+
+.vartis-inline-card .field-order input,
+.vartis-inline-card .field-number input {
+  max-width: 4.5rem;
+  width: 4.5rem;
+}
+
+.vartis-inline-card .field-text textarea,
+.vartis-inline-card textarea {
+  min-height: 4.5rem;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .vartis-inline-card .field-order,
+  .vartis-inline-card .field-number {
+    flex-basis: 100%;
+    max-width: 6rem;
+  }
+}
+
 /*
   Login: Unfold modal shell (fixed inset-0 z-1000 + #modal-overlay)
   інколи лишається видимим, якщо Alpine/x-show не відпрацював → блокує кліки.
