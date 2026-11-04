@@ -33,6 +33,12 @@ if os.environ.get('VERCEL'):
     MEDIA_ROOT = _Path('/tmp/vartis-media')
     MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
 
+    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 STORAGES = {
     'default': {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',

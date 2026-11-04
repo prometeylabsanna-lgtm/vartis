@@ -32,8 +32,10 @@ _SECTION_MODELS = (
     (cms_proxies.HomeMissionSettings, "home", "mission"),
     (cms_proxies.HomeProcessSettings, "home", "process"),
     (cms_proxies.HomeBlogSettings, "home", "blog"),
+    (cms_proxies.SiteHeaderSettings, "site", "header"),
     (cms_proxies.SiteFooterSettings, "site", "footer"),
     (cms_proxies.AboutHeroSettings, "about", "hero"),
+    (cms_proxies.AboutStyleSettings, "about", "style"),
     (cms_proxies.AboutIntroSettings, "about", "intro"),
     (cms_proxies.AboutPrinciplesSettings, "about", "principles"),
     (cms_proxies.AboutTeamSettings, "about", "team"),
@@ -42,7 +44,9 @@ _SECTION_MODELS = (
     (cms_proxies.AboutStatsSettings, "about", "stats"),
     (cms_proxies.AboutProcessSettings, "about", "process"),
     (cms_proxies.ServicesHeroSettings, "services", "hero"),
+    (cms_proxies.ServicesStyleSettings, "services", "style"),
     (cms_proxies.AnalysisHeroSettings, "analysis", "hero"),
+    (cms_proxies.AnalysisStyleSettings, "analysis", "style"),
     (cms_proxies.AnalysisStepsSettings, "analysis", "steps"),
     (cms_proxies.AnalysisRisksSettings, "analysis", "risks"),
     (cms_proxies.AnalysisRecommendationSettings, "analysis", "recommendation"),
@@ -53,7 +57,9 @@ _SECTION_MODELS = (
     (cms_proxies.AnalysisPriceSettings, "analysis", "price"),
     (cms_proxies.AnalysisOrderSettings, "analysis", "order"),
     (cms_proxies.ContactsHeroSettings, "contacts", "hero"),
+    (cms_proxies.ContactsStyleSettings, "contacts", "style"),
     (cms_proxies.PrivacyHeroSettings, "privacy", "hero"),
+    (cms_proxies.PrivacyStyleSettings, "privacy", "style"),
 )
 
 

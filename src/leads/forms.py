@@ -2,7 +2,17 @@ import re
 
 from django import forms
 
+from src.core.block_defaults import get_block_default
+from src.core.cms_context import get_site_blocks
+
 from .models import Lead
+
+
+def _ph(page: str, key: str, fallback: str) -> str:
+    b = get_site_blocks().get(f'{page}.{key}')
+    if b and b.text_html:
+        return b.text_html
+    return get_block_default(page, key) or fallback
 
 
 NAME_RE = re.compile(
@@ -78,6 +88,21 @@ class LeadForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['consent'].required = True
+        self.fields['name'].label = _ph('site', 'form_name_label', "Ім'я")
+        self.fields['phone'].label = _ph('site', 'form_phone_label', 'Телефон')
+        self.fields['email'].label = _ph('site', 'form_email_label', 'Email')
+        self.fields['message'].label = _ph(
+            'site', 'form_message_label', 'Коротко про завдання'
+        )
+        self.fields['phone'].widget.attrs['placeholder'] = _ph(
+            'site', 'form_phone_placeholder', '+380 XX XXX XX XX'
+        )
+        self.fields['email'].widget.attrs['placeholder'] = _ph(
+            'site', 'form_email_placeholder', 'user@domain.com'
+        )
+        self.fields['message'].widget.attrs['placeholder'] = _ph(
+            'site', 'form_message_placeholder', ''
+        )
         if self.is_bound:
             for name in self.fields:
                 if self.errors.get(name):

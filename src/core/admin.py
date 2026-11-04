@@ -19,9 +19,6 @@ class SiteSettingsAdmin(ModelAdmin):
         ('SEO за замовчуванням', {
             'fields': ('default_seo_title', 'default_seo_description'),
         }),
-        ('Футер', {
-            'fields': ('footer_cta_title', 'footer_cta_text'),
-        }),
     )
 
     def has_add_permission(self, request):

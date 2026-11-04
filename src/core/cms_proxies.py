@@ -52,11 +52,18 @@ class HomeBlogSettings(SiteSettings):
         verbose_name_plural = "Головна — Блог"
 
 
+class SiteHeaderSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Оболонка — Хедер"
+        verbose_name_plural = "Оболонка — Хедер"
+
+
 class SiteFooterSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Оболонка — Футер CTA"
-        verbose_name_plural = "Оболонка — Футер CTA"
+        verbose_name = "Оболонка — Футер"
+        verbose_name_plural = "Оболонка — Футер"
 
 
 class AboutHeroSettings(SiteSettings):
@@ -64,6 +71,13 @@ class AboutHeroSettings(SiteSettings):
         proxy = True
         verbose_name = "Про компанію — Hero"
         verbose_name_plural = "Про компанію — Hero"
+
+
+class AboutStyleSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Про компанію — Оформлення"
+        verbose_name_plural = "Про компанію — Оформлення"
 
 
 class AboutIntroSettings(SiteSettings):
@@ -122,11 +136,25 @@ class ServicesHeroSettings(SiteSettings):
         verbose_name_plural = "Послуги — Hero"
 
 
+class ServicesStyleSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Послуги — Оформлення"
+        verbose_name_plural = "Послуги — Оформлення"
+
+
 class AnalysisHeroSettings(SiteSettings):
     class Meta:
         proxy = True
         verbose_name = "VI Analysis — Hero"
         verbose_name_plural = "VI Analysis — Hero"
+
+
+class AnalysisStyleSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "VI Analysis — Оформлення"
+        verbose_name_plural = "VI Analysis — Оформлення"
 
 
 class AnalysisStepsSettings(SiteSettings):
@@ -199,8 +227,22 @@ class ContactsHeroSettings(SiteSettings):
         verbose_name_plural = "Контакти — Hero"
 
 
+class ContactsStyleSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Контакти — Оформлення"
+        verbose_name_plural = "Контакти — Оформлення"
+
+
 class PrivacyHeroSettings(SiteSettings):
     class Meta:
         proxy = True
         verbose_name = "Політика — Hero"
         verbose_name_plural = "Політика — Hero"
+
+
+class PrivacyStyleSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Політика — Оформлення"
+        verbose_name_plural = "Політика — Оформлення"

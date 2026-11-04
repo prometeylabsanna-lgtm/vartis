@@ -5,6 +5,46 @@
   --vartis-gold: #b58b4a;
 }
 
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.main,
+#main-content,
+.content,
+#content-main,
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.site-content-editor {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Довгі URL / help_text не роздувають ширину */
+input[type="text"],
+input[type="url"],
+input[type="email"],
+textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.help,
+.helptext,
+p.help {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+
 /*
   Login: Unfold modal shell (fixed inset-0 z-1000 + #modal-overlay)
   інколи лишається видимим, якщо Alpine/x-show не відпрацював → блокує кліки.
