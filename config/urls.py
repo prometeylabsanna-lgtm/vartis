@@ -12,7 +12,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('src.pages.urls')),
     path('blog/', include('src.blog.urls')),
-    path('keisy/', include('src.cases.urls')),
     path('leads/', include('src.leads.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('robots.txt', RobotsTxtView.as_view(), name='robots'),

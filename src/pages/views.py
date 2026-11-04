@@ -3,9 +3,8 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 
 from src.blog.models import Article
-from src.cases.models import CaseStudy
 from src.core.seo import media_or_static_absolute
-from src.core.seo_copy import SEO, SERVICE_SEO, SERVICE_TO_CASES
+from src.core.seo_copy import SERVICE_SEO
 from src.leads.forms import LeadForm
 
 from . import design_copy
@@ -34,17 +33,6 @@ def _og_image(request, image_field):
     if image_field:
         return media_or_static_absolute(request, image_field.url)
     return None
-
-
-def _related_cases_for(service_key: str):
-    slugs = SERVICE_TO_CASES.get(service_key) or []
-    if not slugs:
-        return []
-    cases = {
-        c.slug: c
-        for c in CaseStudy.objects.filter(is_published=True, slug__in=slugs)
-    }
-    return [cases[s] for s in slugs if s in cases]
 
 
 class HomeView(TemplateView):
@@ -115,7 +103,6 @@ class ServiceDetailView(TemplateView):
         ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
-        ctx['related_cases'] = _related_cases_for(page.slug)
         svc_seo = SERVICE_SEO.get(page.slug)
         if svc_seo:
             page.seo_title = svc_seo['title']
@@ -183,7 +170,6 @@ class AnalysisView(TemplateView):
         ctx['others'] = [s for s in service_nav_items() if not s['is_analysis']]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
-        ctx['related_cases'] = _related_cases_for('analysis')
         return ctx
 
 

@@ -1,8 +1,7 @@
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from src.core.seo import absolute_url, media_or_static_absolute
-from src.core.seo_copy import SEO
+from src.core.seo import media_or_static_absolute
 from src.leads.forms import LeadForm
 
 from .models import CaseStudy
@@ -33,14 +32,11 @@ class CaseListView(ListView):
             'current_cat': cat,
             'categories': categories,
             'lead_form': LeadForm(),
-            'seo_title': SEO['cases']['title'],
-            'seo_description': SEO['cases']['description'],
+            'seo_title': 'Кейси — VARTIS INTELLIGENCE',
+            'seo_description': 'Реалізовані проєкти та демонстраційні приклади.',
             'h1': 'Кейси',
             'crumbs': [{'label': 'Кейси', 'url': ''}],
-            'canonical_url': absolute_url(self.request, reverse('cases:list')),
         })
-        if cat:
-            ctx['seo_robots'] = 'noindex, follow'
         return ctx
 
     def get_template_names(self):

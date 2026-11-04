@@ -2,7 +2,6 @@ from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 from src.blog.models import Article
-from src.cases.models import CaseStudy
 from src.pages.models import ServicePage
 
 
@@ -10,7 +9,7 @@ class StaticSitemap(Sitemap):
     changefreq = 'weekly'
 
     def items(self):
-        # (url_name, priority)
+        # (url_name, priority) — лише сторінки з дизайн-збірки
         return [
             ('pages:home', 1.0),
             ('pages:services', 0.9),
@@ -18,7 +17,6 @@ class StaticSitemap(Sitemap):
             ('pages:about', 0.7),
             ('pages:contacts', 0.7),
             ('blog:list', 0.6),
-            ('cases:list', 0.6),
             ('pages:privacy', 0.3),
         ]
 
@@ -51,20 +49,8 @@ class ArticleSitemap(Sitemap):
         return obj.updated_at
 
 
-class CaseSitemap(Sitemap):
-    changefreq = 'weekly'
-    priority = 0.5
-
-    def items(self):
-        return CaseStudy.objects.filter(is_published=True)
-
-    def lastmod(self, obj):
-        return obj.updated_at
-
-
 sitemaps = {
     'static': StaticSitemap,
     'services': ServiceSitemap,
     'articles': ArticleSitemap,
-    'cases': CaseSitemap,
 }

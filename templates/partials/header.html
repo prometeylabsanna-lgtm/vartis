@@ -33,7 +33,6 @@
           </div>
         </div>
         <a href="{% url 'blog:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'blog' %} is-active{% endif %}">Блог</a>
-        <a href="{% url 'cases:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'cases' %} is-active{% endif %}">Кейси</a>
         <a href="{% url 'pages:contacts' %}" class="site-header__link{% if request.resolver_match.url_name == 'contacts' %} is-active{% endif %}">Контакти</a>
       </nav>
 

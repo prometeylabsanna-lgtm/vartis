@@ -52,13 +52,6 @@ SEO = {
             'корпоративна безпека та управління ризиками.'
         ),
     },
-    'cases': {
-        'title': f'Кейси: перевірка контрагентів і аналітика | {BRAND}',
-        'description': (
-            'Приклади проєктів Vartis Intelligence: перевірка постачальників, '
-            'захист інформації, розслідування та глибока бізнес-аналітика.'
-        ),
-    },
 }
 
 SERVICE_SEO = {
@@ -98,16 +91,3 @@ SERVICE_SEO = {
         ),
     },
 }
-
-# Кейси ↔ послуги (slug кейсу → slug послуги / analysis)
-CASE_TO_SERVICE = {
-    'ekspres-perevirka-postachalnyka': 'analysis',
-    'zakhyst-vid-vytoku': 'zakhyst-vid-vytoku',
-    'kryminalne-provadzhennya': 'kryminalni-provadzhennia',
-    'nelehalni-pidakcyzni-tovary': 'zbir-ta-analiz-informatsiyi',
-    'rozsliduvannya-zbytkiv': 'kompleksna-dopomoha-biznesu',
-}
-
-SERVICE_TO_CASES = {}
-for case_slug, svc in CASE_TO_SERVICE.items():
-    SERVICE_TO_CASES.setdefault(svc, []).append(case_slug)
