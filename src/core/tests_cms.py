@@ -60,6 +60,9 @@ class CmsAdminSmokeTests(TestCase):
         body = response.content.decode()
         self.assertIn('Недавні дії', body)
         self.assertIn('recent-actions-page', body)
+        self.assertIn('recent-actions-page__empty', body)
+        self.assertIn('Поки немає записаних дій', body)
+        self.assertIn('На головну адмінки', body)
 
     def test_site_settings_has_seo_tab_and_url_wrap(self):
         response = self.client.get('/admin/core/sitesettings/1/change/')

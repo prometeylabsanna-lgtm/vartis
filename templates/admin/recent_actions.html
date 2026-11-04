@@ -8,15 +8,15 @@
 
 {% block content %}
 <div class="recent-actions-page">
-  <div class="recent-actions-page__head">
-    <h1 class="text-font-important-light dark:text-font-important-dark">Недавні дії</h1>
-    <p class="recent-actions-page__hint text-font-subtle-light dark:text-font-subtle-dark">
+  <header class="recent-actions-page__head">
+    <h1 class="recent-actions-page__title">Недавні дії</h1>
+    <p class="recent-actions-page__hint">
       Останні зміни в адмінці{% if not request.user.is_superuser %} (лише ваші){% endif %}.
     </p>
-  </div>
+  </header>
 
   {% if admin_log %}
-    <div class="recent-actions-page__list border border-base-200 dark:border-base-800 rounded-lg shadow-xs">
+    <div class="recent-actions-page__panel">
       <ul class="recent-actions-page__ul">
         {% for entry in admin_log %}
           <li class="recent-actions-page__item {% if entry.is_addition %}is-add{% elif entry.is_change %}is-change{% elif entry.is_deletion %}is-delete{% endif %}">
@@ -32,11 +32,11 @@
                     <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
                   {% endif %}
                 </span>
-                <span class="recent-actions-page__type text-font-subtle-light dark:text-font-subtle-dark">
+                <span class="recent-actions-page__type">
                   ({% if entry.content_type %}{{ entry.content_type.name|capfirst }}{% else %}Невідомий тип{% endif %})
                 </span>
               </div>
-              <div class="recent-actions-page__meta text-font-subtle-light dark:text-font-subtle-dark">
+              <div class="recent-actions-page__meta">
                 <time datetime="{{ entry.action_time|date:'c' }}">{{ entry.action_time }}</time>
                 {% if request.user.is_superuser and entry.user_id %}
                   <span>· {{ entry.user.get_username }}</span>
@@ -48,9 +48,18 @@
       </ul>
     </div>
   {% else %}
-    <p class="recent-actions-page__empty text-font-subtle-light dark:text-font-subtle-dark">
-      Поки немає записаних дій.
-    </p>
+    <div class="recent-actions-page__empty" role="status">
+      <div class="recent-actions-page__empty-icon" aria-hidden="true">
+        <span class="material-symbols-outlined">history</span>
+      </div>
+      <h2 class="recent-actions-page__empty-title">Поки немає записаних дій</h2>
+      <p class="recent-actions-page__empty-text">
+        Тут з’являться додавання, зміни та видалення об’єктів після роботи в адмінці.
+      </p>
+      <a href="{% url 'admin:index' %}" class="recent-actions-page__empty-link">
+        На головну адмінки
+      </a>
+    </div>
   {% endif %}
 </div>
 {% endblock %}
