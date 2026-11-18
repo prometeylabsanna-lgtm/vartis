@@ -11,7 +11,7 @@ HOME = design_copy.HOME
 
 
 def register_home_blocks() -> None:
-    _reg("home", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("home", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("home", "seo_title", SEO["home"]["title"], label="SEO Title", inline=True)
     _reg(
         "home",
@@ -21,9 +21,9 @@ def register_home_blocks() -> None:
         multiline=True,
     )
     _reg("home", "h1", HOME["h1"], label="H1", inline=True)
-    _reg("home", "hero_title", HOME["h1"].replace("\n", " "), label="Hero заголовок", inline=True)
-    _reg("home", "hero_text", HOME["hero_text"], label="Hero текст", richtext=True)
-    _reg("home", "hero_image", "", label="Hero зображення", content_type="image")
+    _reg("home", "hero_title", HOME["h1"].replace("\n", " "), label="Заголовок першого екрана", inline=True)
+    _reg("home", "hero_text", HOME["hero_text"], label="Текст першого екрана", richtext=True)
+    _reg("home", "hero_image", "", label="Зображення першого екрана", content_type="image")
     STATIC_FALLBACKS[("home", "hero_image")] = "images/hero.webp"
     _reg("home", "hero_cta", HOME["hero_cta"], label="Текст CTA", inline=True)
 

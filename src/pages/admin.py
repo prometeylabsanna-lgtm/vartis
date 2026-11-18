@@ -227,7 +227,7 @@ class ServicePageAdmin(ModelAdmin):
                 'icon', 'tags', 'card_image', 'card_text',
             ),
         }),
-        ('Hero', {
+        ('Перший екран', {
             'classes': ('tab',),
             'fields': ('hero_text', 'hero_image'),
         }),

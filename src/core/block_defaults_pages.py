@@ -9,19 +9,19 @@ from .block_defaults import _reg, STATIC_FALLBACKS
 
 def register_page_blocks() -> None:
     # --- About ---
-    _reg("about", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("about", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("about", "seo_title", SEO["about"]["title"], label="SEO Title", inline=True)
     _reg("about", "seo_description", SEO["about"]["description"], label="SEO Description", multiline=True)
     _reg("about", "h1", "Про компанію", label="H1", inline=True)
-    _reg("about", "hero_title", "Про компанію", label="Hero заголовок", inline=True)
+    _reg("about", "hero_title", "Про компанію", label="Заголовок першого екрана", inline=True)
     _reg(
         "about",
         "hero_text",
         "Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів",
-        label="Hero текст",
+        label="Текст першого екрана",
         richtext=True,
     )
-    _reg("about", "hero_image", "", label="Hero зображення", content_type="image")
+    _reg("about", "hero_image", "", label="Зображення першого екрана", content_type="image")
     STATIC_FALLBACKS[("about", "hero_image")] = "images/about-bg.webp"
 
     _reg("about", "intro_section_visible", "1", label="Показувати «Про нас»")
@@ -51,7 +51,7 @@ def register_page_blocks() -> None:
     )
 
     _reg("about", "science_section_visible", "1", label="Показувати методологію")
-    _reg("about", "science_eyebrow", "Наукова основа", label="Eyebrow науки", inline=True)
+    _reg("about", "science_eyebrow", "Наукова основа", label="Надзаголовок науки", inline=True)
     _reg("about", "science_title", "Власний сервіс VI Analysis", label="Заголовок методології", inline=True)
     _reg(
         "about",
@@ -64,7 +64,7 @@ def register_page_blocks() -> None:
     _reg("about", "science_doi_label", "doi.org/10.32842/2078-3736/2026.1.1.28", label="DOI підпис", inline=True)
 
     _reg("about", "partners_section_visible", "1", label="Показувати партнерів")
-    _reg("about", "partners_eyebrow", "Міжнародна діяльність", label="Eyebrow партнерів", inline=True)
+    _reg("about", "partners_eyebrow", "Міжнародна діяльність", label="Надзаголовок партнерів", inline=True)
     _reg("about", "partners_title", "Для бізнесу з інтересами за межами України", label="Заголовок партнерів", inline=True)
     _reg(
         "about",
@@ -81,7 +81,7 @@ def register_page_blocks() -> None:
     _reg("about", "process_title", "Як ми працюємо", label="Заголовок процесу", inline=True)
 
     # --- Services index ---
-    _reg("services", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("services", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("services", "seo_title", SEO["services"]["title"], label="SEO Title", inline=True)
     _reg(
         "services",
@@ -91,7 +91,7 @@ def register_page_blocks() -> None:
         multiline=True,
     )
     _reg("services", "h1", "Послуги", label="H1", inline=True)
-    _reg("services", "hero_title", "Послуги", label="Hero заголовок", inline=True)
+    _reg("services", "hero_title", "Послуги", label="Заголовок першого екрана", inline=True)
     _reg(
         "services",
         "hero_text",
@@ -99,20 +99,20 @@ def register_page_blocks() -> None:
             "Комплексні рішення для бізнесу — від перевірки інформації "
             "до стратегічного аналізу та управління ризиками"
         ),
-        label="Hero текст",
+        label="Текст першого екрана",
         richtext=True,
     )
-    _reg("services", "hero_image", "", label="Hero зображення", content_type="image")
+    _reg("services", "hero_image", "", label="Зображення першого екрана", content_type="image")
 
     # --- Analysis ---
-    _reg("analysis", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("analysis", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("analysis", "seo_title", SEO["analysis"]["title"], label="SEO Title", inline=True)
     _reg("analysis", "seo_description", SEO["analysis"]["description"], label="SEO Description", multiline=True)
     _reg("analysis", "h1", "VI Analysis", label="H1", inline=True)
     _reg("analysis", "title", "VI Analysis", label="Назва в меню", inline=True)
-    _reg("analysis", "hero_title", "VI Analysis", label="Hero заголовок", inline=True)
-    _reg("analysis", "hero_text", "Власний сервіс швидкої перевірки контрагентів", label="Hero текст", richtext=True)
-    _reg("analysis", "hero_image", "", label="Hero зображення", content_type="image")
+    _reg("analysis", "hero_title", "VI Analysis", label="Заголовок першого екрана", inline=True)
+    _reg("analysis", "hero_text", "Власний сервіс швидкої перевірки контрагентів", label="Текст першого екрана", richtext=True)
+    _reg("analysis", "hero_image", "", label="Зображення першого екрана", content_type="image")
     _reg("analysis", "short", "", label="Короткий опис у меню", inline=True)
 
     _reg("analysis", "steps_section_visible", "1", label="Показувати кроки")
@@ -148,19 +148,19 @@ def register_page_blocks() -> None:
     _reg("analysis", "order_text", "", label="Текст форми", richtext=True)
 
     # --- Contacts ---
-    _reg("contacts", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("contacts", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("contacts", "seo_title", SEO["contacts"]["title"], label="SEO Title", inline=True)
     _reg("contacts", "seo_description", SEO["contacts"]["description"], label="SEO Description", multiline=True)
     _reg("contacts", "h1", "Контакти", label="H1", inline=True)
-    _reg("contacts", "hero_title", "Контакти", label="Hero заголовок", inline=True)
-    _reg("contacts", "hero_text", "", label="Hero текст", richtext=True)
-    _reg("contacts", "hero_image", "", label="Hero зображення", content_type="image")
+    _reg("contacts", "hero_title", "Контакти", label="Заголовок першого екрана", inline=True)
+    _reg("contacts", "hero_text", "", label="Текст першого екрана", richtext=True)
+    _reg("contacts", "hero_image", "", label="Зображення першого екрана", content_type="image")
     _reg("contacts", "info_title", "Контактні дані", label="Заголовок блоку", inline=True)
 
     # --- Privacy ---
-    _reg("privacy", "hero_section_visible", "1", label="Показувати Hero")
+    _reg("privacy", "hero_section_visible", "1", label="Показувати перший екран")
     _reg("privacy", "seo_title", SEO["privacy"]["title"], label="SEO Title", inline=True)
     _reg("privacy", "seo_description", SEO["privacy"]["description"], label="SEO Description", multiline=True)
     _reg("privacy", "h1", "Політика конфіденційності", label="H1", inline=True)
-    _reg("privacy", "hero_title", "Політика конфіденційності", label="Hero заголовок", inline=True)
+    _reg("privacy", "hero_title", "Політика конфіденційності", label="Заголовок першого екрана", inline=True)
     _reg("privacy", "body", "", label="Текст політики", richtext=True)

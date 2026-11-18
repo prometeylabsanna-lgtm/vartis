@@ -88,6 +88,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'uk'
+# Українські переклади інтерфейсу Unfold (кнопки, дії, підказки) — locale/uk.
+LOCALE_PATHS = [BASE_DIR / 'locale']
 TIME_ZONE = 'Europe/Kyiv'
 USE_I18N = True
 USE_TZ = True

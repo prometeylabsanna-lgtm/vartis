@@ -1,0 +1,272 @@
+# Українські переклади інтерфейсу Unfold (django-unfold 0.110 не має uk-локалі).
+# Лише рядки, яких немає в стандартному uk-каталозі Django.
+msgid ""
+msgstr ""
+"Project-Id-Version: vartis-admin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+msgid "Select record"
+msgstr "Вибрати запис"
+
+msgid "Select action"
+msgstr "Виберіть дію"
+
+msgid "Value"
+msgstr "Значення"
+
+msgid "From"
+msgstr "Від"
+
+msgid "To"
+msgstr "До"
+
+msgid "Date from"
+msgstr "Дата від"
+
+msgid "Date to"
+msgstr "Дата до"
+
+msgid "Not enough data."
+msgstr "Недостатньо даних."
+
+msgid "Add new item"
+msgstr "Додати новий елемент"
+
+msgid "Paragraph"
+msgstr "Абзац"
+
+msgid "Underlined"
+msgstr "Підкреслений"
+
+msgid "Bold"
+msgstr "Жирний"
+
+msgid "Italic"
+msgstr "Курсив"
+
+msgid "Strike"
+msgstr "Закреслений"
+
+msgid "Link"
+msgstr "Посилання"
+
+msgid "Heading"
+msgstr "Заголовок"
+
+msgid "Quote"
+msgstr "Цитата"
+
+msgid "Code"
+msgstr "Код"
+
+msgid "Unordered list"
+msgstr "Маркований список"
+
+msgid "Ordered list"
+msgstr "Нумерований список"
+
+msgid "Indent increase"
+msgstr "Збільшити відступ"
+
+msgid "Indent decrease"
+msgstr "Зменшити відступ"
+
+msgid "Undo"
+msgstr "Скасувати"
+
+msgid "Redo"
+msgstr "Повторити"
+
+msgid "Enter an URL"
+msgstr "Введіть URL"
+
+msgid "Unlink"
+msgstr "Прибрати посилання"
+
+msgid "Select action to run"
+msgstr "Виберіть дію для виконання"
+
+msgid "Raw passwords are not stored, so there is no way to see this user’s password, but you can change the password using <a href=\"{}\" class=\"text-primary-600 dark:text-primary-500\">this form</a>."
+msgstr "Паролі не зберігаються у відкритому вигляді, тому побачити пароль цього користувача неможливо, але його можна змінити за допомогою <a href=\"{}\" class=\"text-primary-600 dark:text-primary-500\">цієї форми</a>."
+
+msgid "Dataset not found. No action performed."
+msgstr "Набір даних не знайдено. Дію не виконано."
+
+msgid "Select value"
+msgstr "Виберіть значення"
+
+msgid "Field <strong class=\"font-semibold\">{field_name}</strong> is not an autocomplete field. Please add it to the `autocomplete_fields` list."
+msgstr "Поле <strong class=\"font-semibold\">{field_name}</strong> не є полем автозаповнення. Додайте його до списку `autocomplete_fields`."
+
+msgid "You can not create nested object without parent"
+msgstr "Не можна створити вкладений обʼєкт без батьківського"
+
+msgid "Run"
+msgstr "Виконати"
+
+msgid "After you've created a user, you’ll be able to edit more user options."
+msgstr "Після створення користувача ви зможете змінити інші його налаштування."
+
+msgid "Welcome back to"
+msgstr "З поверненням до"
+
+msgid "Forgotten your password or username?"
+msgstr "Забули пароль або імʼя користувача?"
+
+msgid "Type to search"
+msgstr "Почніть вводити для пошуку"
+
+msgid "You have been successfully logged out from the administration"
+msgstr "Ви успішно вийшли з адмінпанелі"
+
+msgid "No data"
+msgstr "Немає даних"
+
+msgid "All applications"
+msgstr "Усі розділи"
+
+msgid "True"
+msgstr "Так"
+
+msgid "False"
+msgstr "Ні"
+
+msgid "Apply Filters"
+msgstr "Застосувати фільтри"
+
+msgid "Filters"
+msgstr "Фільтри"
+
+msgid "Navigate"
+msgstr "Перейти"
+
+msgid "Select"
+msgstr "Вибрати"
+
+msgid "Recent searches"
+msgstr "Нещодавні пошуки"
+
+msgid "Nothing matched your search"
+msgstr "Нічого не знайдено"
+
+msgid "\n            Found <span class=\"font-medium text-important\">%(counter)s</span> result in %(time)s seconds\n        "
+msgid_plural "\n            Found <span class=\"font-medium text-important\">%(counter)s</span> results in %(time)s seconds\n        "
+msgstr[0] "\n            Знайдено <span class=\"font-medium text-important\">%(counter)s</span> результат за %(time)s с\n        "
+msgstr[1] "\n            Знайдено <span class=\"font-medium text-important\">%(counter)s</span> результати за %(time)s с\n        "
+msgstr[2] "\n            Знайдено <span class=\"font-medium text-important\">%(counter)s</span> результатів за %(time)s с\n        "
+msgstr[3] "\n            Знайдено <span class=\"font-medium text-important\">%(counter)s</span> результату за %(time)s с\n        "
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Submit"
+msgstr "Надіслати"
+
+msgid "Record picture"
+msgstr "Зображення запису"
+
+msgid "This item will be deleted."
+msgstr "Цей елемент буде видалено."
+
+msgid "Click to cancel"
+msgstr "Натисніть, щоб скасувати"
+
+msgid "No results found"
+msgstr "Нічого не знайдено"
+
+msgid "This page yielded into no results."
+msgstr "На цій сторінці немає результатів."
+
+msgid "Reset filters"
+msgstr "Скинути фільтри"
+
+msgid "Image preview"
+msgstr "Попередній перегляд зображення"
+
+msgid "Click to download"
+msgstr "Натисніть, щоб завантажити"
+
+msgid "Go back"
+msgstr "Назад"
+
+msgid "Previous"
+msgstr "Попередня"
+
+msgid "Next"
+msgstr "Наступна"
+
+msgid "Search apps and models..."
+msgstr "Пошук розділів і моделей..."
+
+msgid "Available shortcuts"
+msgstr "Доступні гарячі клавіші"
+
+msgid "Global shortcuts"
+msgstr "Загальні гарячі клавіші"
+
+msgid "Open command tool"
+msgstr "Відкрити панель команд"
+
+msgid "Open shortcuts list"
+msgstr "Відкрити список гарячих клавіш"
+
+msgid "Toggle sidebar"
+msgstr "Показати/сховати бічну панель"
+
+msgid "Toggle dark/light mode"
+msgstr "Перемкнути темну/світлу тему"
+
+msgid "Changelist shortcuts"
+msgstr "Гарячі клавіші списку"
+
+msgid "Toggle filter"
+msgstr "Показати/сховати фільтр"
+
+msgid "Create new record"
+msgstr "Створити новий запис"
+
+msgid "Command tool shortcuts"
+msgstr "Гарячі клавіші панелі команд"
+
+msgid "Open selection"
+msgstr "Відкрити вибране"
+
+msgid "Open selection in new tab"
+msgstr "Відкрити вибране в новій вкладці"
+
+msgid "General"
+msgstr "Загальне"
+
+msgid "Light"
+msgstr "Світла"
+
+msgid "Dark"
+msgstr "Темна"
+
+msgid "System"
+msgstr "Системна"
+
+msgid "Return to site"
+msgstr "Повернутися на сайт"
+
+msgid "Choose file to upload"
+msgstr "Виберіть файл для завантаження"
+
+msgid "Toggle password visibility"
+msgstr "Показати/сховати пароль"
+
+msgid "Add row"
+msgstr "Додати рядок"
+
+msgid "Welcome"
+msgstr "Вітаємо"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Select currency"
+msgstr "Виберіть валюту"

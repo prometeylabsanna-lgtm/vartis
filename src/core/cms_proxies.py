@@ -6,8 +6,8 @@ from src.core.models import SiteSettings
 class HomeHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Hero"
-        verbose_name_plural = "Головна — Hero"
+        verbose_name = "Головна — Перший екран"
+        verbose_name_plural = "Головна — Перший екран"
 
 
 class HomeStyleSettings(SiteSettings):
@@ -69,8 +69,8 @@ class SiteFooterSettings(SiteSettings):
 class AboutHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Про компанію — Hero"
-        verbose_name_plural = "Про компанію — Hero"
+        verbose_name = "Про компанію — Перший екран"
+        verbose_name_plural = "Про компанію — Перший екран"
 
 
 class AboutStyleSettings(SiteSettings):
@@ -132,8 +132,8 @@ class AboutProcessSettings(SiteSettings):
 class ServicesHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Послуги — Hero"
-        verbose_name_plural = "Послуги — Hero"
+        verbose_name = "Послуги — Перший екран"
+        verbose_name_plural = "Послуги — Перший екран"
 
 
 class ServicesStyleSettings(SiteSettings):
@@ -146,8 +146,8 @@ class ServicesStyleSettings(SiteSettings):
 class AnalysisHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "VI Analysis — Hero"
-        verbose_name_plural = "VI Analysis — Hero"
+        verbose_name = "VI Analysis — Перший екран"
+        verbose_name_plural = "VI Analysis — Перший екран"
 
 
 class AnalysisStyleSettings(SiteSettings):
@@ -223,8 +223,8 @@ class AnalysisOrderSettings(SiteSettings):
 class ContactsHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Контакти — Hero"
-        verbose_name_plural = "Контакти — Hero"
+        verbose_name = "Контакти — Перший екран"
+        verbose_name_plural = "Контакти — Перший екран"
 
 
 class ContactsStyleSettings(SiteSettings):
@@ -237,8 +237,8 @@ class ContactsStyleSettings(SiteSettings):
 class PrivacyHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Політика — Hero"
-        verbose_name_plural = "Політика — Hero"
+        verbose_name = "Політика — Перший екран"
+        verbose_name_plural = "Політика — Перший екран"
 
 
 class PrivacyStyleSettings(SiteSettings):

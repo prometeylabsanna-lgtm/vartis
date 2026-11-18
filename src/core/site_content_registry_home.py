@@ -6,8 +6,8 @@ CONTENT_SECTIONS_HOME: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="home",
-        title="Головна — Hero",
-        sidebar_title="Hero",
+        title="Головна — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="image",
         preview_url="/",
         visibility_key="hero_section_visible",
@@ -25,7 +25,7 @@ CONTENT_SECTIONS_HOME: tuple[ContentSection, ...] = (
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
             FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
-            FieldGroup("Hero", ("hero_title", "hero_text", "hero_image", "hero_cta")),
+            FieldGroup("Перший екран", ("hero_title", "hero_text", "hero_image", "hero_cta")),
         ),
         admin_model_name="homeherosettings",
     ),

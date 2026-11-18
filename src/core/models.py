@@ -46,10 +46,22 @@ class SiteSettings(SingletonModel):
     address = models.CharField('Адреса', max_length=300, blank=True)
     map_embed_url = models.URLField('URL карти (embed)', blank=True)
     facebook_url = models.URLField('Facebook', blank=True)
-    telegram_url = models.URLField(
-        'Telegram',
+    telegram_chat_url = models.URLField(
+        'Telegram: посилання на чат компанії',
         blank=True,
-        help_text='Посилання на чат. Номер на сайті не показується.',
+        help_text=(
+            'Посилання, яке відкриває чат компанії в Telegram, напр. https://t.me/назва_чату. '
+            'Якщо порожньо — використовується запасне посилання нижче (за номером). '
+            'Номер на сайті не показується.'
+        ),
+    )
+    telegram_url = models.URLField(
+        'Telegram: запасне посилання (за номером)',
+        blank=True,
+        help_text=(
+            'Використовується, лише якщо поле «Telegram: посилання на чат компанії» порожнє. '
+            'Номер на сайті не показується.'
+        ),
     )
     default_seo_title = models.CharField(
         'SEO Title за замовчуванням',

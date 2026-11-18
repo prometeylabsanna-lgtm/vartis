@@ -6,8 +6,8 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="about",
-        title="Про компанію — Hero",
-        sidebar_title="Hero",
+        title="Про компанію — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="image",
         preview_url="/pro-kompaniiu/",
         visibility_key="hero_section_visible",
@@ -24,7 +24,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
             FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
-            FieldGroup("Hero", ("hero_title", "hero_text", "hero_image")),
+            FieldGroup("Перший екран", ("hero_title", "hero_text", "hero_image")),
         ),
         admin_model_name="aboutherosettings",
     ),
@@ -163,8 +163,8 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="services",
-        title="Послуги — Hero",
-        sidebar_title="Hero",
+        title="Послуги — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="image",
         preview_url="/posluhy/",
         visibility_key="hero_section_visible",
@@ -181,7 +181,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
             FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
-            FieldGroup("Hero", ("hero_title", "hero_text", "hero_image")),
+            FieldGroup("Перший екран", ("hero_title", "hero_text", "hero_image")),
         ),
         admin_model_name="servicesherosettings",
     ),
@@ -200,8 +200,8 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="analysis",
-        title="VI Analysis — Hero",
-        sidebar_title="Hero",
+        title="VI Analysis — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="image",
         preview_url="/posluhy/perevirka-kontrahentiv/",
         visibility_key="hero_section_visible",
@@ -220,7 +220,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
             FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
-            FieldGroup("Hero", ("title", "hero_title", "hero_text", "hero_image", "short")),
+            FieldGroup("Перший екран", ("title", "hero_title", "hero_text", "hero_image", "short")),
         ),
         admin_model_name="analysisherosettings",
     ),
@@ -385,8 +385,8 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="contacts",
-        title="Контакти — Hero",
-        sidebar_title="Hero",
+        title="Контакти — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="image",
         preview_url="/kontakty/",
         visibility_key="hero_section_visible",
@@ -404,7 +404,7 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
         field_groups=(
             FieldGroup("Видимість", ("hero_section_visible",)),
             FieldGroup("SEO", ("seo_title", "seo_description", "h1"), tab="seo"),
-            FieldGroup("Hero", ("hero_title", "hero_text", "hero_image", "info_title")),
+            FieldGroup("Перший екран", ("hero_title", "hero_text", "hero_image", "info_title")),
         ),
         admin_model_name="contactsherosettings",
     ),
@@ -423,8 +423,8 @@ CONTENT_SECTIONS_PAGES: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="privacy",
-        title="Політика — Hero",
-        sidebar_title="Hero",
+        title="Політика — Перший екран",
+        sidebar_title="Перший екран",
         sidebar_icon="policy",
         preview_url="/polityka-konfidentsiinosti/",
         visibility_key="hero_section_visible",

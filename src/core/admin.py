@@ -22,7 +22,7 @@ class SiteSettingsAdmin(ModelAdmin):
         }),
         ('Контакти', {
             'classes': ('tab',),
-            'fields': ('phone', 'email', 'address', 'map_embed_url', 'facebook_url', 'telegram_url'),
+            'fields': ('phone', 'email', 'address', 'map_embed_url', 'facebook_url', 'telegram_chat_url', 'telegram_url'),
         }),
         ('SEO', {
             'classes': ('tab',),

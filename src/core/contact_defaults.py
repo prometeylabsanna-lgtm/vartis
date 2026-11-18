@@ -66,7 +66,12 @@ def resolve_public_contacts(site_settings=None) -> dict[str, str]:
     facebook_url = _strip(getattr(site_settings, 'facebook_url', None)) or DEMO_FACEBOOK_URL
     stored_map = getattr(site_settings, 'map_embed_url', None)
     map_embed_url = DEMO_MAP_EMBED_URL if _is_legacy_map(stored_map) else (_strip(stored_map) or DEMO_MAP_EMBED_URL)
-    telegram_url = _strip(getattr(site_settings, 'telegram_url', None)) or DEMO_TELEGRAM_URL
+    # Пріоритет: окреме посилання на чат → запасне посилання (за номером) → демо.
+    telegram_url = (
+        _strip(getattr(site_settings, 'telegram_chat_url', None))
+        or _strip(getattr(site_settings, 'telegram_url', None))
+        or DEMO_TELEGRAM_URL
+    )
     handle = facebook_url.rstrip('/').split('/')[-1] or 'vartisintelligence'
     phone_tel = ''.join(ch for ch in phone if ch.isdigit() or ch == '+')
     digits = _phone_digits(phone_tel)
