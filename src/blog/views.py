@@ -1,7 +1,8 @@
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from src.core.seo import absolute_url, media_or_static_absolute
+from src.core.og_image import og_image_from_field
+from src.core.seo import absolute_url
 from src.core.seo_copy import SEO
 from src.leads.forms import LeadForm
 
@@ -111,6 +112,6 @@ class ArticleDetailView(DetailView):
         ctx['seo_title'] = article.seo_title or f'{article.title} — VARTIS INTELLIGENCE'
         ctx['seo_description'] = article.seo_description or article.excerpt
         if article.image:
-            ctx['og_image'] = media_or_static_absolute(self.request, article.image.url)
+            ctx['og_image'] = og_image_from_field(self.request, article.image)
         ctx['og_type'] = 'article'
         return ctx

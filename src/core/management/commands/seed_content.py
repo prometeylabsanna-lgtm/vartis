@@ -68,26 +68,12 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('seed_content OK'))
 
     def seed_settings(self):
-        from src.core.contact_defaults import (
-            DEMO_ADDRESS,
-            DEMO_EMAIL,
-            DEMO_FACEBOOK_URL,
-            DEMO_MAP_EMBED_URL,
-            DEMO_PHONE,
-        )
+        from src.core.contact_defaults import apply_official_contacts
 
         s = SiteSettings.load()
         s.company_name = 'ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»'
         s.tagline = 'Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків'
-        # Демо-контакти для здачі; клієнт замінить реальними в адмінці.
-        if s.phone in ('', '+380', '[Телефон]'):
-            s.phone = DEMO_PHONE
-        if s.email in ('', '[Email]'):
-            s.email = DEMO_EMAIL
-        if s.address in ('', 'Україна', '[Адреса офісу]'):
-            s.address = DEMO_ADDRESS
-        s.facebook_url = s.facebook_url or DEMO_FACEBOOK_URL
-        s.map_embed_url = s.map_embed_url or DEMO_MAP_EMBED_URL
+        apply_official_contacts(s)
         s.save()
 
     def seed_home(self):
@@ -126,7 +112,7 @@ class Command(BaseCommand):
 
         if not page.process_steps.exists():
             for i, (num, title, text) in enumerate([
-                ('01', 'Вивчаємо завдання', "З'ясовуємо, яку інформацію потрібно отримати та на які питання відповісти."),
+                ('01', 'Вивчаємо завдання', 'Зʼясовуємо, яку інформацію потрібно отримати та на які питання відповісти'),
                 ('02', 'Проводимо дослідження', 'Збираємо, перевіряємо й аналізуємо відомості відповідно до погодженого завдання'),
                 ('03', 'Формуємо висновки', 'Систематизуємо результати та визначаємо встановлені факти й можливі ризики'),
                 ('04', 'Передаємо результат', 'Надаємо матеріали, необхідні для подальшого аналізу та ухвалення рішень'),
@@ -201,7 +187,7 @@ class Command(BaseCommand):
 
         team_data = [
             {
-                'name': 'В’ячеслав Аброськін',
+                'name': 'Вʼячеслав Аброськін',
                 'photo': 'team/abroskin.jpg',
                 'photo_position': '50% 20%',
                 'email': 'vaceslavabroskin46@gmail.com',
@@ -395,7 +381,7 @@ class Command(BaseCommand):
                 'order': 1,
             },
             {
-                'slug': 'zbir-ta-analiz-informatsiyi',
+                'slug': 'zbir-ta-analiz-informatsii',
                 'title': 'Глибока аналітика',
                 'short': 'Стратегічна аналітика під ваше завдання',
                 'icon': 'HiconOutlineScan5',
@@ -441,7 +427,9 @@ class Command(BaseCommand):
         ]
 
         from src.pages.design_copy import SERVICES as DESIGN_SERVICES
+        from src.core.slug_renames import SERVICE_SLUGS, rename_slugs
 
+        rename_slugs(ServicePage, SERVICE_SLUGS)
         for data in services:
             page, created = ServicePage.objects.update_or_create(
                 slug=data['slug'],
@@ -464,7 +452,7 @@ class Command(BaseCommand):
                     'is_published': True,
                     'order_title': 'Обговорімо вашу задачу',
                     'order_text': (
-                        "Опишіть ситуацію — ми зв'яжемося, щоб уточнити завдання. "
+                        "Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. "
                         'Факт звернення залишається конфіденційним.'
                     ),
                 },
@@ -568,7 +556,7 @@ class Command(BaseCommand):
                 'Кожен знайдений факт перевіряється на ризики та отримує рівень небезпеки.',
                 'категоризація: низький, середній, високий\n'
                 'окремо показано ризики, успадковані від бізнес-групи — проблеми '
-                'пов’язаних компаній не залишаться поза увагою',
+                'повʼязаних компаній не залишаться поза увагою',
             ),
             (
                 '03', 'Рекомендація',
@@ -654,12 +642,12 @@ class Command(BaseCommand):
             'погоджуєтеся з умовами цієї Політики.</p></div>'
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">02</span> Які дані ми збираємо</h2>'
-            '<p>Ім\'я, номер телефону, адресу електронної пошти та текст повідомлення, які ви '
+            '<p>Імʼя, номер телефону, адресу електронної пошти та текст повідомлення, які ви '
             'самостійно вказуєте у формі заявки. Також технічні дані: IP-адреса, тип браузера, '
             'сторінки, які ви переглядали.</p></div>'
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">03</span> Мета обробки</h2>'
-            '<p>Дані використовуються лише для того, щоб зв\'язатися з вами щодо вашого звернення, '
+            '<p>Дані використовуються лише для того, щоб звʼязатися з вами щодо вашого звернення, '
             'підготувати пропозицію та покращувати роботу сайту.</p></div>'
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">04</span> Передача третім особам</h2>'
@@ -669,7 +657,7 @@ class Command(BaseCommand):
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">05</span> Зберігання та захист</h2>'
             '<p>Дані зберігаються не довше, ніж це потрібно для мети обробки. Ми застосовуємо '
-            'організаційні та технічні заходи захисту, зокрема захищене з\'єднання (SSL).</p></div>'
+            'організаційні та технічні заходи захисту, зокрема захищене зʼєднання (SSL).</p></div>'
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">06</span> Ваші права</h2>'
             '<p>Ви маєте право дізнатися, які дані про вас зберігаються, вимагати їх виправлення '

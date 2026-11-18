@@ -79,12 +79,12 @@
   <nav class="pagination" aria-label="Сторінки">
     {% for num in page_obj.paginator.page_range %}
     <a
-      href="?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
+      href="{% url 'blog:list' %}?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
       class="pagination__btn{% if page_obj.number == num %} is-active{% endif %}"
       {% if page_obj.number == num %}aria-current="page"{% endif %}
-      hx-get="?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
+      hx-get="{% url 'blog:list' %}?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"
       hx-target="#feed-partial"
-      hx-swap="outerHTML"
+      hx-swap="outerHTML show:#feed:top"
       hx-push-url="true"
     >{{ num }}</a>
     {% endfor %}

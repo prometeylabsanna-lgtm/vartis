@@ -39,11 +39,10 @@
 
 .site-header__logo {
   display: block;
-  width: 88px;
+  width: 49px;
   height: 49px;
-  max-width: 88px;
+  max-width: 49px;
   flex-shrink: 0;
-  overflow: hidden;
 }
 
 .site-header__logo img {

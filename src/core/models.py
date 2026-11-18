@@ -46,6 +46,11 @@ class SiteSettings(SingletonModel):
     address = models.CharField('Адреса', max_length=300, blank=True)
     map_embed_url = models.URLField('URL карти (embed)', blank=True)
     facebook_url = models.URLField('Facebook', blank=True)
+    telegram_url = models.URLField(
+        'Telegram',
+        blank=True,
+        help_text='Посилання на чат. Номер на сайті не показується.',
+    )
     default_seo_title = models.CharField(
         'SEO Title за замовчуванням',
         max_length=200,
@@ -66,7 +71,7 @@ class SiteSettings(SingletonModel):
     footer_cta_text = models.TextField(
         'Текст CTA у футері',
         default=(
-            "Опишіть ситуацію — ми зв'яжемося, щоб уточнити завдання. "
+            "Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. "
             'Факт звернення залишається конфіденційним.'
         ),
     )

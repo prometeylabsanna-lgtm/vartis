@@ -33,7 +33,7 @@ from .models import (
 
 
 class _ParentPageMixin:
-    """Автоматично прив'язує ListItem до singleton-сторінки."""
+    """Автоматично привʼязує ListItem до singleton-сторінки."""
 
     parent_model = None
     parent_field = 'page'

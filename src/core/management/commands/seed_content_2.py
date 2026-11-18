@@ -47,6 +47,10 @@ def _blocks_from_js(body):
 
 
 def seed_articles():
+    from src.blog.models import Article
+    from src.core.slug_renames import ARTICLE_SLUGS, rename_slugs
+
+    rename_slugs(Article, ARTICLE_SLUGS)
     articles = json.loads(ARTICLES_JSON.read_text(encoding='utf-8'))
     for data in articles:
         art, _created = Article.objects.update_or_create(
@@ -56,8 +60,8 @@ def seed_articles():
                 'category': data['cat'],
                 'published_at': date.fromisoformat(data['date']),
                 'excerpt': data['excerpt'],
-                'seo_title': data['title'],
-                'seo_description': data['excerpt'],
+                'seo_title': data.get('seo_title') or data['title'],
+                'seo_description': data.get('seo_description') or data['excerpt'],
                 'h1': data['title'],
                 'is_published': True,
             },
@@ -70,14 +74,22 @@ def seed_articles():
 
 
 def seed_cases():
+    from src.core.slug_renames import CASE_SLUGS, rename_slugs
+
+    rename_slugs(CaseStudy, CASE_SLUGS)
     cases = [
         {
-            'slug': 'nelehalni-pidakcyzni-tovary',
+            'slug': 'nelehalni-pidaktsyzni-tovary',
             'cat': 'Бізнес-аналітика',
             'img': 'blog/magn.jpg',
             'demo': False,
             'title': 'Дослідження торгівлі нелегальними підакцизними товарами в Україні',
-            'excerpt': 'Замовник хотів зрозуміти, де і як продають підроблені та контрабандні цигарки.',
+            'excerpt': 'Замовник хотів зрозуміти, де і як продають підроблені та контрабандні товари визначеного сегменту.',
+            'seo_title': 'Нелегальні товари: де їх продають і як це рахують — Vartis',
+            'seo_description': (
+                'Замовник хотів зрозуміти, де і як продають підроблені та контрабандні товари '
+                'визначеного сегменту, які марки трапляються частіше і звідки товар іде в магазини.'
+            ),
             'client': 'Знеособлено за NDA',
             'service': 'Глибока бізнес-аналітика',
             'scope': '21 область',
@@ -108,6 +120,11 @@ def seed_cases():
             'demo': True,
             'title': 'Експрес-перевірка нового постачальника через VI Analysis',
             'excerpt': 'Компанія отримала вигідну пропозицію з вимогою передоплати.',
+            'seo_title': 'Експрес-перевірка постачальника до передоплати — Vartis',
+            'seo_description': (
+                'Компанія отримала вигідну пропозицію з вимогою передоплати. '
+                'Перевірка до договору охоплює правові, фінансові, репутаційні та успадковані ризики.'
+            ),
             'client': 'Демонстраційний приклад',
             'service': 'Перевірка контрагентів',
             'scope': 'Назва та код ЄДРПОУ',
@@ -118,12 +135,17 @@ def seed_cases():
             ],
         },
         {
-            'slug': 'rozsliduvannya-zbytkiv',
+            'slug': 'rozsliduvannia-zbytkiv',
             'cat': 'Розслідування збитків',
             'img': 'blog/fin.jpg',
             'demo': True,
             'title': 'Продажі ростуть, а прибуток падає: пошук причин збитків',
             'excerpt': 'Витрати зростали, а за звітами все виглядало нормально.',
+            'seo_title': 'Продажі ростуть, а прибуток падає: пошук причин збитків',
+            'seo_description': (
+                'Витрати зростали, а за звітами все виглядало нормально. '
+                'Розбір типових причин: завищення цін закупівель, нестачі, списання і межі внутрішньої перевірки.'
+            ),
             'client': 'Демонстраційний приклад',
             'service': 'Розслідування причин збитків',
             'scope': 'Процеси закупівель',
@@ -140,6 +162,11 @@ def seed_cases():
             'demo': True,
             'title': 'Клієнти йдуть до конкурентів: побудова захисту від витоку',
             'excerpt': 'Компанія втрачала замовлення, а конкуренти знали більше, ніж мали б.',
+            'seo_title': 'Клієнти йдуть до конкурентів: захист інформації від витоку',
+            'seo_description': (
+                'Компанія втрачала замовлення, а конкуренти знали більше, ніж мали б. '
+                'У роботу входить система захисту, документальне оформлення і подальша актуалізація.'
+            ),
             'client': 'Демонстраційний приклад',
             'service': 'Захист конфіденційної інформації',
             'scope': 'Офіс і транспорт',
@@ -149,12 +176,17 @@ def seed_cases():
             ],
         },
         {
-            'slug': 'kryminalne-provadzhennya',
+            'slug': 'kryminalne-provadzhennia',
             'cat': 'Кримінальні провадження',
             'img': 'blog/law.jpg',
             'demo': True,
             'title': 'Інформаційна підтримка сторони захисту',
             'excerpt': 'Адвокатське обʼєднання потребувало перевірки достовірності даних обвинувачення.',
+            'seo_title': 'Інформаційна підтримка адвоката у кримінальній справі',
+            'seo_description': (
+                'Адвокатське обʼєднання потребувало перевірки даних обвинувачення. '
+                'Допомагаємо звірити дані, зібрати альтернативні версії та оцінити їх допустимість.'
+            ),
             'client': 'Демонстраційний приклад',
             'service': 'Інформаційна підтримка у кримінальних провадженнях',
             'scope': 'Для адвокатів',
@@ -177,8 +209,8 @@ def seed_cases():
                 'scope': data['scope'],
                 'is_demo': data['demo'],
                 'is_published': True,
-                'seo_title': data['title'],
-                'seo_description': data['excerpt'],
+                'seo_title': data.get('seo_title', data['title']),
+                'seo_description': data.get('seo_description', data['excerpt']),
                 'h1': data['title'],
             },
         )

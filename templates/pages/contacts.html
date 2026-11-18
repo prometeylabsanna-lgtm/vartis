@@ -32,6 +32,30 @@
           <span class="contacts-tile__value contacts-tile__value--break">{{ facebook_handle }}</span>
           <span class="contacts-tile__hint">{{ facebook_hint }}</span>
         </a>
+
+        {% if whatsapp_url %}
+        <a href="{{ whatsapp_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
+          <span class="contacts-tile__label">WhatsApp</span>
+          <span class="contacts-tile__value">Написати</span>
+          <span class="contacts-tile__hint">Відкриє чат на номер телефону</span>
+        </a>
+        {% endif %}
+
+        {% if signal_url %}
+        <a href="{{ signal_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
+          <span class="contacts-tile__label">Signal</span>
+          <span class="contacts-tile__value">Написати</span>
+          <span class="contacts-tile__hint">Відкриє чат на номер телефону</span>
+        </a>
+        {% endif %}
+
+        {% if telegram_url %}
+        <a href="{{ telegram_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
+          <span class="contacts-tile__label">Telegram</span>
+          <span class="contacts-tile__value">Написати</span>
+          <span class="contacts-tile__hint">Відкриє чат компанії</span>
+        </a>
+        {% endif %}
       </div>
 
       <div class="contacts-office">

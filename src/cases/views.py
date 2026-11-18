@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from src.core.seo import media_or_static_absolute
+from src.core.og_image import og_image_from_field
 from src.leads.forms import LeadForm
 
 from .models import CaseStudy

@@ -138,7 +138,7 @@ class AboutPrinciple(models.Model):
 
 class TeamMember(models.Model):
     page = models.ForeignKey(AboutPage, on_delete=models.CASCADE, related_name='team')
-    name = models.CharField("Ім'я", max_length=120)
+    name = models.CharField("Імʼя", max_length=120)
     role = models.CharField('Посада', max_length=300)
     regalia = models.CharField('Регалії', max_length=400, blank=True)
     email = models.EmailField('Email', blank=True)
@@ -228,7 +228,7 @@ class ServicesIndex(SingletonModel, SEOFields):
 SERVICE_SLUGS = [
     ('konsaltynh', 'Консалтинг'),
     ('kompleksna-dopomoha-biznesu', 'Комплексна допомога бізнесу'),
-    ('zbir-ta-analiz-informatsiyi', 'Глибока аналітика'),
+    ('zbir-ta-analiz-informatsii', 'Глибока аналітика'),
     ('zakhyst-vid-vytoku', 'Захист від витоку інформації'),
     ('kryminalni-provadzhennia', 'Інформаційна підтримка у кримінальних провадженнях'),
 ]

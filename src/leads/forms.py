@@ -43,10 +43,10 @@ class LeadForm(forms.ModelForm):
         model = Lead
         fields = ('name', 'phone', 'email', 'message', 'consent')
         error_messages = {
-            'name': {'required': "Поле обов'язкове для заповнення"},
-            'phone': {'required': "Поле обов'язкове для заповнення"},
+            'name': {'required': "Поле обовʼязкове для заповнення"},
+            'phone': {'required': "Поле обовʼязкове для заповнення"},
             'email': {
-                'required': "Поле обов'язкове для заповнення",
+                'required': "Поле обовʼязкове для заповнення",
                 'invalid': 'Введіть коректну електронну пошту',
             },
             'consent': {'required': 'Потрібна згода на обробку даних'},
@@ -91,7 +91,7 @@ class LeadForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['consent'].required = True
-        self.fields['name'].label = _ph('site', 'form_name_label', "Ім'я")
+        self.fields['name'].label = _ph('site', 'form_name_label', "Імʼя")
         self.fields['phone'].label = _ph('site', 'form_phone_label', 'Телефон')
         self.fields['email'].label = _ph('site', 'form_email_label', 'Email')
         self.fields['message'].label = _ph(
@@ -117,17 +117,17 @@ class LeadForm(forms.ModelForm):
     def clean_name(self):
         name = re.sub(r'\s+', ' ', (self.cleaned_data.get('name') or '').strip())
         if len(name) < 2:
-            raise forms.ValidationError("Поле обов'язкове для заповнення")
+            raise forms.ValidationError("Поле обовʼязкове для заповнення")
         if not NAME_RE.match(name):
             raise forms.ValidationError(
-                "Ім'я може містити лише літери, пробіл, дефіс або апостроф"
+                "Імʼя може містити лише літери, пробіл, дефіс або апостроф"
             )
         return name
 
     def clean_phone(self):
         phone = (self.cleaned_data.get('phone') or '').strip()
         if not phone:
-            raise forms.ValidationError("Поле обов'язкове для заповнення")
+            raise forms.ValidationError("Поле обовʼязкове для заповнення")
         normalized = normalize_ua_phone(phone)
         if not normalized:
             raise forms.ValidationError(
@@ -138,7 +138,7 @@ class LeadForm(forms.ModelForm):
     def clean_email(self):
         email = (self.cleaned_data.get('email') or '').strip()
         if not email:
-            raise forms.ValidationError("Поле обов'язкове для заповнення")
+            raise forms.ValidationError("Поле обовʼязкове для заповнення")
         if not EMAIL_RE.match(email):
             raise forms.ValidationError('Введіть коректну електронну пошту')
         return email.lower()

@@ -1,5 +1,8 @@
+from django import forms
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin as DjangoModelAdmin
 from unfold.admin import ModelAdmin
+from unfold.forms import ActionForm
 
 from .admin_recent_actions import patch_admin_urls
 from .admin_site_content_proxies import register_site_content_section_admins
@@ -19,7 +22,7 @@ class SiteSettingsAdmin(ModelAdmin):
         }),
         ('Контакти', {
             'classes': ('tab',),
-            'fields': ('phone', 'email', 'address', 'map_embed_url', 'facebook_url'),
+            'fields': ('phone', 'email', 'address', 'map_embed_url', 'facebook_url', 'telegram_url'),
         }),
         ('SEO', {
             'classes': ('tab',),
@@ -51,3 +54,22 @@ class SiteSettingsAdmin(ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         SiteSettings.load()
         return super().changelist_view(request, extra_context)
+
+
+class VartisActionForm(ActionForm):
+    action = forms.ChoiceField(
+        label='',
+        widget=forms.Select(attrs={
+            'class': 'vartis-action-select',
+            'aria-label': 'Виберіть дію',
+            'x-model': 'action',
+        }),
+    )
+
+
+def _ukrainian_action_choices(self, request, default_choices=None):
+    return DjangoModelAdmin.get_action_choices(self, request, [('', 'Виберіть дію')])
+
+
+ModelAdmin.action_form = VartisActionForm
+ModelAdmin.get_action_choices = _ukrainian_action_choices

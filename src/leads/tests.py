@@ -19,7 +19,7 @@ class NormalizeUaPhoneTests(TestCase):
 class LeadFormValidationTests(TestCase):
     def _data(self, **overrides):
         data = {
-            'name': "О'Браєн-Тест",
+            'name': "ОʼБраєн-Тест",
             'phone': '+380671234567',
             'email': 'user@domain.com',
             'message': 'hi',

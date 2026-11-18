@@ -7,7 +7,10 @@ from src.pages.models import ServicePage
 
 
 class StaticSitemap(Sitemap):
-    changefreq = 'weekly'
+    def changefreq(self, item):
+        if item[0] == 'pages:privacy':
+            return 'yearly'
+        return 'weekly'
 
     def items(self):
         # (url_name, priority) — лише сторінки з дизайн-збірки

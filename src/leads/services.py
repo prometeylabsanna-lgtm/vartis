@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def notify_lead(lead):
     body = (
         f"Нова заявка з сайту Vartis\n"
-        f"Ім'я: {lead.name}\n"
+        f"Імʼя: {lead.name}\n"
         f"Телефон: {lead.phone}\n"
         f"Email: {lead.email}\n"
         f"Сторінка: {lead.source_page}\n"

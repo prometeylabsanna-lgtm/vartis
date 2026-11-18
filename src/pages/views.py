@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 
 from src.blog.models import Article
-from src.core.seo import media_or_static_absolute
+from src.core.og_image import og_image_from_field
 from src.core.seo_copy import SERVICE_SEO
 from src.leads.forms import LeadForm
 
@@ -19,7 +19,7 @@ from .models import (
 )
 from .services import home_direction_items, service_nav_items
 
-DEEP_SLUG = 'zbir-ta-analiz-informatsiyi'
+DEEP_SLUG = 'zbir-ta-analiz-informatsii'
 
 
 def _crumbs_service(label):
@@ -30,9 +30,7 @@ def _crumbs_service(label):
 
 
 def _og_image(request, image_field):
-    if image_field:
-        return media_or_static_absolute(request, image_field.url)
-    return None
+    return og_image_from_field(request, image_field) or None
 
 
 class HomeView(TemplateView):
@@ -52,7 +50,7 @@ class HomeView(TemplateView):
             {'icon': 'HiconOutlineCalling1', 'title': 'Експертна підтримка', 'text': 'Фаховий аналіз і пояснення отриманих результатів'},
         ]
         ctx['process_steps'] = [
-            {'num': '01', 'title': 'Вивчаємо завдання', 'text': "З'ясовуємо, яку інформацію потрібно отримати та на які питання відповісти."},
+            {'num': '01', 'title': 'Вивчаємо завдання', 'text': 'Зʼясовуємо, яку інформацію потрібно отримати та на які питання відповісти'},
             {'num': '02', 'title': 'Проводимо дослідження', 'text': 'Збираємо, перевіряємо й аналізуємо відомості відповідно до погодженого завдання'},
             {'num': '03', 'title': 'Формуємо висновки', 'text': 'Систематизуємо результати та визначаємо встановлені факти й можливі ризики'},
             {'num': '04', 'title': 'Передаємо результат', 'text': 'Надаємо матеріали, необхідні для подальшого аналізу та ухвалення рішень'},
@@ -195,6 +193,9 @@ class ContactsView(TemplateView):
         ctx['facebook_handle'] = contacts['facebook_handle']
         ctx['facebook_hint'] = contacts['facebook_hint']
         ctx['map_embed_url'] = contacts['map_embed_url']
+        ctx['telegram_url'] = contacts['telegram_url']
+        ctx['whatsapp_url'] = contacts['whatsapp_url']
+        ctx['signal_url'] = contacts['signal_url']
         return ctx
 
 

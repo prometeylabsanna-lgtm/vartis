@@ -10,9 +10,9 @@
         <div class="site-footer__brand">
           <a href="{% url 'pages:home' %}" class="site-footer__logo" aria-label="VARTIS INTELLIGENCE — на головну">
             {% if site_settings.logo %}
-              <img src="{{ site_settings.logo.url }}" alt="" width="200" height="121" decoding="async">
+              <img src="{{ site_settings.logo.url }}" alt="" width="104" height="104" decoding="async">
             {% else %}
-              <img src="{% static 'images/logo-sm.webp' %}" alt="" width="200" height="121" decoding="async">
+              <img src="{% static 'images/logo-sm.webp' %}" alt="" width="104" height="104" decoding="async">
             {% endif %}
           </a>
           <p class="site-footer__tagline">{{ site_settings.tagline }}</p>
@@ -50,6 +50,30 @@
             <span class="site-footer__row-label">Адр</span>
             <span class="site-footer__row-value">{{ public_contacts.address }}</span>
           </div>
+          {% if public_contacts.whatsapp_url %}
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">WhatsApp</span>
+            <span class="site-footer__row-value">
+              <a href="{{ public_contacts.whatsapp_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+            </span>
+          </div>
+          {% endif %}
+          {% if public_contacts.signal_url %}
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">Signal</span>
+            <span class="site-footer__row-value">
+              <a href="{{ public_contacts.signal_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+            </span>
+          </div>
+          {% endif %}
+          {% if public_contacts.telegram_url %}
+          <div class="site-footer__row">
+            <span class="site-footer__row-label">Telegram</span>
+            <span class="site-footer__row-value">
+              <a href="{{ public_contacts.telegram_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+            </span>
+          </div>
+          {% endif %}
         </div>
       </div>
       <div class="site-footer__right" id="footer-form">

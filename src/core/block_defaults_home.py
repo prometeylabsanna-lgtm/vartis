@@ -60,7 +60,7 @@ def register_home_blocks() -> None:
         "site",
         "footer_cta_text",
         (
-            "Опишіть ситуацію — ми зв'яжемося, щоб уточнити завдання. "
+            "Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. "
             "Факт звернення залишається конфіденційним."
         ),
         label="Текст CTA у футері",
@@ -86,7 +86,7 @@ def register_home_blocks() -> None:
         inline=True,
     )
 
-    _reg("site", "form_name_label", "Ім'я", label="Підпис поля «Ім'я»", inline=True)
+    _reg("site", "form_name_label", "Імʼя", label="Підпис поля «Імʼя»", inline=True)
     _reg("site", "form_phone_label", "Телефон", label="Підпис поля «Телефон»", inline=True)
     _reg("site", "form_email_label", "Email", label="Підпис поля «Email»", inline=True)
     _reg(
@@ -116,7 +116,7 @@ def register_home_blocks() -> None:
         "form_consent_text",
         (
             'Погоджуюся на обробку персональних даних відповідно до '
-            '<a href="/polityka-konfidentsiynosti/">Політики конфіденційності</a>'
+            '<a href="/polityka-konfidentsiinosti/">Політики конфіденційності</a>'
         ),
         label="Текст згоди у формі",
         richtext=True,

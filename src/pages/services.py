@@ -10,7 +10,7 @@ SERVICES_NAV_ORDER = (
     'konsaltynh',
     'kompleksna-dopomoha-biznesu',
     'perevirka-kontrahentiv',
-    'zbir-ta-analiz-informatsiyi',
+    'zbir-ta-analiz-informatsii',
     'zakhyst-vid-vytoku',
     'kryminalni-provadzhennia',
 )
@@ -20,7 +20,7 @@ CARD_IMAGE_STATIC = {
     'perevirka-kontrahentiv': 'images/services/dir-1.webp',
     'kompleksna-dopomoha-biznesu': 'images/services/dir-2.webp',
     'konsaltynh': 'images/services/dir-3.webp',
-    'zbir-ta-analiz-informatsiyi': 'images/services/dir-4.webp',
+    'zbir-ta-analiz-informatsii': 'images/services/dir-4.webp',
     'zakhyst-vid-vytoku': 'images/blog/lock.webp',
     'kryminalni-provadzhennia': 'images/blog/law.webp',
 }

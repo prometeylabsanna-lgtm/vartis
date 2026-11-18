@@ -24,6 +24,12 @@
   color: var(--color-ink);
 }
 
+#cases-partial {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .feed-toolbar {
   display: flex;
   flex-wrap: wrap;

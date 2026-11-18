@@ -8,7 +8,7 @@ class Lead(models.Model):
         DONE = 'done', 'Оброблено'
         SPAM = 'spam', 'Спам'
 
-    name = models.CharField("Ім'я", max_length=120)
+    name = models.CharField("Імʼя", max_length=120)
     phone = models.CharField('Телефон', max_length=40)
     email = models.EmailField('Email')
     message = models.TextField('Повідомлення', blank=True)

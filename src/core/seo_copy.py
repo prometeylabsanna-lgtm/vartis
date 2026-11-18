@@ -69,7 +69,7 @@ SERVICE_SEO = {
             'критичної інформації та супровід ризикових рішень.'
         ),
     },
-    'zbir-ta-analiz-informatsiyi': {
+    'zbir-ta-analiz-informatsii': {
         'title': f'Глибока аналітика та OSINT-дослідження | {BRAND}',
         'description': (
             'Стратегічна аналітика про людей, компанії та ринки: факти окремо '
