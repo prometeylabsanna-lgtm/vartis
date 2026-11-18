@@ -21,13 +21,13 @@ class BlogPaginationTests(TestCase):
         Article.objects.all().delete()
 
     def test_pager_hidden_when_second_page_has_no_articles(self):
-        for index in range(1, 7):
+        for index in range(1, 5):
             _article(index, index)
         response = self.client.get(reverse('blog:list'))
         self.assertNotContains(response, 'class="pagination"')
 
     def test_second_page_link_opens_articles_not_footer(self):
-        for index in range(1, 8):
+        for index in range(1, 6):
             _article(index, index)
         response = self.client.get(reverse('blog:list'))
         self.assertContains(response, 'href="/blog/?page=2"')

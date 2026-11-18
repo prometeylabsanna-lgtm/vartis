@@ -8,7 +8,7 @@ from src.leads.forms import LeadForm
 
 from .models import Article
 
-PER_PAGE = 6
+PER_PAGE = 4
 
 # Порядок чіпів як у Blog.dc.html / articles.js (перша поява в стрічці)
 CHIP_ORDER = (
