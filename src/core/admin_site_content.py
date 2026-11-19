@@ -111,12 +111,6 @@ class SitePageContentForm(forms.Form):
                 help_text=style_hint,
                 widget=UnfoldAdminFileFieldWidget(),
             )
-            self.fields["style_glass"] = forms.BooleanField(
-                required=False,
-                label="Ефект скла (glass)",
-                initial=style.glass_enabled,
-                widget=UnfoldBooleanWidget(),
-            )
             self._page_style = style
         else:
             self._page_style = None
@@ -258,7 +252,7 @@ class SitePageContentForm(forms.Form):
             style.background_color = self.cleaned_data.get("style_background", "")
             style.text_color = self.cleaned_data.get("style_text", "")
             style.accent_color = self.cleaned_data.get("style_accent", "")
-            style.glass_enabled = bool(self.cleaned_data.get("style_glass", False))
+            style.glass_enabled = False
             img = self.cleaned_data.get("style_background_image")
             if img:
                 style.background_image = img
@@ -293,7 +287,6 @@ def site_content_section_view(request, page_slug: str, section_slug: str, model_
             "style_text",
             "style_accent",
             "style_background_image",
-            "style_glass",
         ):
             if fname in form.fields:
                 style_fields.append({

@@ -13,8 +13,13 @@
       <nav class="site-header__nav" aria-label="Основна навігація">
         <a href="{% url 'pages:about' %}" class="site-header__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">{{ site_settings.nav_about }}</a>
         <div class="svc-wrap" data-svc>
-          <button type="button" class="svc-btn" data-action="toggle-svc" aria-expanded="false" aria-haspopup="true" aria-controls="svc-menu">
+          <a
+            href="{% url 'pages:services' %}"
+            class="svc-btn{% if request.resolver_match.url_name == 'services' or request.resolver_match.url_name == 'service_detail' or request.resolver_match.url_name == 'analysis' %} is-active{% endif %}"
+          >
             {{ site_settings.nav_services }}
+          </a>
+          <button type="button" class="svc-btn__toggle" data-action="toggle-svc" aria-expanded="false" aria-haspopup="true" aria-controls="svc-menu" aria-label="Список послуг">
             <svg class="svc-btn__chev" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#B58B4A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <div id="svc-menu" class="svc-menu">

@@ -60,6 +60,23 @@ class AdminUkrainianTests(TestCase):
             self.assertNotIn(english, html)
         self.assertIn('Доступні гарячі клавіші', html)
 
+    def test_axes_admin_labels_are_ukrainian(self):
+        html = self.client.get(reverse('admin:index')).content.decode()
+        self.assertNotIn('Access attempts', html)
+        self.assertNotIn('Access failures', html)
+        self.assertNotIn('Access logs', html)
+        self.assertIn('Безпека входу', html)
+        self.assertIn('Спроби входу', html)
+        self.assertIn('Невдалі входи', html)
+        self.assertIn('Журнал входів', html)
+
+    def test_style_form_has_no_glass_toggle(self):
+        html = self.client.get(
+            reverse('admin:core_homestylesettings_change', args=[1]),
+        ).content.decode()
+        self.assertNotIn('Скло (glass)', html)
+        self.assertNotIn('name="glass_enabled"', html)
+
     def test_hero_labels_are_ukrainian(self):
         html = self.client.get(reverse('admin:core_homeherosettings_change', args=[1])).content.decode()
         self.assertIn('Заголовок першого екрана', html)

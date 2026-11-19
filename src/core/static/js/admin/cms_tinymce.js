@@ -54,17 +54,30 @@
       branding: false,
       promotion: false,
       height: 380,
+      toolbar_mode: "wrap",
       plugins: "lists link autolink",
       toolbar:
-        "undo redo | fontfamily fontsize | bold italic underline | " +
-        "bullist numlist | link unlink | removeformat",
+        "undo redo | fontsize | bold italic underline | " +
+        "forecolor backcolor | bullist numlist | link unlink | removeformat",
       font_family_formats:
         "Roboto=Roboto, -apple-system, Segoe UI, Arial, sans-serif;" +
         "Arial=Arial, Helvetica, sans-serif;" +
         "Georgia=Georgia, serif;" +
         "Times New Roman='Times New Roman', Times, serif;" +
         "Courier New='Courier New', Courier, monospace",
-      font_size_formats: "12px 14px 16px 18px 20px 24px",
+      font_size_formats: "12px 14px 16px 18px 20px 24px 28px",
+      color_map: [
+        "#12263a", "Текст",
+        "#ffffff", "Білий",
+        "#b58b4a", "Золото",
+        "#d4b072", "Світле золото",
+        "#5a6270", "Сірий",
+        "#d64545", "Червоний",
+        "#f4e6c3", "Підсвітка",
+        "#0b1626", "Темний",
+      ],
+      color_default_foreground: "#12263a",
+      color_default_background: "#f4e6c3",
       valid_elements:
         "p[style],br,strong/b,em/i,u,ul,ol,li,a[href|target|rel|title],span[style]",
       forced_root_block: "p",

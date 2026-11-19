@@ -74,11 +74,19 @@ _PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
             },
         ),
         (
+            "intro",
+            {
+                "title": "Цифри стрічки",
+                "icon": "pin",
+                "link": "/admin/pages/aboutintrostat/",
+            },
+        ),
+        (
             "stats",
             {
-                "title": "Цифри (список)",
-                "icon": "pin",
-                "link": "/admin/pages/aboutstat/",
+                "title": "Ключові цифри (список)",
+                "icon": "tag",
+                "link": "/admin/pages/aboutkeystat/",
             },
         ),
         (

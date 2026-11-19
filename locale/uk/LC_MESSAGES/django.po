@@ -270,3 +270,84 @@ msgstr "Дата"
 
 msgid "Select currency"
 msgstr "Виберіть валюту"
+
+msgid "access attempt"
+msgstr "Спроба входу"
+
+msgid "access attempts"
+msgstr "Спроби входу"
+
+msgid "access failure"
+msgstr "Невдалий вхід"
+
+msgid "access failures"
+msgstr "Невдалі входи"
+
+msgid "access log"
+msgstr "Запис входу"
+
+msgid "access logs"
+msgstr "Журнал входів"
+
+msgid "access attempt expiration"
+msgstr "Термін спроби входу"
+
+msgid "access attempt expirations"
+msgstr "Терміни спроб входу"
+
+msgid "User Agent"
+msgstr "User-Agent"
+
+msgid "IP Address"
+msgstr "IP-адреса"
+
+msgid "HTTP Accept"
+msgstr "HTTP Accept"
+
+msgid "Attempt Time"
+msgstr "Час спроби"
+
+msgid "Access lock out"
+msgstr "Блокування доступу"
+
+msgid "GET Data"
+msgstr "Дані GET"
+
+msgid "POST Data"
+msgstr "Дані POST"
+
+msgid "Failed Logins"
+msgstr "Невдалі входи"
+
+msgid "Logout Time"
+msgstr "Час виходу"
+
+msgid "Access Attempt"
+msgstr "Спроба входу"
+
+msgid "Expires At"
+msgstr "Чинна до"
+
+msgid "The time when access attempt expires and is no longer valid."
+msgstr "Час, коли спроба входу втрачає чинність."
+
+msgid "Session key hash (sha256)"
+msgstr "Хеш сесії (sha256)"
+
+msgid "Form Data"
+msgstr "Дані форми"
+
+msgid "Meta Data"
+msgstr "Метадані"
+
+msgid "Locked Out"
+msgstr "Заблоковано"
+
+msgid "Attempt Remaining"
+msgstr "спроб залишилось"
+
+msgid "Not set"
+msgstr "Не задано"
+
+msgid "Clean up expired attempts"
+msgstr "Видалити прострочені спроби"

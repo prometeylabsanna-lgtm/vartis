@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from src.core.block_defaults import get_block_default
 from src.core.cms_context import get_site_blocks
+from src.core.models_cms import PageStyle
 from src.core.page_styles import resolve_page_style
 
 
@@ -39,5 +40,19 @@ def apply_page_shell(ctx: dict, page_key: str) -> None:
     ctx["shell_bg"] = bg
     ctx["shell_text"] = style.get("--page-text", "")
     ctx["shell_accent"] = style.get("--page-accent", "")
+    text = (style.get("--page-text") or PageStyle.DEFAULT_TEXT).strip()
+    ctx["hero_fg"] = text
+    ctx["hero_panel_bg"] = (
+        "rgba(255, 255, 255, 0.82)" if _hex_luminance(text) < 0.45 else ""
+    )
     ctx["seo_title"] = block_value(page_key, "seo_title")
     ctx["seo_description"] = block_value(page_key, "seo_description")
+
+
+class StyledPageMixin:
+    page_style_key = "home"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        apply_page_shell(ctx, self.page_style_key)
+        return ctx

@@ -168,7 +168,7 @@ _IMAGE_FALLBACKS = {
 }
 
 _STYLE_FIELDS = (
-    "background_color", "text_color", "accent_color", "background_image", "glass_enabled",
+    "background_color", "text_color", "accent_color", "background_image",
 )
 
 
@@ -204,7 +204,14 @@ class SectionAdmin(ModelAdmin):
         elif db_field.name == "icon":
             kwargs["widget"] = CmsAdminIconWidget()
         elif db_field.name.endswith("color"):
-            kwargs["widget"] = CmsAdminColorWidget()
+            defaults = {
+                "background_color": PageStyle.DEFAULT_BACKGROUND,
+                "text_color": PageStyle.DEFAULT_TEXT,
+                "accent_color": PageStyle.DEFAULT_ACCENT,
+            }
+            kwargs["widget"] = CmsAdminColorWidget(
+                default_color=defaults.get(db_field.name, PageStyle.DEFAULT_ACCENT),
+            )
         return super().formfield_for_dbfield(db_field, request, **kwargs)
 
     def has_add_permission(self, request):
@@ -226,12 +233,20 @@ class StyleSectionAdmin(SectionAdmin):
     tab_title = "Оформлення"
     section_fields = _STYLE_FIELDS
     style_page = "home"
+    exclude = ("glass_enabled",)
+
+    def get_fields(self, request, obj=None):
+        return list(self.section_fields)
 
     def get_fieldsets(self, request, obj=None):
         return [(
             "Оформлення — Кольори",
             {"classes": ["tab"], "fields": self.section_fields},
         )]
+
+    def save_model(self, request, obj, form, change):
+        obj.glass_enabled = False
+        super().save_model(request, obj, form, change)
 
     def changelist_view(self, request, extra_context=None):
         obj = PageStyle.for_page(self.style_page)

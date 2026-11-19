@@ -1,0 +1,42 @@
+<div class="cms-list cms-list--career" data-cms-list>
+  <div class="cms-list__rows" data-cms-list-rows>
+    {% for item in widget.items %}
+    <div class="cms-list__row cms-list__row--career" data-cms-list-row>
+      <span class="cms-list__ring" aria-hidden="true"></span>
+      <div class="cms-list__pair">
+        <span class="cms-list__caption">Заголовок</span>
+        <input
+          type="text"
+          name="{{ widget.name }}_t"
+          value="{{ item.t }}"
+          class="{{ widget.title_class }}"
+          {% if forloop.first and widget.attrs.id %}id="{{ widget.attrs.id }}"{% endif %}
+          autocomplete="off"
+        >
+        <span class="cms-list__caption">Роки</span>
+        <input
+          type="text"
+          name="{{ widget.name }}_y"
+          value="{{ item.y }}"
+          class="{{ widget.year_class }}"
+          autocomplete="off"
+        >
+      </div>
+      <button type="button" class="cms-list__remove" data-cms-list-remove aria-label="Прибрати запис">×</button>
+    </div>
+    {% endfor %}
+  </div>
+  <template data-cms-list-template>
+    <div class="cms-list__row cms-list__row--career" data-cms-list-row>
+      <span class="cms-list__ring" aria-hidden="true"></span>
+      <div class="cms-list__pair">
+        <span class="cms-list__caption">Заголовок</span>
+        <input type="text" name="{{ widget.name }}_t" value="" class="{{ widget.title_class }}" autocomplete="off">
+        <span class="cms-list__caption">Роки</span>
+        <input type="text" name="{{ widget.name }}_y" value="" class="{{ widget.year_class }}" autocomplete="off">
+      </div>
+      <button type="button" class="cms-list__remove" data-cms-list-remove aria-label="Прибрати запис">×</button>
+    </div>
+  </template>
+  <button type="button" class="cms-list__add" data-cms-list-add>Додати запис</button>
+</div>

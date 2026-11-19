@@ -4,6 +4,7 @@ from django.views.generic import DetailView, ListView
 from src.core.og_image import og_image_from_field
 from src.core.seo import absolute_url
 from src.leads.forms import LeadForm
+from src.pages.cms import StyledPageMixin
 
 from .models import Article, BlogPage
 
@@ -29,7 +30,8 @@ def _ordered_categories():
     return ordered + extras
 
 
-class ArticleListView(ListView):
+class ArticleListView(StyledPageMixin, ListView):
+    page_style_key = 'blog'
     model = Article
     template_name = 'blog/list.html'
     context_object_name = 'articles'
@@ -75,7 +77,8 @@ class ArticleListView(ListView):
         return [self.template_name]
 
 
-class ArticleDetailView(DetailView):
+class ArticleDetailView(StyledPageMixin, DetailView):
+    page_style_key = 'blog'
     model = Article
     template_name = 'blog/detail.html'
     context_object_name = 'article'

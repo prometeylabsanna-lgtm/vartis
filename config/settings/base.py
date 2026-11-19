@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'unfold.contrib.forms',
     'django.contrib.admin',
     'django.contrib.auth',
-    'axes',
+    'src.core.axes_config.AxesUkConfig',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

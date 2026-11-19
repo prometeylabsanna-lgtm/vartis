@@ -1,0 +1,26 @@
+<div class="cms-list cms-list--bullets" data-cms-list>
+  <div class="cms-list__rows" data-cms-list-rows>
+    {% for item in widget.items %}
+    <div class="cms-list__row" data-cms-list-row>
+      <span class="cms-list__dot" aria-hidden="true"></span>
+      <input
+        type="text"
+        name="{{ widget.name }}_item"
+        value="{{ item }}"
+        class="{{ widget.input_class }}"
+        {% if forloop.first and widget.attrs.id %}id="{{ widget.attrs.id }}"{% endif %}
+        autocomplete="off"
+      >
+      <button type="button" class="cms-list__remove" data-cms-list-remove aria-label="Прибрати пункт">×</button>
+    </div>
+    {% endfor %}
+  </div>
+  <template data-cms-list-template>
+    <div class="cms-list__row" data-cms-list-row>
+      <span class="cms-list__dot" aria-hidden="true"></span>
+      <input type="text" name="{{ widget.name }}_item" value="" class="{{ widget.input_class }}" autocomplete="off">
+      <button type="button" class="cms-list__remove" data-cms-list-remove aria-label="Прибрати пункт">×</button>
+    </div>
+  </template>
+  <button type="button" class="cms-list__add" data-cms-list-add>Додати пункт</button>
+</div>

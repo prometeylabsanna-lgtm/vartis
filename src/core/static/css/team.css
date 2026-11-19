@@ -117,6 +117,24 @@
   color: rgba(255, 255, 255, 0.88);
 }
 
+.founder-card__bio p {
+  margin: 0 0 0.75em;
+}
+
+.founder-card__bio p:last-child {
+  margin-bottom: 0;
+}
+
+.founder-card__bio ul,
+.founder-card__bio ol {
+  margin: 0 0 0.75em;
+  padding-left: 1.2em;
+}
+
+.founder-card__bio li + li {
+  margin-top: 0.35em;
+}
+
 .founder-card__cols {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

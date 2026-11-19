@@ -20,10 +20,31 @@ class FooterDeveloperLinkTests(TestCase):
             self.assertNotContains(response, 'site-footer__credit-link')
 
 
+class PageStyleHeroTests(TestCase):
+    def test_hero_uses_page_text_color(self):
+        from src.core.models_cms import PageStyle
+
+        PageStyle.objects.update_or_create(
+            page='home',
+            defaults={'text_color': '#f6f0e6', 'background_color': '#0b1626', 'accent_color': '#b58b4a'},
+        )
+        html = self.client.get(reverse('pages:home')).content.decode()
+        self.assertIn('--hero-fg: #f6f0e6', html)
+        self.assertIn('--page-accent: #b58b4a', html)
+
+
 class PublicUrlTests(TestCase):
     def test_translit_paths(self):
         self.assertEqual(reverse('pages:about'), '/pro-kompaniiu/')
         self.assertEqual(reverse('pages:privacy'), '/polityka-konfidentsiinosti/')
+
+    def test_header_services_links_to_catalog(self):
+        html = self.client.get(reverse('pages:home')).content.decode()
+        self.assertIn('href="/posluhy/"', html)
+        self.assertRegex(html, r'<a[^>]+href="/posluhy/"[^>]*class="[^"]*svc-btn')
+        listing = self.client.get(reverse('pages:services'))
+        self.assertEqual(listing.status_code, 200)
+        self.assertContains(listing, 'Каталог послуг')
 
     def test_cases_catalog_is_removed(self):
         home = self.client.get(reverse('pages:home'))

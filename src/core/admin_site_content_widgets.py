@@ -113,7 +113,7 @@ class CmsTinyMCEWidget(AdminTextareaWidget):
 
 
 class CmsAdminColorWidget(Widget):
-    def __init__(self, *, default_color: str = "#0b1626", attrs=None):
+    def __init__(self, *, default_color: str = "#12263a", attrs=None):
         self.default_color = default_color
         super().__init__(attrs)
 

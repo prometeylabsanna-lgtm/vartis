@@ -26,6 +26,7 @@ from .present import (
     home_steps,
     service_copy,
 )
+from .cms import StyledPageMixin
 from .privacy_copy import fill_privacy_placeholders
 from .services import service_nav_items
 
@@ -41,8 +42,9 @@ def _og_image(request, image_field):
     return og_image_from_field(request, image_field) or None
 
 
-class HomeView(TemplateView):
+class HomeView(StyledPageMixin, TemplateView):
     template_name = 'pages/home.html'
+    page_style_key = 'home'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -58,8 +60,9 @@ class HomeView(TemplateView):
         return ctx
 
 
-class AboutView(TemplateView):
+class AboutView(StyledPageMixin, TemplateView):
     template_name = 'pages/about.html'
+    page_style_key = 'about'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -87,8 +90,9 @@ class AboutView(TemplateView):
         return ctx
 
 
-class ServicesIndexView(TemplateView):
+class ServicesIndexView(StyledPageMixin, TemplateView):
     template_name = 'pages/services_index.html'
+    page_style_key = 'services'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -101,7 +105,8 @@ class ServicesIndexView(TemplateView):
         return ctx
 
 
-class ServiceDetailView(TemplateView):
+class ServiceDetailView(StyledPageMixin, TemplateView):
+    page_style_key = 'services'
     def get_template_names(self):
         if self.kwargs.get('slug') == DEEP_SLUG:
             return ['pages/deep_analytics.html']
@@ -130,8 +135,9 @@ class ServiceDetailView(TemplateView):
         return ctx
 
 
-class AnalysisView(TemplateView):
+class AnalysisView(StyledPageMixin, TemplateView):
     template_name = 'pages/analysis.html'
+    page_style_key = 'analysis'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -145,8 +151,9 @@ class AnalysisView(TemplateView):
         return ctx
 
 
-class ContactsView(TemplateView):
+class ContactsView(StyledPageMixin, TemplateView):
     template_name = 'pages/contacts.html'
+    page_style_key = 'contacts'
 
     def get_context_data(self, **kwargs):
         from src.core.contact_defaults import resolve_public_contacts
@@ -173,8 +180,9 @@ class ContactsView(TemplateView):
         return ctx
 
 
-class PrivacyView(TemplateView):
+class PrivacyView(StyledPageMixin, TemplateView):
     template_name = 'pages/privacy.html'
+    page_style_key = 'privacy'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

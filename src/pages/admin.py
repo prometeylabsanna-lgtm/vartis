@@ -10,12 +10,15 @@ from src.core.admin_site_content_widgets import (
     CmsImageFieldWidget,
     CmsTinyMCEWidget,
 )
+from src.pages.admin_team_widgets import CareerPathWidget, ExpertiseListWidget
 
 from .models import (
     AboutPage,
     AboutPrinciple,
     AboutProcessStep,
     AboutStat,
+    AboutIntroStat,
+    AboutKeyStat,
     AnalysisInclude,
     AnalysisPage,
     AnalysisPriceRow,
@@ -305,6 +308,16 @@ class TeamMemberForm(forms.ModelForm):
                 hard_limit=False,
             )
             self.fields['bio'].help_text = 'Рекомендовано до 2000 символів.'
+        if 'expertise' in self.fields:
+            self.fields['expertise'].widget = ExpertiseListWidget()
+            self.fields['expertise'].help_text = (
+                'Кожен рядок — окремий пункт списку на сайті. Розмітка підставляється автоматично.'
+            )
+        if 'career_path' in self.fields:
+            self.fields['career_path'].widget = CareerPathWidget()
+            self.fields['career_path'].help_text = (
+                'Заголовок — жирний і золотий, роки — окремим рядком, як на сайті.'
+            )
         if 'photo' in self.fields:
             profile = image_profile_for_key('team_photo')
             self.fields['photo'].widget = CmsImageFieldWidget(
@@ -331,12 +344,36 @@ class TeamMemberAdmin(_ParentPageMixin, ModelAdmin):
     search_fields = ('name', 'role')
 
 
-@admin.register(AboutStat)
-class AboutStatAdmin(_ParentPageMixin, ModelAdmin):
+class _AboutStatBlockAdmin(_ParentPageMixin, ModelAdmin):
     parent_model = AboutPage
-    list_display = ('value', 'label', 'block', 'order')
+    stat_block = AboutStat.BLOCK_KEY
+    list_display = ('value', 'label', 'order')
     list_editable = ('order',)
     ordering = ('order', 'id')
+    fields = ('value', 'label', 'order')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(block=self.stat_block)
+
+    def get_exclude(self, request, obj=None):
+        excluded = list(super().get_exclude(request, obj) or [])
+        if 'block' not in excluded:
+            excluded.append('block')
+        return excluded
+
+    def save_model(self, request, obj, form, change):
+        obj.block = self.stat_block
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(AboutIntroStat)
+class AboutIntroStatAdmin(_AboutStatBlockAdmin):
+    stat_block = AboutStat.BLOCK_INTRO
+
+
+@admin.register(AboutKeyStat)
+class AboutKeyStatAdmin(_AboutStatBlockAdmin):
+    stat_block = AboutStat.BLOCK_KEY
 
 
 @admin.register(AboutProcessStep)

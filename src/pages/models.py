@@ -5,6 +5,8 @@ from src.pages.models_about import (
     AboutPrinciple,
     AboutProcessStep,
     AboutStat,
+    AboutIntroStat,
+    AboutKeyStat,
     TeamMember,
 )
 from src.pages.models_analysis import AnalysisPage
@@ -57,6 +59,8 @@ __all__ = [
     'AboutPrinciple',
     'TeamMember',
     'AboutStat',
+    'AboutIntroStat',
+    'AboutKeyStat',
     'AboutProcessStep',
     'ServicesIndex',
     'ServicePage',

@@ -18,6 +18,7 @@ def resolve_page_style(page: str) -> dict[str, str]:
             "--page-accent": PageStyle.DEFAULT_ACCENT,
             "glass_enabled": "0",
             "background_image_url": "",
+            "raw_text": "",
         }
     bg_url = ""
     if row.background_image:
@@ -31,6 +32,7 @@ def resolve_page_style(page: str) -> dict[str, str]:
         "--page-accent": row.effective_accent,
         "glass_enabled": "1" if row.glass_enabled else "0",
         "background_image_url": bg_url,
+        "raw_text": (row.text_color or "").strip(),
     }
 
 
@@ -59,10 +61,15 @@ def reset_page_styles_to_layout_defaults() -> int:
         if (row.background_color or "").strip().lower() in {"#0b1626", "0b1626"}:
             row.background_color = ""
             changed = True
-        if (row.text_color or "").strip().lower() in {"#f6f0e6", "f6f0e6", "#e8edf4", "e8edf4"}:
+        if (row.text_color or "").strip().lower() in {
+            "#f6f0e6", "f6f0e6", "#e8edf4", "e8edf4", "#0b1626", "0b1626",
+        }:
             row.text_color = ""
             changed = True
+        if (row.accent_color or "").strip().lower() in {"#0b1626", "0b1626"}:
+            row.accent_color = ""
+            changed = True
         if changed:
-            row.save(update_fields=["glass_enabled", "background_color", "text_color"])
+            row.save(update_fields=["glass_enabled", "background_color", "text_color", "accent_color"])
             updated += 1
     return updated

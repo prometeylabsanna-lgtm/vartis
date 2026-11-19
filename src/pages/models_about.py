@@ -109,6 +109,20 @@ class AboutStat(models.Model):
         return f'{self.value} {self.label}'
 
 
+class AboutIntroStat(AboutStat):
+    class Meta:
+        proxy = True
+        verbose_name = 'Цифра стрічки'
+        verbose_name_plural = 'Цифри стрічки «Про нас»'
+
+
+class AboutKeyStat(AboutStat):
+    class Meta:
+        proxy = True
+        verbose_name = 'Ключова цифра'
+        verbose_name_plural = 'Ключові цифри'
+
+
 class AboutProcessStep(models.Model):
     page = models.ForeignKey(AboutPage, on_delete=models.CASCADE, related_name='process_steps')
     number = models.CharField('Номер', max_length=8, default='01')

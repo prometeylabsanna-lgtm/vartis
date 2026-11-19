@@ -1,0 +1,153 @@
+.cms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 42rem;
+}
+
+.cms-list__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cms-list__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cms-list__row--career {
+  align-items: stretch;
+}
+
+.cms-list__dot,
+.cms-list__ring {
+  width: 8px;
+  height: 8px;
+  margin-top: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #b58b4a;
+}
+
+.cms-list__ring {
+  width: 10px;
+  height: 10px;
+  margin-top: 20px;
+  background: transparent;
+  border: 2px solid #b58b4a;
+  box-sizing: border-box;
+}
+
+.cms-list__pair {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.cms-list__caption {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b58b4a;
+}
+
+.cms-list input.cms-list__input {
+  width: 100%;
+  min-height: 44px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.cms-list input.cms-list__title {
+  font-weight: 600;
+  color: #b58b4a;
+}
+
+.cms-list input.cms-list__year {
+  font-size: 14px;
+  color: #5a6270;
+}
+
+.cms-list__remove,
+.cms-list__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(181, 139, 74, 0.35);
+  border-radius: 0.375rem;
+  background: #fff;
+  color: #12263a;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.cms-list__remove {
+  width: 44px;
+  flex-shrink: 0;
+  color: #8a6b3c;
+}
+
+.cms-list__add {
+  align-self: flex-start;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b58b4a;
+}
+
+.cms-list__remove:hover,
+.cms-list__add:hover,
+.cms-list__remove:focus-visible,
+.cms-list__add:focus-visible {
+  border-color: #b58b4a;
+  outline: none;
+}
+
+html.dark .cms-list input.cms-list__title {
+  color: #d4b072;
+}
+
+html.dark .cms-list input.cms-list__year {
+  color: #c4c8d0;
+}
+
+html.dark .cms-list .cms-list__caption {
+  color: #d4b072;
+}
+
+html.dark .cms-list__remove,
+html.dark .cms-list__add {
+  background: #12263a;
+  color: #f4efe6;
+  border-color: rgba(181, 139, 74, 0.45);
+}
+
+html.dark .cms-list__add {
+  color: #d4b072;
+}
+
+@media (max-width: 768px) {
+  .cms-list {
+    max-width: none;
+  }
+
+  .cms-list__row--career {
+    flex-wrap: wrap;
+  }
+
+  .cms-list__row--career .cms-list__remove {
+    margin-left: 18px;
+  }
+}

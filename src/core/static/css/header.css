@@ -151,33 +151,58 @@
 
 .svc-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .svc-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
   border: 0;
   background: none;
-  padding: 0;
+  padding: 6px 0;
   font-weight: 500;
   font-size: var(--fs-nav);
   line-height: 1;
   color: #000;
+  text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition: color 0.2s ease;
 }
 
 .svc-btn:hover,
-.svc-btn[aria-expanded="true"] {
+.svc-btn.is-active,
+.svc-wrap.is-open .svc-btn {
   color: var(--color-gold);
 }
 
+.svc-btn__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .svc-btn__chev {
+  display: block;
   transition: transform 0.25s ease;
 }
 
-.svc-btn[aria-expanded="true"] .svc-btn__chev {
+.svc-wrap.is-open .svc-btn__chev,
+.svc-btn__toggle[aria-expanded="true"] .svc-btn__chev {
   transform: rotate(180deg);
 }
 

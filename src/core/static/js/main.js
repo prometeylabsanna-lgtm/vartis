@@ -83,7 +83,9 @@
       svcTimer = setTimeout(function () { setSvc(false); }, 150);
     });
     if (svcBtn) {
-      svcBtn.addEventListener('click', function () {
+      svcBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
         setSvc(!svcWrap.classList.contains('is-open'));
       });
     }

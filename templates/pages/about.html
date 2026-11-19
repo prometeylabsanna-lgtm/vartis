@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_seo vartis_media %}
+{% load static vartis_icons vartis_seo vartis_media vartis_content %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -88,7 +88,7 @@
               <p class="founder-card__role">{{ m.role }}</p>
               {% if m.regalia %}<p class="founder-card__regalia">{{ m.regalia }}</p>{% endif %}
             </div>
-            {% if m.bio %}<p class="founder-card__bio">{{ m.bio }}</p>{% endif %}
+            {% if m.bio %}<div class="founder-card__bio">{{ m.bio|cms_rich }}</div>{% endif %}
             <div class="founder-card__cols">
               {% if m.expertise %}
               <div class="founder-block">

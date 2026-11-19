@@ -162,6 +162,7 @@ html:not(.dark) body:not(.login) .bg-base-50 {
 
 body:not(.login) .bg-primary-600 {
   background-color: var(--vartis-blue);
+  color: #ffffff;
 }
 
 html:not(.dark) body:not(.login) .bg-primary-600 {
