@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.test import Client, TestCase
 
 from .forms import LeadForm, normalize_ua_phone
@@ -56,6 +57,7 @@ class LeadFormValidationTests(TestCase):
 
 class LeadSubmitViewTests(TestCase):
     def setUp(self):
+        cache.clear()
         self.client = Client()
 
     def test_submit_saves_lead(self):

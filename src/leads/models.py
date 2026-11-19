@@ -1,4 +1,7 @@
+from django.core.validators import MaxLengthValidator
 from django.db import models
+
+LEAD_MESSAGE_MAX_LENGTH = 2000
 
 
 class Lead(models.Model):
@@ -11,7 +14,11 @@ class Lead(models.Model):
     name = models.CharField("Імʼя", max_length=120)
     phone = models.CharField('Телефон', max_length=40)
     email = models.EmailField('Email')
-    message = models.TextField('Повідомлення', blank=True)
+    message = models.TextField(
+        'Повідомлення',
+        blank=True,
+        validators=[MaxLengthValidator(LEAD_MESSAGE_MAX_LENGTH)],
+    )
     consent = models.BooleanField('Згода на обробку даних', default=False)
     source_page = models.CharField('Сторінка-джерело', max_length=200, blank=True)
     status = models.CharField(

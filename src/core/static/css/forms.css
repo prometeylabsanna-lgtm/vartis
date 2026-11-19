@@ -101,6 +101,10 @@
   display: none;
 }
 
+.lead-form__alert {
+  margin: 0 0 12px;
+}
+
 .lead-form__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

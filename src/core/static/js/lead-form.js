@@ -9,6 +9,7 @@
     name: "Імʼя може містити лише літери, пробіл, дефіс або апостроф",
     phone: 'Введіть номер у форматі +380XXXXXXXXX або 0XXXXXXXXX',
     email: 'Введіть коректну електронну пошту',
+    message: 'Повідомлення має містити не більше 2000 символів',
     consent: 'Потрібна згода на обробку даних',
   };
 
@@ -51,6 +52,19 @@
       }
     }
     return out;
+  }
+
+  function enforceMessageLimit(input) {
+    if (!input || input.getAttribute('data-validate') !== 'message') return;
+    if ((input.value || '').length <= 2000) return;
+    var start = input.selectionStart;
+    input.value = input.value.slice(0, 2000);
+    if (typeof start === 'number') {
+      try {
+        var pos = Math.min(start, 2000);
+        input.setSelectionRange(pos, pos);
+      } catch (e) { /* iOS Safari */ }
+    }
   }
 
   function enforcePhoneLimit(input) {
@@ -103,6 +117,15 @@
   function validateField(input) {
     var type = input.getAttribute('data-validate');
     if (!type) return true;
+
+    if (type === 'message') {
+      if ((input.value || '').length > 2000) {
+        setError(input, MSG.message);
+        return false;
+      }
+      clearError(input);
+      return true;
+    }
 
     if (type === 'consent') {
       if (!input.checked) {
@@ -204,6 +227,9 @@
     if (input.getAttribute('data-validate') === 'phone') {
       enforcePhoneLimit(input);
     }
+    if (input.getAttribute('data-validate') === 'message') {
+      enforceMessageLimit(input);
+    }
     if (!input.classList || !input.classList.contains('is-invalid')) return;
     validateField(input);
   }, true);
@@ -211,9 +237,11 @@
   document.addEventListener('paste', function (e) {
     var input = e.target;
     if (!input || !input.closest || !input.closest('.lead-form')) return;
-    if (input.getAttribute('data-validate') !== 'phone') return;
+    var kind = input.getAttribute('data-validate');
+    if (kind !== 'phone' && kind !== 'message') return;
     window.setTimeout(function () {
-      enforcePhoneLimit(input);
+      if (kind === 'phone') enforcePhoneLimit(input);
+      if (kind === 'message') enforceMessageLimit(input);
       if (input.classList.contains('is-invalid')) validateField(input);
     }, 0);
   }, true);

@@ -20,6 +20,9 @@
   <input type="hidden" name="form_id" value="{{ form_id|default:'lead-form' }}">
   <input type="hidden" name="source_page" value="{{ request.path }}">
   {{ form.honeypot }}
+  {% if form.non_field_errors %}
+  <p class="lead-form__error lead-form__alert" role="alert">{{ form.non_field_errors|striptags }}</p>
+  {% endif %}
 
   <label class="lead-form__label">Імʼя
     {{ form.name }}

@@ -5,7 +5,7 @@ from django import forms
 from src.core.block_defaults import get_block_default
 from src.core.cms_context import get_site_blocks
 
-from .models import Lead
+from .models import LEAD_MESSAGE_MAX_LENGTH, Lead
 
 
 def _ph(page: str, key: str, fallback: str) -> str:
@@ -19,6 +19,37 @@ NAME_RE = re.compile(
     r"^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'ʼ’\-\s]{2,120}$",
 )
 EMAIL_RE = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]{2,}$')
+FORM_VARIANTS = frozenset({'footer', 'modal', 'service', 'analysis'})
+_SOURCE_RE = re.compile(r'^/[\w\-./]{0,199}$')
+_FORM_ID_RE = re.compile(r'^[a-z0-9-]{1,40}$')
+
+
+def clean_form_variant(raw: str) -> str:
+    value = (raw or '').strip()
+    if value in FORM_VARIANTS:
+        return value
+    return 'footer'
+
+
+def clean_form_id(raw: str) -> str:
+    value = (raw or '').strip()
+    if _FORM_ID_RE.match(value):
+        return value
+    return 'lead-form'
+
+
+def clean_source_page(raw: str) -> str:
+    """Лише внутрішній шлях. POST іде на /leads/submit/, тож шлях береться з прихованого поля."""
+    value = (raw or '').strip()
+    if (
+        len(value) > 200
+        or not _SOURCE_RE.match(value)
+        or value.startswith('//')
+        or '//' in value
+        or '..' in value
+    ):
+        return ''
+    return value
 
 
 def normalize_ua_phone(raw: str) -> str | None:
@@ -80,6 +111,8 @@ class LeadForm(forms.ModelForm):
             'message': forms.Textarea(attrs={
                 'rows': 3,
                 'class': 'lead-form__textarea',
+                'maxlength': str(LEAD_MESSAGE_MAX_LENGTH),
+                'data-validate': 'message',
             }),
             'consent': forms.CheckboxInput(attrs={
                 'class': 'lead-form__checkbox',
@@ -142,6 +175,14 @@ class LeadForm(forms.ModelForm):
         if not EMAIL_RE.match(email):
             raise forms.ValidationError('Введіть коректну електронну пошту')
         return email.lower()
+
+    def clean_message(self):
+        message = (self.cleaned_data.get('message') or '').strip()
+        if len(message) > LEAD_MESSAGE_MAX_LENGTH:
+            raise forms.ValidationError(
+                'Повідомлення має містити не більше 2000 символів'
+            )
+        return message
 
     def clean_consent(self):
         consent = self.cleaned_data.get('consent')

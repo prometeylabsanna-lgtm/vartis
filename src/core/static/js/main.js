@@ -3,7 +3,7 @@
 
   document.body.addEventListener('htmx:beforeSwap', function (e) {
     var s = e.detail.xhr.status;
-    if (s === 400 || s === 422) {
+    if (s === 400 || s === 422 || s === 429) {
       e.detail.shouldSwap = true;
       e.detail.isError = false;
     }

@@ -5,9 +5,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
-from django.views.static import serve
 
 from src.core.sitemaps import sitemaps
+from src.core.views_media import media_serve
 from src.core.views_seo import LlmsTxtView, RobotsTxtView
 from src.pages.views import page_not_found
 
@@ -31,8 +31,7 @@ if settings.DEBUG or os.environ.get('VERCEL'):
     urlpatterns += [
         re_path(
             r'^%s(?P<path>.*)$' % re.escape(media_url.lstrip('/')),
-            serve,
-            {'document_root': str(settings.MEDIA_ROOT)},
+            media_serve,
         ),
     ]
 

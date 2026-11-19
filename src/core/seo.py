@@ -58,9 +58,18 @@ def robots_meta_content(request) -> str:
     return 'noindex, nofollow'
 
 
+_JSON_LD_ESCAPES = str.maketrans({
+    '&': '\\u0026',
+    '<': '\\u003c',
+    '>': '\\u003e',
+    '\u2028': '\\u2028',
+    '\u2029': '\\u2029',
+})
+
+
 def json_ld_script(data: dict[str, Any] | list[Any]) -> str:
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':'))
-    return mark_safe(payload)
+    return mark_safe(payload.translate(_JSON_LD_ESCAPES))
 
 
 def organization_schema(request, site_settings) -> dict[str, Any]:
