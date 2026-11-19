@@ -35,3 +35,11 @@ class BlogPaginationTests(TestCase):
         page_two = self.client.get(reverse('blog:list') + '?page=2')
         self.assertContains(page_two, 'Стаття 1')
         self.assertContains(page_two, 'id="feed-partial"')
+
+    def test_article_uses_admin_read_minutes(self):
+        article = _article(1, 1)
+        article.read_minutes = 9
+        article.save(update_fields=['read_minutes'])
+        response = self.client.get(article.get_absolute_url())
+        self.assertContains(response, '9 хв читання')
+        self.assertNotContains(response, '6 хв читання')

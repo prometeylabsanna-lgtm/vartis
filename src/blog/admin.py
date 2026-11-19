@@ -14,7 +14,7 @@ class ArticleBlockInline(TabularInline):
 
 @admin.register(Article)
 class ArticleAdmin(TopDropdownFiltersMixin, ModelAdmin):
-    list_display = ('title', 'category', 'published_at', 'is_published')
+    list_display = ('title', 'category', 'published_at', 'read_minutes', 'is_published')
     list_filter = ('category', 'is_published')
     search_fields = ('title', 'slug', 'excerpt')
     prepopulated_fields = {'slug': ('title',)}
@@ -22,7 +22,7 @@ class ArticleAdmin(TopDropdownFiltersMixin, ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'title', 'slug', 'category', 'published_at',
+                'title', 'slug', 'category', 'published_at', 'read_minutes',
                 'image', 'excerpt', 'is_published',
             ),
         }),

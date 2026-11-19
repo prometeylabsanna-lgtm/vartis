@@ -175,7 +175,7 @@ CONTENT_SECURITY_POLICY = {
         'font-src': ["'self'", 'data:'],
         'img-src': ["'self'", 'data:', 'https:'],
         'frame-src': ["'self'", 'https://www.google.com', 'https://maps.google.com'],
-        'connect-src': ["'self'", 'https://www.google-analytics.com'],
+        'connect-src': ["'self'", 'https://www.google-analytics.com', 'https://www.googletagmanager.com'],
     },
 }
 

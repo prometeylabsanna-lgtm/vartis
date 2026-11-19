@@ -1,6 +1,6 @@
 {% load static django_htmx vartis_seo %}
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk"{% if gtm_id %} data-gtm-id="{{ gtm_id }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -45,10 +45,8 @@
   <link rel="stylesheet" href="{% static 'css/cards.css' %}">
   <link rel="stylesheet" href="{% static 'css/deep.css' %}">
   <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/cookie-banner.css' %}">
   {% block extra_css %}{% endblock %}
-  {% if gtm_id %}
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ gtm_id }}');</script>
-  {% endif %}
   {% block structured_data %}
   <script type="application/ld+json">{{ org_json_ld }}</script>
   <script type="application/ld+json">{{ website_json_ld }}</script>
@@ -56,10 +54,6 @@
   {% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-  {% if gtm_id %}
-  <noscript><iframe class="gtm-noscript" src="https://www.googletagmanager.com/ns.html?id={{ gtm_id }}" height="0" width="0" title="GTM"></iframe></noscript>
-  {% endif %}
-
   {% include 'partials/header.html' %}
   {% include 'partials/mobile_nav.html' %}
 
@@ -69,11 +63,13 @@
 
   {% include 'partials/footer.html' %}
   {% include 'partials/lead_modal.html' %}
+  {% include 'partials/cookie_banner.html' %}
 
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
   {% django_htmx_script %}
   <script src="{% static 'js/lead-form.js' %}" defer></script>
   <script src="{% static 'js/main.js' %}" defer></script>
+  <script src="{% static 'js/cookie-banner.js' %}" defer></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

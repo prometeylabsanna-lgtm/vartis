@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -16,6 +17,12 @@ class Article(models.Model):
     seo_description = models.TextField('SEO Description', blank=True)
     h1 = models.CharField('H1', max_length=300, blank=True)
     is_published = models.BooleanField('Опубліковано', default=True)
+    read_minutes = models.PositiveIntegerField(
+        'Хвилин читання',
+        default=6,
+        validators=[MinValueValidator(1)],
+        help_text='Скільки хвилин показувати біля статті.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -36,13 +43,18 @@ class Article(models.Model):
 
     @property
     def read_label(self):
+        minutes = self.read_minutes or 1
+        return f'{minutes} хв читання'
+
+    def estimate_read_minutes(self):
         words = len((self.excerpt or '').split())
         for block in self.blocks.all():
             words += len((block.heading or '').split())
             words += len((block.text or '').split())
             words += len((block.list_items or '').split())
-        minutes = max(2, round(words / 180)) if words else 2
-        return f'{minutes} хв читання'
+        if not words:
+            return 6
+        return max(1, round(words / 180))
 
 
 class ArticleBlock(models.Model):

@@ -53,7 +53,7 @@ def seed_articles():
     rename_slugs(Article, ARTICLE_SLUGS)
     articles = json.loads(ARTICLES_JSON.read_text(encoding='utf-8'))
     for data in articles:
-        art, _created = Article.objects.update_or_create(
+        art, created = Article.objects.update_or_create(
             slug=data['slug'],
             defaults={
                 'title': data['title'],
@@ -71,6 +71,9 @@ def seed_articles():
         art.blocks.all().delete()
         for kwargs in _blocks_from_js(data['body']):
             ArticleBlock.objects.create(article=art, **kwargs)
+        if created:
+            art.read_minutes = art.estimate_read_minutes()
+            art.save(update_fields=['read_minutes'])
 
 
 def seed_cases():

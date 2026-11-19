@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView
 
 from src.blog.models import Article
@@ -25,6 +26,7 @@ from .present import (
     home_steps,
     service_copy,
 )
+from .privacy_copy import fill_privacy_placeholders
 from .services import service_nav_items
 
 
@@ -180,6 +182,7 @@ class PrivacyView(TemplateView):
         ctx['crumbs'] = [{'label': 'Політика конфіденційності', 'url': ''}]
         ctx['hero_text'] = ctx['page'].hero_text
         ctx['lead_form'] = LeadForm()
+        ctx['privacy_body'] = mark_safe(fill_privacy_placeholders(ctx['page'].body))
         return ctx
 
 

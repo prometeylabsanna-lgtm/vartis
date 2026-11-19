@@ -59,6 +59,28 @@ class PublicUrlTests(TestCase):
         self.assertNotContains(response, 'Хрещатик')
         self.assertContains(response, 'Ігорівська')
 
+    def test_privacy_has_official_contacts_not_stub(self):
+        from src.pages.models_contacts import PrivacyPage
+        from src.pages.privacy_copy import apply_approved_privacy
+
+        apply_approved_privacy(PrivacyPage.load())
+        response = self.client.get(reverse('pages:privacy'))
+        self.assertNotContains(response, 'Тимчасовий текст')
+        self.assertNotContains(response, '[Email]')
+        self.assertNotContains(response, '[дата]')
+        self.assertContains(response, 'Редакція від 19 листопада 2026')
+        self.assertContains(response, 'info@vartis.in.ua')
+        self.assertContains(response, '+380 75 535 99 18')
+        self.assertContains(response, 'Ігорівська')
+
+    def test_cookie_banner_shows_until_consent(self):
+        response = self.client.get(reverse('pages:home'))
+        self.assertContains(response, 'data-cookie-banner')
+        self.assertContains(response, 'data-action="accept-cookies"')
+        self.client.cookies['vartis_cookie_consent'] = '1'
+        hidden = self.client.get(reverse('pages:home'))
+        self.assertNotContains(hidden, 'data-cookie-banner')
+
     def test_home_process_steps_have_no_final_period(self):
         response = self.client.get(reverse('pages:home'))
         self.assertContains(response, 'Зʼясовуємо, яку інформацію потрібно отримати та на які питання відповісти<')

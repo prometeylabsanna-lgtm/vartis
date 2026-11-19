@@ -1,0 +1,24 @@
+{% if request.COOKIES.vartis_cookie_consent != '1' %}
+<aside
+  class="cookie-banner"
+  data-cookie-banner
+  role="dialog"
+  aria-live="polite"
+  aria-labelledby="cookie-banner-title"
+>
+  <div class="cookie-banner__inner">
+    <div class="cookie-banner__copy">
+      <p id="cookie-banner-title" class="cookie-banner__title">Файли cookie</p>
+      <p class="cookie-banner__text">
+        Ми використовуємо файли cookie для аналітики відвідувань і роботи сайту.
+        Натискаючи «Прийняти», ви погоджуєтесь на їх використання.
+        Деталі — у <a href="{% url 'pages:privacy' %}">політиці конфіденційності</a>.
+      </p>
+    </div>
+    <div class="cookie-banner__actions">
+      <a class="btn btn--outline cookie-banner__link" href="{% url 'pages:privacy' %}">Детальніше</a>
+      <button type="button" class="btn btn--primary" data-action="accept-cookies">Прийняти</button>
+    </div>
+  </div>
+</aside>
+{% endif %}
