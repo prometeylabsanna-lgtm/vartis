@@ -75,7 +75,7 @@ def register_home_blocks() -> None:
 
     _reg("site", "footer_contact_phone_label", "Тел", label="Підпис телефону у футері", inline=True)
     _reg("site", "footer_contact_email_label", "Email", label="Підпис email у футері", inline=True)
-    _reg("site", "footer_contact_address_label", "Адр", label="Підпис адреси у футері", inline=True)
+    _reg("site", "footer_contact_address_label", "Адреса", label="Підпис адреси у футері", inline=True)
     _reg("site", "footer_contact_phone_placeholder", "[Телефон]", label="Плейсхолдер телефону", inline=True)
     _reg("site", "footer_contact_email_placeholder", "[Email]", label="Плейсхолдер email", inline=True)
     _reg(
