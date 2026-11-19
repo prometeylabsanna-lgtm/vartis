@@ -329,13 +329,6 @@
   color: var(--color-ink-soft);
 }
 
-.contacts-map {
-  width: 100%;
-  min-height: 280px;
-  border: 0;
-  border-radius: var(--radius-panel);
-}
-
 @media (min-width: 640px) {
   .process-box {
     min-height: 194px;

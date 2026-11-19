@@ -490,23 +490,6 @@
   line-height: 1.55;
 }
 
-.share-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 32px;
-}
-
-.share-btn {
-  height: 40px;
-  border-radius: var(--radius-chip);
-  border: 1px solid rgba(181, 139, 74, 0.55);
-  background: var(--color-white);
-  padding: 0 16px;
-  font-size: 14px;
-  color: var(--color-ink);
-}
-
 .case-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -534,94 +517,6 @@
   color: var(--color-ink-soft);
 }
 
-.team-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 24px;
-}
-
-.team-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  color: var(--color-white);
-}
-
-.team-card__photo {
-  aspect-ratio: 1;
-  border-radius: var(--radius-media);
-  background-color: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-.team-card__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.team-card__name {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 1.15;
-}
-
-.team-card__role {
-  color: var(--color-gold-light);
-  font-size: 15px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.stat-card__value {
-  font-weight: 700;
-  font-size: clamp(36px, 6vw, 56px);
-  line-height: 1;
-  color: var(--color-gold);
-  margin-bottom: 10px;
-}
-
-.stat-card__label {
-  font-size: 15px;
-  color: var(--color-ink-soft);
-}
-
-.contacts-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  border-radius: var(--radius-panel);
-  border: 1px solid rgba(181, 139, 74, 0.28);
-  padding: 28px 22px;
-}
-
-.contacts-card .site-footer__row {
-  border-color: rgba(18, 38, 58, 0.12);
-}
-
-.contacts-card .site-footer__row-value {
-  color: var(--color-ink);
-}
-
-.contacts-card .site-footer__row-value a {
-  color: var(--color-ink);
-}
-
-.contacts-card .site-footer__row-value a:hover {
-  color: var(--color-gold);
-}
-
-.contacts-map {
-  width: 100%;
-  min-height: 280px;
-  border: 0;
-  border-radius: var(--radius-media);
-}
-
 .privacy-body {
   max-width: 800px;
   display: flex;
@@ -634,28 +529,6 @@
 
 .privacy-body p {
   margin: 0;
-}
-
-.price-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 15px;
-}
-
-.price-table th,
-.price-table td {
-  text-align: left;
-  padding: 16px 12px;
-  border-bottom: 1px solid rgba(18, 38, 58, 0.12);
-  vertical-align: top;
-}
-
-.price-table th {
-  color: var(--color-gold);
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 @media (min-width: 640px) {
@@ -713,15 +586,6 @@
 
   .article-card__text {
     font-size: 18px;
-  }
-
-  .team-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 40px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .case-stats {
