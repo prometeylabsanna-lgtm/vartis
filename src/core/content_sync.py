@@ -81,7 +81,7 @@ def sync_editorial() -> None:
     for row in SiteBlock.objects.all():
         _normalize_obj(row, ('label', 'text_html', 'link_label'))
     for row in Article.objects.all():
-        _normalize_obj(row, ('title', 'excerpt', 'seo_title', 'seo_description', 'h1'))
+        _normalize_obj(row, ('title', 'excerpt', 'body', 'seo_title', 'seo_description', 'h1'))
     for row in ArticleBlock.objects.all():
         _normalize_obj(row, ('heading', 'text', 'list_items'))
 

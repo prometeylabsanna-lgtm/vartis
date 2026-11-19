@@ -46,6 +46,7 @@ def _blocks_from_js(body):
 
 
 def seed_articles():
+    from src.blog.body_html import article_blocks_to_html
     from src.blog.models import Article
     from src.core.slug_renames import ARTICLE_SLUGS, rename_slugs
 
@@ -70,6 +71,8 @@ def seed_articles():
         art.blocks.all().delete()
         for kwargs in _blocks_from_js(data['body']):
             ArticleBlock.objects.create(article=art, **kwargs)
+        art.body = article_blocks_to_html(art.blocks.all())
+        art.save(update_fields=['body'])
         if created:
             art.read_minutes = art.estimate_read_minutes()
             art.save(update_fields=['read_minutes'])

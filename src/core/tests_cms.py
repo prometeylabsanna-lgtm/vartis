@@ -45,6 +45,24 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('Колір тексту на баннері', body)
         self.assertIn('name="hero_text_color"', body)
         self.assertIn('name="hero_panel_opacity"', body)
+        self.assertIn('js/admin/cms_nested_tabs.js', body)
+        self.assertIn('css/admin/cms_tabs.css', body)
+        self.assertIn('js/admin/cms_tinymce.js', body)
+
+    def test_tinymce_and_tabs_assets_have_dark_contrast(self):
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parent / 'static' / 'js' / 'admin'
+        css = Path(__file__).resolve().parent / 'static' / 'css' / 'admin'
+        tinymce = (root / 'cms_tinymce.js').read_text(encoding='utf-8')
+        tabs_js = (root / 'cms_nested_tabs.js').read_text(encoding='utf-8')
+        tabs_css = (css / 'cms_tabs.css').read_text(encoding='utf-8')
+        self.assertIn('#f4efe6', tinymce)
+        self.assertIn('data-cms-tinymce-theme', tinymce)
+        self.assertIn('cmsheading', tinymce)
+        self.assertIn('cmsframe', tinymce)
+        self.assertIn('data-cms-tabs', tabs_js)
+        self.assertIn('nav[data-cms-tabs]', tabs_css)
 
     def test_style_admin_hides_hero_chrome_fields(self):
         from src.core.models_cms import PageStyle

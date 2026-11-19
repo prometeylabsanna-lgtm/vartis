@@ -173,11 +173,16 @@ class PublicUrlTests(TestCase):
 
     def test_cookie_banner_shows_until_consent(self):
         response = self.client.get(reverse('pages:home'))
-        self.assertContains(response, 'data-cookie-banner')
-        self.assertContains(response, 'data-action="accept-cookies"')
+        html = response.content.decode()
+        self.assertIn('data-cookie-banner', html)
+        self.assertIn('data-action="accept-cookies"', html)
+        self.assertIn('data-action="reset-cookies"', html)
+        self.assertNotRegex(html, r'<aside[^>]*data-cookie-banner[^>]*\bhidden\b')
         self.client.cookies['vartis_cookie_consent'] = '1'
-        hidden = self.client.get(reverse('pages:home'))
-        self.assertNotContains(hidden, 'data-cookie-banner')
+        hidden = self.client.get(reverse('pages:home')).content.decode()
+        self.assertIn('data-cookie-banner', hidden)
+        self.assertRegex(hidden, r'<aside[^>]*data-cookie-banner[^>]*\bhidden\b')
+        self.assertIn('data-action="reset-cookies"', hidden)
 
     def test_home_process_steps_have_no_final_period(self):
         response = self.client.get(reverse('pages:home'))

@@ -3,6 +3,14 @@
   border-color: rgba(181, 139, 74, 0.35);
 }
 
+html:not(.dark) .tox .tox-edit-area__iframe {
+  background: #ffffff;
+}
+
 html.dark .tox .tox-edit-area__iframe {
+  background: #0b1626;
+}
+
+html.dark .tox .tox-edit-area {
   background: #0b1626;
 }

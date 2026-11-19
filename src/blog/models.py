@@ -1,6 +1,10 @@
+import re
+
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+
+_STRIP_TAGS = re.compile(r"<[^>]+>")
 
 from src.core.fields import WebPImageField
 from src.core.models import SingletonModel
@@ -13,6 +17,7 @@ class Article(models.Model):
     published_at = models.DateField('Дата публікації')
     image = WebPImageField('Зображення', upload_to='blog/', blank=True)
     excerpt = models.TextField('Короткий опис')
+    body = models.TextField('Текст', blank=True)
     seo_title = models.CharField('SEO Title', max_length=200, blank=True)
     seo_description = models.TextField('SEO Description', blank=True)
     h1 = models.CharField('H1', max_length=300, blank=True)
@@ -48,10 +53,13 @@ class Article(models.Model):
 
     def estimate_read_minutes(self):
         words = len((self.excerpt or '').split())
-        for block in self.blocks.all():
-            words += len((block.heading or '').split())
-            words += len((block.text or '').split())
-            words += len((block.list_items or '').split())
+        body_text = _STRIP_TAGS.sub(' ', self.body or '')
+        words += len(body_text.split())
+        if not body_text:
+            for block in self.blocks.all():
+                words += len((block.heading or '').split())
+                words += len((block.text or '').split())
+                words += len((block.list_items or '').split())
         if not words:
             return 6
         return max(1, round(words / 180))
@@ -128,3 +136,10 @@ class BlogPage(SingletonModel):
 
     def __str__(self):
         return 'Сторінка блогу'
+
+
+class BlogArticleBanner(BlogPage):
+    class Meta:
+        proxy = True
+        verbose_name = 'Банер у статті'
+        verbose_name_plural = 'Банер у статті'

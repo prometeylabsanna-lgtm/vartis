@@ -85,3 +85,80 @@ html .bg-primary-500 {
   min-height: 44px;
   font-size: 16px;
 }
+
+div.border-b:has(> nav[data-cms-tabs]) {
+  border-bottom-width: 0;
+}
+
+nav[data-cms-tabs] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 1rem;
+  padding: 6px;
+  border: 1.5px solid rgba(181, 139, 74, 0.55);
+  border-radius: 0.75rem;
+  background: rgba(181, 139, 74, 0.08);
+  box-sizing: border-box;
+}
+
+nav[data-cms-tabs] > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1.5px solid rgba(181, 139, 74, 0.35);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  color: #12263a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+nav[data-cms-tabs] > a.active {
+  background: #b58b4a;
+  border-color: #b58b4a;
+  color: #ffffff;
+}
+
+nav[data-cms-tabs] > a.active::after {
+  content: none;
+  display: none;
+  height: 0;
+}
+
+html.dark nav[data-cms-tabs] {
+  background: rgba(11, 22, 38, 0.55);
+  border-color: rgba(181, 139, 74, 0.55);
+}
+
+html.dark nav[data-cms-tabs] > a {
+  background: #12263a;
+  color: #f4efe6;
+  border-color: rgba(181, 139, 74, 0.4);
+}
+
+html.dark nav[data-cms-tabs] > a.active {
+  background: #b58b4a;
+  border-color: #b58b4a;
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  nav[data-cms-tabs] {
+    width: 100%;
+  }
+
+  nav[data-cms-tabs] > a {
+    flex: 1 1 auto;
+    min-width: calc(50% - 8px);
+    font-size: 16px;
+  }
+}

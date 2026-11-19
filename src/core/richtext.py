@@ -8,10 +8,17 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 _ALLOWED = frozenset(
-    {'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'span'}
+    {
+        'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li',
+        'a', 'span', 'h2', 'h3', 'blockquote',
+    }
 )
 _TAG = re.compile(r'</?([a-z0-9]+)((?:\s[^>]*)?)>', re.IGNORECASE)
-_HAS_HTML = re.compile(r'</?(?:p|br|strong|b|em|i|u|ul|ol|li|a|span)\b', re.I)
+_HAS_HTML = re.compile(
+    r'</?(?:p|br|strong|b|em|i|u|ul|ol|li|a|span|h2|h3|blockquote)\b',
+    re.I,
+)
+_NOTE_CLASS = 'art-note'
 _ATTR = re.compile(r'([a-z0-9:-]+)\s*=\s*("([^"]*)"|\'([^\']*)\')', re.I)
 _STYLE_PROP = re.compile(
     r'^\s*(color|background-color|font-size|font-family|font-weight|text-decoration)\s*:\s*(.+)$',
@@ -58,6 +65,10 @@ def _rebuild_open(tag: str, attr_blob: str) -> str:
             style = _clean_style(value)
             if style:
                 attrs.append(f'style="{escape(style)}"')
+        elif tag == 'blockquote' and name == 'class':
+            classes = [token for token in value.split() if token == _NOTE_CLASS]
+            if classes:
+                attrs.append(f'class="{" ".join(classes)}"')
     extra = (' ' + ' '.join(attrs)) if attrs else ''
     if tag == 'br':
         return '<br>'

@@ -1,10 +1,10 @@
-{% if request.COOKIES.vartis_cookie_consent != '1' %}
 <aside
   class="cookie-banner"
   data-cookie-banner
   role="dialog"
   aria-live="polite"
   aria-labelledby="cookie-banner-title"
+  {% if request.COOKIES.vartis_cookie_consent == '1' %}hidden{% endif %}
 >
   <div class="cookie-banner__inner">
     <div class="cookie-banner__copy">
@@ -21,4 +21,3 @@
     </div>
   </div>
 </aside>
-{% endif %}

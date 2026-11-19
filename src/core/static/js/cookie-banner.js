@@ -3,6 +3,11 @@
 
   var COOKIE = 'vartis_cookie_consent';
 
+  function cookieSuffix() {
+    var secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    return '; Path=/; SameSite=Lax' + secure;
+  }
+
   function hasConsent() {
     return document.cookie.split(';').some(function (part) {
       return part.trim().indexOf(COOKIE + '=1') === 0;
@@ -10,8 +15,11 @@
   }
 
   function setConsent() {
-    var secure = window.location.protocol === 'https:' ? '; Secure' : '';
-    document.cookie = COOKIE + '=1; Max-Age=31536000; Path=/; SameSite=Lax' + secure;
+    document.cookie = COOKIE + '=1; Max-Age=31536000' + cookieSuffix();
+  }
+
+  function clearConsent() {
+    document.cookie = COOKIE + '=; Max-Age=0' + cookieSuffix();
   }
 
   function loadGtm() {
@@ -26,18 +34,43 @@
     document.head.appendChild(script);
   }
 
-  if (hasConsent()) {
-    loadGtm();
-    return;
+  var banner = document.querySelector('[data-cookie-banner]');
+
+  function showBanner() {
+    if (!banner) return;
+    banner.hidden = false;
+    banner.removeAttribute('hidden');
   }
 
-  var banner = document.querySelector('[data-cookie-banner]');
-  if (!banner) return;
-  var accept = banner.querySelector('[data-action="accept-cookies"]');
-  if (!accept) return;
-  accept.addEventListener('click', function () {
-    setConsent();
-    loadGtm();
+  function hideBanner() {
+    if (!banner) return;
     banner.hidden = true;
+  }
+
+  if (hasConsent()) {
+    hideBanner();
+    loadGtm();
+  } else {
+    showBanner();
+  }
+
+  if (banner) {
+    var accept = banner.querySelector('[data-action="accept-cookies"]');
+    if (accept) {
+      accept.addEventListener('click', function () {
+        setConsent();
+        loadGtm();
+        hideBanner();
+      });
+    }
+  }
+
+  document.querySelectorAll('[data-action="reset-cookies"]').forEach(function (el) {
+    el.addEventListener('click', function (event) {
+      event.preventDefault();
+      clearConsent();
+      window.__vartisGtmLoaded = false;
+      showBanner();
+    });
   });
 })();

@@ -45,6 +45,29 @@
   color: var(--color-ink-soft);
 }
 
+.privacy-cookie-reset-wrap {
+  margin: 0;
+}
+
+.privacy-cookie-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-field);
+  background: transparent;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 @media (max-width: 639px) {
   .privacy-section {
     padding: 64px 0;

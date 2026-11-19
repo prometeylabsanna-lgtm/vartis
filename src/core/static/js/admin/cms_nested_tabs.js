@@ -1,10 +1,6 @@
 (function () {
-  function groupTabs() {
-    var nav = document.querySelector(".tabs, .unfold-tabs, nav[role='tablist']");
-    if (!nav || nav.dataset.cmsGrouped) {
-      return;
-    }
-    var buttons = nav.querySelectorAll("a, button");
+  function shortenLabels(nav) {
+    var buttons = nav.querySelectorAll(":scope > a, :scope > button");
     var groups = {};
     buttons.forEach(function (btn) {
       var label = (btn.textContent || "").trim();
@@ -17,20 +13,29 @@
       groups[group] = groups[group] || [];
       groups[group].push({ btn: btn, sub: sub });
     });
-    var names = Object.keys(groups);
-    if (!names.length) {
-      return;
-    }
-    nav.dataset.cmsGrouped = "1";
-    names.forEach(function (name) {
+    Object.keys(groups).forEach(function (name) {
       groups[name].forEach(function (item) {
         item.btn.textContent = item.sub;
       });
     });
   }
+
+  function markTabNavs() {
+    document.querySelectorAll("form nav.flex.flex-col.items-center").forEach(function (nav) {
+      if (nav.querySelectorAll(":scope > a").length < 2) {
+        return;
+      }
+      nav.setAttribute("data-cms-tabs", "1");
+      if (!nav.dataset.cmsGrouped) {
+        nav.dataset.cmsGrouped = "1";
+        shortenLabels(nav);
+      }
+    });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", groupTabs);
+    document.addEventListener("DOMContentLoaded", markTabNavs);
   } else {
-    groupTabs();
+    markTabNavs();
   }
 })();

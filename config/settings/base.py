@@ -221,6 +221,11 @@ def _vartis_unfold_navigation():
                     'link': '/admin/blog/blogpage/',
                 },
                 {
+                    'title': 'Банер у статті',
+                    'icon': 'campaign',
+                    'link': '/admin/blog/blogarticlebanner/',
+                },
+                {
                     'title': 'Заявки',
                     'icon': 'mail',
                     'link': '/admin/leads/lead/',

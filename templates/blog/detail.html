@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_seo vartis_media %}
+{% load static vartis_seo vartis_media vartis_content %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/article-detail.css' %}">
@@ -38,6 +38,9 @@
       </aside>
 
       <article class="art-body">
+        {% if article.body %}
+        <div class="art-body__rich">{{ article.body|cms_rich }}</div>
+        {% else %}
         {% for block in article.blocks.all %}
         <div class="art-block">
           {% if block.block_type == 'h' %}
@@ -63,6 +66,7 @@
           {% endif %}
         </div>
         {% endfor %}
+        {% endif %}
 
         <div class="art-cta">
           <p class="art-cta__text">{{ blog_page.help_title }}</p>
