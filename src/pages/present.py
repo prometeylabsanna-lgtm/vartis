@@ -38,6 +38,20 @@ def home_steps(page):
     ]
 
 
+def home_directions(page):
+    from src.core.public_images import public_image_url
+
+    items = []
+    for item in page.directions.filter(is_visible=True):
+        items.append({
+            'title': item.title,
+            'card_text': item.text,
+            'href': item.href or '#',
+            'card_image_url': public_image_url(item.image),
+        })
+    return items
+
+
 def service_copy(page) -> dict:
     paragraphs = [item.text for item in page.scope_paragraphs.all()]
     if not paragraphs and page.scope_text:

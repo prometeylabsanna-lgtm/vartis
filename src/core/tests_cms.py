@@ -37,7 +37,9 @@ class CmsAdminSmokeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         body = response.content.decode()
         self.assertIn('cms-tinymce', body)
-        self.assertIn('cms-image', body)
+        self.assertIn('cms-image__preview', body)
+        self.assertIn('cms-image__thumb', body)
+        self.assertIn('/static/images/hero.webp', body)
         self.assertIn('Перший екран — SEO', body)
 
     def test_sidebar_lists_are_under_pages(self):

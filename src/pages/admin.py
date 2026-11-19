@@ -4,6 +4,7 @@ from django.db import models
 from unfold.admin import ModelAdmin, StackedInline
 from src.core.admin_guidelines import image_profile_for_key, text_limit_for_key
 from src.core.admin_site_content_widgets import (
+    CmsAdminIconWidget,
     CmsAdminTextInputWidget,
     CmsAdminTextareaWidget,
     CmsImageFieldWidget,
@@ -22,6 +23,7 @@ from .models import (
     AnalysisStep,
     AnalysisWhy,
     HomeAdvantage,
+    HomeDirection,
     HomePage,
     HomeProcessStep,
     ServiceAdvantage,
@@ -48,6 +50,13 @@ class _ParentPageMixin:
         if self.parent_field not in excluded:
             excluded.append(self.parent_field)
         return excluded
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == 'icon':
+            kwargs['widget'] = CmsAdminIconWidget()
+        elif isinstance(db_field, models.ImageField):
+            kwargs['widget'] = CmsImageFieldWidget()
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
 
 
 SERVICE_RICH_FIELDS = (
@@ -110,7 +119,7 @@ class ServicePageForm(forms.ModelForm):
             )
 
         for name, max_chars in SERVICE_TEXT_LIMITS.items():
-            if name not in self.fields:
+            if name == 'icon' or name not in self.fields:
                 continue
             field = self.fields[name]
             if isinstance(field.widget, forms.Textarea):
@@ -132,7 +141,10 @@ class ServicePageForm(forms.ModelForm):
             self.fields[name].widget = CmsImageFieldWidget(
                 hint=profile.hint,
                 preview_url=preview,
+                fallback_url='' if preview else '/static/images/hero.webp',
             )
+        if 'icon' in self.fields:
+            self.fields['icon'].widget = CmsAdminIconWidget()
             self.fields[name].help_text = profile.hint
 
 
@@ -239,6 +251,17 @@ class ServicePageAdmin(ModelAdmin):
             ),
         }),
     )
+
+
+@admin.register(HomeDirection)
+class HomeDirectionAdmin(_ParentPageMixin, ModelAdmin):
+    parent_model = HomePage
+    list_display = ('title', 'is_visible', 'order')
+    list_editable = ('is_visible', 'order')
+    list_filter = ('is_visible',)
+    ordering = ('order', 'id')
+    search_fields = ('title', 'text')
+    fields = ('title', 'text', 'image', 'href', 'is_visible', 'order')
 
 
 @admin.register(HomeAdvantage)

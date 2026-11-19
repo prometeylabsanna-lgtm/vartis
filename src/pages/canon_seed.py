@@ -133,6 +133,9 @@ def sync_home() -> None:
     if not page.process_steps.exists():
         for i, (num, title, text) in enumerate(_HOME_STEPS):
             HomeProcessStep.objects.create(page=page, number=num, title=title, text=text, order=i)
+    from src.pages.home_directions_seed import seed_home_directions
+
+    seed_home_directions(page)
 
 
 def sync_service(page: ServicePage, design: dict) -> None:

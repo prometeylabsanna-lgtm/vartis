@@ -1,6 +1,7 @@
 """Реєстрація proxy-секцій: поля моделі, вкладки Контент і SEO."""
 
 from django.contrib import admin
+from django.templatetags.static import static
 from django.db import models
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -9,6 +10,7 @@ from unfold.admin import ModelAdmin
 from src.core import cms_proxies
 from src.core.admin_site_content_widgets import (
     CmsAdminColorWidget,
+    CmsAdminIconWidget,
     CmsAdminImageWidget,
     CmsTinyMCEWidget,
 )
@@ -84,7 +86,10 @@ _SPECS = (
     (
         cms_proxies.AnalysisHeroSettings,
         "Перший екран",
-        ("hero_title", "hero_text", "hero_image", "cta_primary", "cta_secondary", "cta_secondary_href"),
+        (
+            "hero_title", "hero_text", "hero_image",
+            "cta_primary", "cta_secondary", "cta_secondary_href",
+        ),
         True,
     ),
     (
@@ -153,6 +158,15 @@ _SPECS = (
     (cms_proxies.PrivacyHeroSettings, "Перший екран", ("hero_title", "hero_text", "body"), True),
 )
 
+_IMAGE_FALLBACKS = {
+    ("HomeHeroSettings", "hero_image"): "images/hero.webp",
+    ("HomeMissionSettings", "mission_image"): "images/about-bg.webp",
+    ("AboutHeroSettings", "hero_image"): "images/about-bg.webp",
+    ("ServicesHeroSettings", "hero_image"): "images/hero.webp",
+    ("AnalysisHeroSettings", "hero_image"): "images/services/dir-1.webp",
+    ("ContactsHeroSettings", "hero_image"): "images/hero.webp",
+}
+
 _STYLE_FIELDS = (
     "background_color", "text_color", "accent_color", "background_image", "glass_enabled",
 )
@@ -183,7 +197,12 @@ class SectionAdmin(ModelAdmin):
         if isinstance(db_field, models.TextField):
             kwargs["widget"] = CmsTinyMCEWidget()
         elif isinstance(db_field, models.ImageField):
-            kwargs["widget"] = CmsAdminImageWidget()
+            fallback = _IMAGE_FALLBACKS.get((self.model.__name__, db_field.name), "")
+            kwargs["widget"] = CmsAdminImageWidget(
+                fallback_url=static(fallback) if fallback else "",
+            )
+        elif db_field.name == "icon":
+            kwargs["widget"] = CmsAdminIconWidget()
         elif db_field.name.endswith("color"):
             kwargs["widget"] = CmsAdminColorWidget()
         return super().formfield_for_dbfield(db_field, request, **kwargs)

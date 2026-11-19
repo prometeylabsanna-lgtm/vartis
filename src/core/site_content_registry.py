@@ -32,6 +32,14 @@ _SITE_SECTION_GROUPS: dict[str, str] = {
 _PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
     "home": (
         (
+            "services",
+            {
+                "title": "Картки напрямів",
+                "icon": "grid_view",
+                "link": "/admin/pages/homedirection/",
+            },
+        ),
+        (
             "advantages",
             {
                 "title": "Картки переваг",

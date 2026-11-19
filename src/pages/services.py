@@ -1,7 +1,6 @@
 from django.templatetags.static import static
 from django.urls import reverse
 
-from .design_copy import HOME
 from .models import AnalysisPage, ServicePage
 
 
@@ -102,15 +101,6 @@ def service_nav_items():
     for key, item in by_key.items():
         if key not in used:
             ordered.append(item)
-    return ordered
-
-
-def home_direction_items():
-    by_key = {item['key']: item for item in service_nav_items()}
-    ordered = []
-    for key in HOME['directions_order']:
-        if key in by_key:
-            ordered.append(by_key[key])
     return ordered
 
 

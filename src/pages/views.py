@@ -16,8 +16,16 @@ from .models import (
     ServicesIndex,
 )
 from .models_deep import DEEP_SLUG, DeepAnalytics
-from .present import analysis_copy, deep_copy, home_advantages, home_copy, home_steps, service_copy
-from .services import home_direction_items, service_nav_items
+from .present import (
+    analysis_copy,
+    deep_copy,
+    home_advantages,
+    home_copy,
+    home_directions,
+    home_steps,
+    service_copy,
+)
+from .services import service_nav_items
 
 
 def _crumbs_service(label):
@@ -39,7 +47,7 @@ class HomeView(TemplateView):
         page = HomePage.load()
         ctx['page'] = page
         ctx['copy'] = home_copy(page)
-        ctx['services'] = home_direction_items()
+        ctx['services'] = home_directions(page)
         ctx['advantages'] = home_advantages(page)
         ctx['process_steps'] = home_steps(page)
         ctx['articles'] = Article.objects.filter(is_published=True)[:3]

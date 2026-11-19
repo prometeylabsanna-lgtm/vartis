@@ -1,8 +1,11 @@
 """CMS widgets для Unfold admin."""
 
+import json
+
 from django.contrib.admin.widgets import AdminTextareaWidget, AdminTextInputWidget
 from django.forms import Media, Widget
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from unfold.widgets import INPUT_CLASSES, TEXTAREA_CLASSES, UnfoldAdminFileFieldWidget
 
 CMS_COUNTER_MEDIA = Media(
@@ -55,40 +58,31 @@ class CmsAdminTextareaWidget(AdminTextareaWidget):
 
 
 class CmsImageFieldWidget(UnfoldAdminFileFieldWidget):
-    """Upload + превʼю поточного зображення + підказка розміру/ваги."""
+    """Upload, велике превʼю і мініатюра поточного або запасного фото."""
 
-    def __init__(self, attrs=None, *, hint: str = "", preview_url: str = ""):
+    template_name = "unfold/widgets/cms_image_input.html"
+
+    def __init__(self, attrs=None, *, hint: str = "", preview_url: str = "", fallback_url: str = ""):
         self.hint = hint or ""
         self.preview_url = preview_url or ""
+        self.fallback_url = fallback_url or ""
         super().__init__(attrs=attrs)
 
-    def render(self, name, value, attrs=None, renderer=None):
-        attrs = {} if attrs is None else dict(attrs)
-        # Щоб Unfold не малював друге превʼю поруч із нашим.
-        if attrs.get("accept") == "image/*":
-            attrs["accept"] = "image/png,image/jpeg,image/webp,image/svg+xml"
-        html = super().render(name, value, attrs=attrs, renderer=renderer)
-        preview = ""
-        url = self.preview_url
-        if not url and value and hasattr(value, "url"):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        uploaded = ""
+        if value is not None and getattr(value, "name", ""):
             try:
-                url = value.url
+                uploaded = value.url
             except Exception:
-                url = ""
-        if url:
-            preview = format_html(
-                '<div class="site-content-editor__img-preview">'
-                '<img src="{}" alt="" width="240" height="160" loading="lazy" decoding="async">'
-                "</div>",
-                url,
-            )
-        hint = ""
-        if self.hint:
-            hint = format_html(
-                '<p class="site-content-editor__img-hint">{}</p>',
-                self.hint,
-            )
-        return format_html("{}{}{}", preview, hint, html)
+                uploaded = ""
+        url = uploaded or self.preview_url or self.fallback_url
+        widget = context["widget"]
+        widget["preview_url"] = url
+        widget["preview_fallback"] = bool(url and not uploaded)
+        widget["hint"] = self.hint
+        widget["attrs"]["accept"] = "image/*"
+        return context
 
 
 class CmsTinyMCEWidget(AdminTextareaWidget):
@@ -144,19 +138,38 @@ class CmsAdminColorWidget(Widget):
         )
 
 
-class CmsAdminImageWidget(UnfoldAdminFileFieldWidget):
+class CmsAdminImageWidget(CmsImageFieldWidget):
+    pass
+
+
+def _icon_markup(name: str) -> str:
+    from src.core.templatetags.vartis_icons import ICONS
+
+    data = ICONS.get(name or "")
+    if not data:
+        return ""
+    return (
+        f'<span class="cms-icon__pic"><svg width="28" height="28" viewBox="{data["viewBox"]}" '
+        f'fill="none" aria-hidden="true">{data["body"]}</svg></span>'
+    )
+
+
+class CmsAdminIconWidget(CmsAdminTextInputWidget):
+    """Поле ключа іконки з малюнком поруч."""
+
     def render(self, name, value, attrs=None, renderer=None):
-        url = ""
-        if value and getattr(value, "url", ""):
-            url = value.url
-        preview = format_html(
-            '<img class="cms-image__preview" src="{}" alt="" {}>',
-            url,
-            "" if url else "hidden",
-        )
+        from src.core.templatetags.vartis_icons import ICONS
+
+        picture = mark_safe(_icon_markup(value or ""))
         control = super().render(name, value, attrs, renderer)
+        payload = mark_safe(
+            '<script type="application/json" id="cms-icon-data">'
+            + json.dumps(ICONS).replace("<", "\\u003c")
+            + "</script>"
+        )
         return format_html(
-            '<div class="cms-image" data-cms-image>{}{}</div>',
-            preview,
+            '<div class="cms-icon" data-cms-icon>{}{}{}</div>',
+            picture,
             control,
+            payload,
         )

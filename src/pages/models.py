@@ -34,7 +34,7 @@ from src.pages.models_deep import (
     DeepSnippet,
     DeepStep,
 )
-from src.pages.models_home import HomeAdvantage, HomePage, HomeProcessStep
+from src.pages.models_home import HomeAdvantage, HomeDirection, HomePage, HomeProcessStep
 from src.pages.models_services import (
     SERVICE_SLUGS,
     ServiceAdvantage,
@@ -51,6 +51,7 @@ __all__ = [
     'DEEP_SLUG',
     'HomePage',
     'HomeAdvantage',
+    'HomeDirection',
     'HomeProcessStep',
     'AboutPage',
     'AboutPrinciple',

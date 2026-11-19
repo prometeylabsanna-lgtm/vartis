@@ -66,3 +66,21 @@ class HomeProcessStep(models.Model):
 
     def __str__(self):
         return f'{self.number} {self.title}'
+
+
+class HomeDirection(models.Model):
+    page = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name='directions')
+    title = models.CharField('Заголовок', max_length=200)
+    text = models.TextField('Текст', blank=True)
+    image = WebPImageField('Зображення', upload_to='pages/home/directions/', blank=True)
+    href = models.CharField('Посилання', max_length=200, blank=True)
+    is_visible = models.BooleanField('Показувати на головній', default=True)
+    order = models.PositiveIntegerField('Порядок', default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Напрям на головній'
+        verbose_name_plural = 'Напрями на головній'
+
+    def __str__(self):
+        return self.title

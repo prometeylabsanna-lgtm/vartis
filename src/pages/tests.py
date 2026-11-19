@@ -34,6 +34,20 @@ class DeepCopyTests(TestCase):
         response = self.client.get('/')
         self.assertContains(response, 'ризики на переваги')
         self.assertContains(response, 'Залишити заявку')
+        self.assertContains(response, 'Експрес-перевірка контрагентів — VI Analysis')
+        self.assertContains(response, 'Комплексна допомога бізнесу')
+        self.assertContains(response, 'Консалтинг')
+        self.assertContains(response, 'Глибока аналітика')
+
+    def test_home_hides_invisible_direction(self):
+        from src.pages.models import HomeDirection
+
+        sync_home()
+        card = HomeDirection.objects.get(title='Консалтинг')
+        card.is_visible = False
+        card.save(update_fields=['is_visible'])
+        response = self.client.get('/')
+        self.assertNotContains(response, 'Експертна підтримка бізнесу в питаннях аналізу ситуацій')
 
     def test_seed_keeps_custom_home_title(self):
         page = HomePage.load()
