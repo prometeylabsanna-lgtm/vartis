@@ -62,7 +62,7 @@
     id="main-content"
     class="page-shell{% if glass %} page-shell--glass{% endif %}"
     data-theme="{{ shell_theme|default:'light' }}"
-    style="--page-bg: {{ shell_bg|default:'#ffffff' }}; --page-text: {{ shell_text|default:'#12263a' }}; --page-accent: {{ shell_accent|default:'#b58b4a' }};{% if hero_fg %} --hero-fg: {{ hero_fg }};{% endif %}{% if hero_panel_bg %} --hero-panel-bg: {{ hero_panel_bg }};{% endif %}{% if background_image %} --page-bg-image: url('{{ background_image }}');{% endif %}"
+    style="--page-bg: {{ shell_bg|default:'#ffffff' }}; --page-text: {{ shell_text|default:'#12263a' }}; --page-accent: {{ shell_accent|default:'#b58b4a' }};{% if hero_fg %} --hero-fg-set: {{ hero_fg }};{% endif %}{% if hero_fg_muted %} --hero-fg-muted-set: {{ hero_fg_muted }};{% endif %}{% if hero_panel_bg %} --hero-panel-bg-set: {{ hero_panel_bg }};{% endif %}{% if background_image %} --page-bg-image: url('{{ background_image }}');{% endif %}"
   >
     {% block content %}{% endblock %}
   </main>

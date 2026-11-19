@@ -1,7 +1,15 @@
 .hero {
+  /* Хром лише з --hero-*-set (Перший екран → Баннер), не з --page-text. */
+  --hero-fg: var(--hero-fg-set, #ffffff);
+  --hero-fg-muted: var(--hero-fg-muted-set, rgba(255, 255, 255, 0.75));
+  --hero-panel-bg: var(--hero-panel-bg-set, rgba(255, 255, 255, 0.1));
+  --page-bg: var(--color-dark);
+  --page-text: var(--hero-fg);
+  --color-ink: #12263a;
   position: relative;
   min-height: calc(100svh - 150px);
-  background-color: var(--page-bg, var(--color-dark));
+  background-color: var(--color-dark);
+  color: var(--hero-fg);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -24,7 +32,7 @@
 }
 
 .hero--home {
-  background-color: var(--page-bg, var(--color-dark));
+  background-color: var(--color-dark);
   background-image: url("../images/hero.png");
   background-position: 54.098% 50%;
   background-size: cover;
@@ -52,7 +60,8 @@
   min-width: 0;
   margin: 0 auto;
   border-radius: var(--radius-panel);
-  background: var(--hero-panel-bg, rgba(255, 255, 255, 0.1));
+  background: var(--hero-panel-bg);
+  color: var(--hero-fg);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   padding: 32px 24px;
@@ -71,11 +80,11 @@
   gap: 10px;
   font-size: 14px;
   line-height: 1;
-  color: var(--hero-fg, rgba(255, 255, 255, 0.75));
+  color: var(--hero-fg-muted);
 }
 
 .hero__crumbs a {
-  color: var(--hero-fg, rgba(255, 255, 255, 0.75));
+  color: var(--hero-fg-muted);
   text-decoration: none;
 }
 
@@ -110,7 +119,7 @@
   font-weight: 600;
   font-size: clamp(28px, 8vw, 36px);
   line-height: 1.05;
-  color: var(--hero-fg, var(--color-white));
+  color: var(--hero-fg);
   text-wrap: balance;
   overflow-wrap: break-word;
 }
@@ -126,7 +135,7 @@
   min-width: 0;
   font-size: var(--fs-body);
   line-height: 1.55;
-  color: var(--hero-fg, var(--color-white));
+  color: var(--hero-fg);
   overflow-wrap: break-word;
 }
 

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from src.core.block_defaults import get_block_default
 from src.core.cms_context import get_site_blocks
-from src.core.models_cms import PageStyle
 from src.core.page_styles import resolve_page_style
 
 
@@ -30,6 +29,7 @@ def _hex_luminance(color: str) -> float:
 
 
 def apply_page_shell(ctx: dict, page_key: str) -> None:
+    """Оформлення — контент під баннером. Хром баннера — окремі hero_* поля."""
     style = resolve_page_style(page_key)
     bg = style.get("--page-bg", "") or ""
     ctx["page_key"] = page_key
@@ -40,11 +40,9 @@ def apply_page_shell(ctx: dict, page_key: str) -> None:
     ctx["shell_bg"] = bg
     ctx["shell_text"] = style.get("--page-text", "")
     ctx["shell_accent"] = style.get("--page-accent", "")
-    text = (style.get("--page-text") or PageStyle.DEFAULT_TEXT).strip()
-    ctx["hero_fg"] = text
-    ctx["hero_panel_bg"] = (
-        "rgba(255, 255, 255, 0.82)" if _hex_luminance(text) < 0.45 else ""
-    )
+    ctx["hero_fg"] = style.get("hero_text") or ""
+    ctx["hero_fg_muted"] = style.get("hero_text_muted") or ""
+    ctx["hero_panel_bg"] = style.get("hero_panel_rgba") or ""
     ctx["seo_title"] = block_value(page_key, "seo_title")
     ctx["seo_description"] = block_value(page_key, "seo_description")
 

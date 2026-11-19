@@ -3,9 +3,17 @@
 from __future__ import annotations
 
 from django.core.cache import cache
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from src.core.fields import WebPImageField
+from src.core.hero_chrome import (
+    DEFAULT_HERO_OPACITY as HERO_OPACITY_DEFAULT,
+    DEFAULT_HERO_PANEL as HERO_PANEL_DEFAULT,
+    DEFAULT_HERO_TEXT as HERO_TEXT_DEFAULT,
+    clamp_opacity,
+    hex_to_rgba,
+)
 
 SITE_BLOCKS_CACHE_KEY = 'vartis_site_blocks_v1'
 
@@ -73,6 +81,9 @@ class PageStyle(models.Model):
     DEFAULT_BACKGROUND = '#ffffff'
     DEFAULT_TEXT = '#12263a'
     DEFAULT_ACCENT = '#b58b4a'
+    DEFAULT_HERO_TEXT = HERO_TEXT_DEFAULT
+    DEFAULT_HERO_PANEL = HERO_PANEL_DEFAULT
+    DEFAULT_HERO_OPACITY = HERO_OPACITY_DEFAULT
 
     page = models.CharField(
         'Сторінка',
@@ -104,6 +115,24 @@ class PageStyle(models.Model):
         blank=True,
     )
     glass_enabled = models.BooleanField('Скло (glass)', default=False)
+    hero_text_color = models.CharField(
+        'Колір тексту на баннері',
+        max_length=32,
+        blank=True,
+        help_text='Лише баннер. Порожнє — білий як у макеті.',
+    )
+    hero_panel_color = models.CharField(
+        'Колір скла баннера',
+        max_length=32,
+        blank=True,
+        help_text='Лише баннер. Порожнє — біле скло макета.',
+    )
+    hero_panel_opacity = models.PositiveSmallIntegerField(
+        'Прозорість скла, %',
+        default=DEFAULT_HERO_OPACITY,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        help_text='10 — скло як у макеті. 80+ виглядає як суцільна панель.',
+    )
 
     class Meta:
         ordering = ['page']
@@ -132,6 +161,24 @@ class PageStyle(models.Model):
     @property
     def effective_accent(self) -> str:
         return (self.accent_color or '').strip() or self.DEFAULT_ACCENT
+
+    @property
+    def effective_hero_text(self) -> str:
+        return (self.hero_text_color or '').strip() or self.DEFAULT_HERO_TEXT
+
+    @property
+    def effective_hero_panel(self) -> str:
+        return (self.hero_panel_color or '').strip() or self.DEFAULT_HERO_PANEL
+
+    @property
+    def effective_hero_opacity(self) -> int:
+        return clamp_opacity(self.hero_panel_opacity)
+
+    def hero_panel_rgba(self) -> str:
+        return hex_to_rgba(self.effective_hero_panel, self.effective_hero_opacity)
+
+    def hero_text_muted_rgba(self) -> str:
+        return hex_to_rgba(self.effective_hero_text, 75, fallback=self.DEFAULT_HERO_TEXT)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

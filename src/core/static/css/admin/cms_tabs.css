@@ -79,3 +79,9 @@ html .bg-primary-600,
 html .bg-primary-500 {
   color: #ffffff;
 }
+
+.cms-hero-opacity {
+  max-width: 8rem;
+  min-height: 44px;
+  font-size: 16px;
+}

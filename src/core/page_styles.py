@@ -2,7 +2,19 @@
 
 from __future__ import annotations
 
+from src.core.hero_chrome import hex_to_rgba
 from src.core.models import PageStyle, SiteBlock
+
+
+def _default_hero() -> dict[str, str]:
+    return {
+        "hero_text": PageStyle.DEFAULT_HERO_TEXT,
+        "hero_text_muted": hex_to_rgba(PageStyle.DEFAULT_HERO_TEXT, 75),
+        "hero_panel_rgba": hex_to_rgba(
+            PageStyle.DEFAULT_HERO_PANEL,
+            PageStyle.DEFAULT_HERO_OPACITY,
+        ),
+    }
 
 
 def resolve_page_style(page: str) -> dict[str, str]:
@@ -19,6 +31,7 @@ def resolve_page_style(page: str) -> dict[str, str]:
             "glass_enabled": "0",
             "background_image_url": "",
             "raw_text": "",
+            **_default_hero(),
         }
     bg_url = ""
     if row.background_image:
@@ -33,6 +46,9 @@ def resolve_page_style(page: str) -> dict[str, str]:
         "glass_enabled": "1" if row.glass_enabled else "0",
         "background_image_url": bg_url,
         "raw_text": (row.text_color or "").strip(),
+        "hero_text": row.effective_hero_text,
+        "hero_text_muted": row.hero_text_muted_rgba(),
+        "hero_panel_rgba": row.hero_panel_rgba(),
     }
 
 

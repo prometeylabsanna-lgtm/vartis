@@ -41,6 +41,23 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('cms-image__thumb', body)
         self.assertIn('/static/images/hero.webp', body)
         self.assertIn('Перший екран — SEO', body)
+        self.assertIn('Перший екран — Баннер', body)
+        self.assertIn('Колір тексту на баннері', body)
+        self.assertIn('name="hero_text_color"', body)
+        self.assertIn('name="hero_panel_opacity"', body)
+
+    def test_style_admin_hides_hero_chrome_fields(self):
+        from src.core.models_cms import PageStyle
+
+        style = PageStyle.for_page('about')
+        response = self.client.get(
+            f'/admin/core/aboutstylesettings/{style.pk}/change/',
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        self.assertNotIn('Колір тексту на баннері', body)
+        self.assertNotIn('name="hero_text_color"', body)
+        self.assertNotIn('name="hero_panel_opacity"', body)
 
     def test_sidebar_lists_are_under_pages(self):
         from src.core.site_content_registry import build_content_sidebar_groups

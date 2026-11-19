@@ -14,6 +14,7 @@ from src.core.admin_site_content_widgets import (
     CmsAdminImageWidget,
     CmsTinyMCEWidget,
 )
+from src.core.admin_hero_chrome import HERO_PAGE, HeroChromeAdminMixin
 from src.core.models_cms import PageStyle
 
 _SEO = ("seo_title", "seo_description", "h1")
@@ -229,11 +230,20 @@ class SectionAdmin(ModelAdmin):
         return redirect(url)
 
 
+class HeroSectionAdmin(HeroChromeAdminMixin, SectionAdmin):
+    pass
+
+
 class StyleSectionAdmin(SectionAdmin):
     tab_title = "Оформлення"
     section_fields = _STYLE_FIELDS
     style_page = "home"
-    exclude = ("glass_enabled",)
+    exclude = (
+        "glass_enabled",
+        "hero_text_color",
+        "hero_panel_color",
+        "hero_panel_opacity",
+    )
 
     def get_fields(self, request, obj=None):
         return list(self.section_fields)
@@ -262,10 +272,14 @@ def register_site_content_section_admins(site=None):
     for model, tab, fields, seo in _SPECS:
         if admin_site.is_registered(model):
             continue
+        is_hero = tab == "Перший екран" and model.__name__ in HERO_PAGE
+        attrs = {"tab_title": tab, "section_fields": fields, "with_seo": seo}
+        if is_hero:
+            attrs["hero_page"] = HERO_PAGE[model.__name__]
         admin_site.register(model, type(
             f"{model.__name__}Admin",
-            (SectionAdmin,),
-            {"tab_title": tab, "section_fields": fields, "with_seo": seo},
+            (HeroSectionAdmin if is_hero else SectionAdmin,),
+            attrs,
         ))
     for name, page in cms_proxies.STYLE_PAGE.items():
         model = getattr(cms_proxies, name)

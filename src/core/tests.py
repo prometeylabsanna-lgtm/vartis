@@ -21,16 +21,64 @@ class FooterDeveloperLinkTests(TestCase):
 
 
 class PageStyleHeroTests(TestCase):
-    def test_hero_uses_page_text_color(self):
+    """Оформлення не фарбує баннер. Хром — окремі hero_* поля."""
+
+    def _assert_hero_isolated_from_page_text(self, html: str):
+        self.assertIn('hero__panel', html)
+        self.assertIn('--hero-fg-set:', html)
+        self.assertIn('--hero-panel-bg-set:', html)
+        self.assertNotIn('rgba(255, 255, 255, 0.82)', html)
+        if '--page-text: #12263a' in html:
+            self.assertNotIn('--hero-fg-set: #12263a', html)
+
+    def test_page_style_does_not_repaint_hero(self):
         from src.core.models_cms import PageStyle
 
         PageStyle.objects.update_or_create(
-            page='home',
-            defaults={'text_color': '#f6f0e6', 'background_color': '#0b1626', 'accent_color': '#b58b4a'},
+            page='about',
+            defaults={
+                'text_color': '#12263a',
+                'background_color': '#ffffff',
+                'accent_color': '#b58b4a',
+            },
         )
-        html = self.client.get(reverse('pages:home')).content.decode()
-        self.assertIn('--hero-fg: #f6f0e6', html)
+        html = self.client.get(reverse('pages:about')).content.decode()
+        self.assertIn('--page-text: #12263a', html)
+        self.assertIn('--page-bg: #ffffff', html)
         self.assertIn('--page-accent: #b58b4a', html)
+        self.assertIn('hero--shade', html)
+        self.assertIn('--hero-fg-set: #ffffff', html)
+        self.assertIn('--hero-panel-bg-set: rgba(255, 255, 255, 0.1)', html)
+        self._assert_hero_isolated_from_page_text(html)
+
+    def test_hero_chrome_fields_paint_banner_only(self):
+        from src.core.models_cms import PageStyle
+
+        PageStyle.objects.update_or_create(
+            page='about',
+            defaults={
+                'text_color': '#12263a',
+                'background_color': '#ffffff',
+                'hero_text_color': '#f4e6c3',
+                'hero_panel_color': '#0b1626',
+                'hero_panel_opacity': 40,
+            },
+        )
+        html = self.client.get(reverse('pages:about')).content.decode()
+        self.assertIn('--page-text: #12263a', html)
+        self.assertIn('--hero-fg-set: #f4e6c3', html)
+        self.assertIn('--hero-panel-bg-set: rgba(11, 22, 38, 0.4)', html)
+
+    def test_inner_heroes_stay_glass_with_default_style(self):
+        from src.pages.cms import apply_page_shell
+
+        for url_name in ('pages:about', 'pages:services'):
+            html = self.client.get(reverse(url_name)).content.decode()
+            self._assert_hero_isolated_from_page_text(html)
+        ctx = {}
+        apply_page_shell(ctx, 'about')
+        self.assertEqual(ctx['hero_fg'], '#ffffff')
+        self.assertEqual(ctx['hero_panel_bg'], 'rgba(255, 255, 255, 0.1)')
 
 
 class PublicUrlTests(TestCase):
