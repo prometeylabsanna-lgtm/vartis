@@ -134,14 +134,17 @@
 }
 
 .site-footer__contacts {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  min-width: 0;
 }
 
 .site-footer__row {
   display: grid;
-  grid-template-columns: minmax(40px, max-content) minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  column-gap: 12px;
+  align-items: start;
   padding: 14px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
@@ -156,12 +159,15 @@
   letter-spacing: 0.08em;
   color: var(--color-gold);
   padding-top: 3px;
+  white-space: nowrap;
 }
 
 .site-footer__row-value {
+  min-width: 0;
   font-weight: 500;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.85);
+  overflow-wrap: anywhere;
 }
 
 .site-footer__row-value.is-placeholder {
