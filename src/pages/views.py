@@ -63,6 +63,22 @@ class AboutView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         page = AboutPage.load()
         ctx['page'] = page
+        # #region agent log
+        from src.core.middleware_debug_session import _dbg
+
+        _dbg(
+            'C',
+            'views.py:AboutView',
+            'about related counts',
+            {
+                'intro_len': len(page.intro_text or ''),
+                'principles': page.principles.count(),
+                'team': page.team.count(),
+                'intro_title': page.intro_title,
+                'principles_title': page.principles_title,
+            },
+        )
+        # #endregion
         ctx['crumbs'] = [{'label': 'Про компанію', 'url': ''}]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
