@@ -6,7 +6,6 @@ from django.core.files import File
 from django.core.management.base import BaseCommand
 
 from src.blog.models import Article, ArticleBlock
-from src.cases.models import CaseBlock, CaseStat, CaseStudy
 from src.core.models import SiteSettings
 from src.core.seo_copy import SEO, SERVICE_SEO
 from src.pages.models import (
@@ -62,7 +61,6 @@ class Command(BaseCommand):
         self.seed_analysis()
         self.seed_contacts_privacy()
         self.seed_articles()
-        self.seed_cases()
         from django.core.management import call_command
         call_command('seed_site_blocks')
         from src.pages.canon_seed import sync_all
@@ -613,7 +611,3 @@ class Command(BaseCommand):
     def seed_articles(self):
         from .seed_content_2 import seed_articles
         seed_articles()
-
-    def seed_cases(self):
-        from .seed_content_2 import seed_cases
-        seed_cases()

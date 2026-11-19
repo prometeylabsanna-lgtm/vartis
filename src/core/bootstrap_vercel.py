@@ -60,7 +60,6 @@ def ensure_demo_superuser() -> None:
 
 
 def _demo_content_snapshot():
-    from src.cases.models import CaseStudy
     from src.pages.models import AboutPrinciple, HomePage, ServicePage
     from src.pages.models_about import AboutPage
     from src.pages.models_contacts import PrivacyPage
@@ -72,7 +71,6 @@ def _demo_content_snapshot():
         'principle_count': AboutPrinciple.objects.count(),
         'intro_len': len(about.intro_text or ''),
         'privacy_len': len(PrivacyPage.load().body or ''),
-        'case_count': CaseStudy.objects.count(),
     }
 
 

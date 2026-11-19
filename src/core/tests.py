@@ -22,9 +22,38 @@ class FooterDeveloperLinkTests(TestCase):
 
 class PublicUrlTests(TestCase):
     def test_translit_paths(self):
-        self.assertEqual(reverse('cases:list'), '/keisy/')
         self.assertEqual(reverse('pages:about'), '/pro-kompaniiu/')
         self.assertEqual(reverse('pages:privacy'), '/polityka-konfidentsiinosti/')
+
+    def test_cases_catalog_is_removed(self):
+        home = self.client.get(reverse('pages:home'))
+        self.assertNotContains(home, 'href="/keisy/"')
+        self.assertNotContains(home, '>Кейси<')
+        listing = self.client.get('/keisy/')
+        self.assertEqual(listing.status_code, 404)
+        detail = self.client.get('/keisy/nelehalni-pidaktsyzni-tovary/')
+        self.assertEqual(detail.status_code, 404)
+        sitemap = self.client.get('/sitemap.xml').content.decode()
+        self.assertNotIn('/keisy/', sitemap)
+        llms = self.client.get('/llms.txt').content.decode()
+        self.assertNotIn('/keisy/', llms)
+        self.assertNotIn('Кейси', llms)
+        from django.contrib.auth import get_user_model
+
+        from config.settings.base import _vartis_unfold_navigation
+
+        sidebar = str(_vartis_unfold_navigation())
+        self.assertNotIn('Кейси', sidebar)
+        self.assertNotIn('/admin/cases/', sidebar)
+        user_model = get_user_model()
+        admin_user = user_model.objects.create_superuser(
+            'cases-admin', 'cases-admin@example.com', 'secret-pass',
+        )
+        self.client.force_login(admin_user)
+        admin_list = self.client.get('/admin/cases/casestudy/')
+        self.assertEqual(admin_list.status_code, 404)
+        admin_page = self.client.get('/admin/cases/casespage/')
+        self.assertEqual(admin_page.status_code, 404)
 
     def test_contacts_show_official_details_without_telegram_number(self):
         response = self.client.get(reverse('pages:contacts'))
@@ -106,3 +135,4 @@ class SitemapTests(TestCase):
         self.assertIn('<changefreq>yearly</changefreq>', body)
         self.assertIn('<lastmod>2024-03-02</lastmod>', body)
         self.assertNotIn('/keysy/', body)
+        self.assertNotIn('/keisy/', body)

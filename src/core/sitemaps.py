@@ -2,7 +2,6 @@ from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 from src.blog.models import Article
-from src.cases.models import CaseStudy
 from src.pages.models import ServicePage
 
 
@@ -21,7 +20,6 @@ class StaticSitemap(Sitemap):
             ('pages:about', 0.7),
             ('pages:contacts', 0.7),
             ('blog:list', 0.6),
-            ('cases:list', 0.6),
             ('pages:privacy', 0.3),
         ]
 
@@ -54,20 +52,8 @@ class ArticleSitemap(Sitemap):
         return obj.updated_at
 
 
-class CaseSitemap(Sitemap):
-    changefreq = 'weekly'
-    priority = 0.5
-
-    def items(self):
-        return CaseStudy.objects.filter(is_published=True)
-
-    def location(self, obj):
-        return reverse('cases:detail', kwargs={'slug': obj.slug})
-
-
 sitemaps = {
     'static': StaticSitemap,
     'services': ServiceSitemap,
     'articles': ArticleSitemap,
-    'cases': CaseSitemap,
 }

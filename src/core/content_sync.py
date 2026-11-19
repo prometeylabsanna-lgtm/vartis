@@ -5,13 +5,11 @@ from __future__ import annotations
 import re
 
 from src.blog.models import Article, ArticleBlock
-from src.cases.models import CaseBlock, CaseStudy
 from src.core.contact_defaults import apply_official_contacts
 from src.core.models import SiteSettings
 from src.core.models_cms import SiteBlock
 from src.core.slug_renames import (
     ARTICLE_SLUGS,
-    CASE_SLUGS,
     SERVICE_SLUGS,
     rename_slugs,
 )
@@ -64,13 +62,11 @@ def _normalize_queryset(model) -> None:
 
 def sync_editorial() -> None:
     rename_slugs(Article, ARTICLE_SLUGS)
-    rename_slugs(CaseStudy, CASE_SLUGS)
     rename_slugs(ServicePage, SERVICE_SLUGS)
 
-    from src.core.management.commands.seed_content_2 import seed_articles, seed_cases
+    from src.core.management.commands.seed_content_2 import seed_articles
 
     seed_articles()
-    seed_cases()
 
     settings_row = SiteSettings.objects.filter(pk=1).first()
     if settings_row is not None:
@@ -88,10 +84,6 @@ def sync_editorial() -> None:
         _normalize_obj(row, ('title', 'excerpt', 'seo_title', 'seo_description', 'h1'))
     for row in ArticleBlock.objects.all():
         _normalize_obj(row, ('heading', 'text', 'list_items'))
-    for row in CaseStudy.objects.all():
-        _normalize_obj(row, ('title', 'excerpt', 'seo_title', 'seo_description', 'h1', 'client', 'service', 'scope'))
-    for row in CaseBlock.objects.all():
-        _normalize_obj(row, ('heading', 'text', 'list_items', 'facts', 'assumption', 'why', 'quotes'))
 
     from django.apps import apps
 

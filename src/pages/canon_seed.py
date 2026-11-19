@@ -460,7 +460,6 @@ def _refresh_why(page, rows):
 
 def sync_all() -> None:
     from src.blog.models import BlogPage
-    from src.cases.models import CasesPage
     from src.leads.models import LeadModal
     from src.pages.models import AboutPage, ContactsPage, PrivacyPage, ServicesIndex
 
@@ -469,7 +468,6 @@ def sync_all() -> None:
     sync_deep()
     sync_analysis()
     BlogPage.load()
-    CasesPage.load()
     LeadModal.load()
     AboutPage.load()
     ContactsPage.load()

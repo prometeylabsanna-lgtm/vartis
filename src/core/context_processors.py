@@ -76,7 +76,6 @@ def site_settings(request):
         'lead_form': lead_form,
         'lead_modal': _lead_modal(),
         'blog_page': _page_singleton('src.blog.models', 'BlogPage'),
-        'cases_page': _page_singleton('src.cases.models', 'CasesPage'),
         'canonical_url': absolute_url(request),
         'public_origin': get_public_origin(request),
         'seo_robots': robots_meta_content(request),

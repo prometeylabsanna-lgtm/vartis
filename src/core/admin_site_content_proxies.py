@@ -29,7 +29,7 @@ _SPECS = (
         cms_proxies.SiteHeaderSettings,
         "Шапка",
         (
-            "nav_about", "nav_services", "nav_cases", "nav_blog", "nav_contacts",
+            "nav_about", "nav_services", "nav_blog", "nav_contacts",
             "header_cta", "mobile_lead", "mobile_cta_secondary",
         ),
         False,

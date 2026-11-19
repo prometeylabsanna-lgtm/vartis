@@ -221,16 +221,6 @@ def _vartis_unfold_navigation():
                     'link': '/admin/blog/blogpage/',
                 },
                 {
-                    'title': 'Кейси',
-                    'icon': 'folder',
-                    'link': '/admin/cases/casestudy/',
-                },
-                {
-                    'title': 'Сторінка кейсів',
-                    'icon': 'dashboard',
-                    'link': '/admin/cases/casespage/',
-                },
-                {
                     'title': 'Заявки',
                     'icon': 'mail',
                     'link': '/admin/leads/lead/',

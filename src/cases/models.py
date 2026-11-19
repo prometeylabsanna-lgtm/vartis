@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 from src.core.fields import WebPImageField
 from src.core.models import SingletonModel
@@ -31,7 +30,7 @@ class CaseStudy(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('cases:detail', kwargs={'slug': self.slug})
+        return '/'
 
     @property
     def display_h1(self):

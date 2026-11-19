@@ -9,12 +9,6 @@ ARTICLE_SLUGS = {
     'nadiynist-postachalnyka': 'nadiinist-postachalnyka',
 }
 
-CASE_SLUGS = {
-    'nelehalni-pidakcyzni-tovary': 'nelehalni-pidaktsyzni-tovary',
-    'rozsliduvannya-zbytkiv': 'rozsliduvannia-zbytkiv',
-    'kryminalne-provadzhennya': 'kryminalne-provadzhennia',
-}
-
 SERVICE_SLUGS = {
     'zbir-ta-analiz-informatsiyi': 'zbir-ta-analiz-informatsii',
 }
