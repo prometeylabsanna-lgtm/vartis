@@ -1,5 +1,5 @@
 <div class="modal__head">
-  <h2 id="lead-modal-title" class="modal__title">Залишити заявку</h2>
-  <p class="modal__lead">Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. Факт звернення залишається конфіденційним.</p>
+  <h2 id="lead-modal-title" class="modal__title">{{ lead_modal.title }}</h2>
+  <p class="modal__lead">{{ lead_modal.lead }}</p>
 </div>
 {% include 'leads/partials/form.html' with form_variant='modal' form_id=form_id|default:'lead-form-modal' %}

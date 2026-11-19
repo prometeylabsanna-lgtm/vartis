@@ -15,7 +15,7 @@
 {% block content %}
 {% public_img article.image 'images/blog/article.webp' as article_hero %}
 <div id="top">
-  {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article_hero shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#article' secondary_label='Читати' crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article_hero shade=True show_cta=True cta_primary=blog_page.detail_cta secondary_href='#article' secondary_label=blog_page.detail_read crumbs=crumbs %}
 
   <section id="article" class="art-section" aria-label="Текст статті">
     <div class="art-layout">
@@ -65,8 +65,8 @@
         {% endfor %}
 
         <div class="art-cta">
-          <p class="art-cta__text">Потрібна допомога з подібним завданням?</p>
-          <button type="button" class="btn btn--primary" data-action="open-form">Обговорити завдання</button>
+          <p class="art-cta__text">{{ blog_page.help_title }}</p>
+          <button type="button" class="btn btn--primary" data-action="open-form">{{ blog_page.help_cta }}</button>
         </div>
       </article>
     </div>
@@ -76,8 +76,8 @@
   <section class="art-related" aria-labelledby="rel-title">
     <div class="container">
       <div class="art-related__head">
-        <h2 id="rel-title" class="section__title">Читайте також</h2>
-        <a href="{% url 'blog:list' %}" class="art-related__all">Усі статті →</a>
+        <h2 id="rel-title" class="section__title">{{ blog_page.related_title }}</h2>
+        <a href="{% url 'blog:list' %}" class="art-related__all">{{ blog_page.all_articles_label }}</a>
       </div>
       <div class="blog-grid">
         {% for article in related %}
@@ -95,7 +95,7 @@
             <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
           </h3>
           <p class="blog-card__text">{{ article.excerpt }}</p>
-          <a href="{{ article.get_absolute_url }}" class="blog-card__more">Читати статтю</a>
+          <a href="{{ article.get_absolute_url }}" class="blog-card__more">{{ blog_page.read_label }}</a>
         </article>
         {% endfor %}
       </div>

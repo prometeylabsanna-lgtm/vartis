@@ -24,5 +24,5 @@
     </h3>
     <p class="home-article__text">{{ article.excerpt }}</p>
   </div>
-  <a href="{{ article.get_absolute_url }}" class="home-article__more">Читати статтю</a>
+  <a href="{{ article.get_absolute_url }}" class="home-article__more">{{ blog_page.read_label }}</a>
 </article>

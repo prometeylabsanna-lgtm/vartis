@@ -14,6 +14,23 @@ from .seo import (
 )
 
 
+def _page_singleton(module: str, name: str):
+    try:
+        import importlib
+        model = getattr(importlib.import_module(module), name)
+        return model.load()
+    except Exception:
+        return None
+
+
+def _lead_modal():
+    try:
+        from src.leads.models import LeadModal
+        return LeadModal.load()
+    except Exception:
+        return None
+
+
 def site_settings(request):
     path = getattr(request, 'path', '') or ''
     is_admin = path.startswith('/admin/')
@@ -57,6 +74,9 @@ def site_settings(request):
         'footer_services': footer_services,
         'gtm_id': settings.GTM_ID,
         'lead_form': lead_form,
+        'lead_modal': _lead_modal(),
+        'blog_page': _page_singleton('src.blog.models', 'BlogPage'),
+        'cases_page': _page_singleton('src.cases.models', 'CasesPage'),
         'canonical_url': absolute_url(request),
         'public_origin': get_public_origin(request),
         'seo_robots': robots_meta_content(request),

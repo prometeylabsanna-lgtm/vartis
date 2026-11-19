@@ -95,7 +95,7 @@
           <h2 id="blog-title" class="section__title">{{ copy.blog_title }}</h2>
           <p class="section__lead section__lead--blog">{{ copy.blog_lead }}</p>
         </div>
-        <a href="{% url 'blog:list' %}" class="btn btn--outline">Усі статті →</a>
+        <a href="{% url 'blog:list' %}" class="btn btn--outline">{{ copy.blog_all_label }}</a>
       </div>
       <div class="home-articles">
         {% for article in articles %}

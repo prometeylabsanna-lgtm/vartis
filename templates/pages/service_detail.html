@@ -77,7 +77,7 @@
             <span class="timeline-item__line"></span>
             <span class="timeline-item__dot"></span>
           </div>
-          <span class="timeline-item__num">Етап {{ step.0 }}</span>
+          <span class="timeline-item__num">{{ copy.method_step_prefix }} {{ step.0 }}</span>
           <h3 class="timeline-item__title">{{ step.1 }}</h3>
           <p class="timeline-item__text">{{ step.2 }}</p>
         </li>
@@ -166,7 +166,7 @@
 
   <section class="section section--end" aria-labelledby="other-title">
     <div class="container">
-      <h2 id="other-title" class="section__title">Профільні послуги</h2>
+      <h2 id="other-title" class="section__title">{{ copy.related_title }}</h2>
       {% include 'partials/profile_services.html' %}
     </div>
   </section>

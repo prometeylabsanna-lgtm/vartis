@@ -97,3 +97,12 @@ def block_image_url(context, page: str, key: str, fallback_static: str = "") -> 
     if static_path:
         return static(static_path)
     return ""
+
+
+@register.filter
+def gold_tail(value):
+    text = str(value or "").strip()
+    if " " not in text:
+        return escape(text)
+    head, tail = text.rsplit(" ", 1)
+    return mark_safe(f'{escape(head)} <span class="gold-text">{escape(tail)}</span>')

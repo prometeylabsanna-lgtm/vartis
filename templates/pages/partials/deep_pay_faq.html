@@ -14,18 +14,18 @@
         <div class="pay-card__bar" aria-hidden="true">
           <span class="pay-card__bar-fill" style="width: {{ p.paid }}"></span>
         </div>
-        <span class="pay-card__paid">Сплачено: {{ p.paid }}</span>
+        <span class="pay-card__paid">{{ d.paid_label }} {{ p.paid }}</span>
         <div class="pay-card__stage-block">
           <span class="pay-card__stage">{{ p.stage }}</span>
           <h3 class="pay-card__title">{{ p.title }}</h3>
         </div>
         <p class="pay-card__text">{{ p.text }}</p>
-        <p class="pay-card__see"><strong>Перед наступним платежем:</strong> {{ p.see }}</p>
+        <p class="pay-card__see"><strong>{{ d.before_pay_label }}</strong> {{ p.see }}</p>
       </article>
       {% endfor %}
     </div>
     <div class="pay-guar">
-      <h3 class="pay-guar__title">Ваша гарантія</h3>
+      <h3 class="pay-guar__title">{{ d.guarantee_title }}</h3>
       {% for g in d.pay_guar %}
       <p class="pay-guar__item">{{ g }}</p>
       {% endfor %}

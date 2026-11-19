@@ -3,10 +3,9 @@ from django.views.generic import DetailView, ListView
 
 from src.core.og_image import og_image_from_field
 from src.core.seo import absolute_url
-from src.core.seo_copy import SEO
 from src.leads.forms import LeadForm
 
-from .models import Article
+from .models import Article, BlogPage
 
 PER_PAGE = 5
 
@@ -57,14 +56,11 @@ class ArticleListView(ListView):
             'current_cat': cat,
             'categories': _ordered_categories(),
             'lead_form': LeadForm(),
-            'seo_title': SEO['blog']['title'],
-            'seo_description': SEO['blog']['description'],
-            'h1': 'Блог',
-            'hero_text': (
-                'Аналітика та експертні матеріали про перевірку контрагентів, '
-                'стратегічну розвідку, корпоративну безпеку та управління ризиками'
-            ),
-            'crumbs': [{'label': 'Блог', 'url': ''}],
+            'seo_title': BlogPage.load().seo_title,
+            'seo_description': BlogPage.load().seo_description,
+            'h1': BlogPage.load().h1,
+            'hero_text': BlogPage.load().hero_text,
+            'crumbs': [{'label': BlogPage.load().crumb, 'url': ''}],
             'canonical_url': absolute_url(self.request, reverse('blog:list')),
         })
         if cat or page_obj.number > 1:
@@ -106,7 +102,7 @@ class ArticleDetailView(DetailView):
         ctx['lead_form'] = LeadForm()
         ctx['share_url'] = self.request.build_absolute_uri(article.get_absolute_url())
         ctx['crumbs'] = [
-            {'label': 'Блог', 'url': reverse('blog:list')},
+            {'label': BlogPage.load().crumb, 'url': reverse('blog:list')},
             {'label': article.category, 'url': ''},
         ]
         ctx['seo_title'] = article.seo_title or f'{article.title} — VARTIS INTELLIGENCE'

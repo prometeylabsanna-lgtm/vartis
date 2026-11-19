@@ -27,7 +27,7 @@
       <p class="ex-block__lead">{{ d.ex_frag3_lead }}</p>
       <div class="ex-facts-grid">
         <div class="ex-panel">
-          <h3 class="ex-panel__title">Встановлені факти</h3>
+          <h3 class="ex-panel__title">{{ d.facts_title }}</h3>
           <ul class="ex-check-list">
             {% for f in d.ex_facts %}
             <li>{{ f }}</li>
@@ -35,9 +35,9 @@
           </ul>
         </div>
         <div class="ex-panel ex-panel--accent">
-          <h3 class="ex-panel__title">Висновок і ступінь упевненості</h3>
-          <p><strong class="gold-plain">Припущення:</strong> {{ d.ex_assumption }}</p>
-          <p class="ex-panel__muted"><strong class="gold-plain">Чому не факт:</strong> {{ d.ex_why_not }}</p>
+          <h3 class="ex-panel__title">{{ d.conclusion_title }}</h3>
+          <p><strong class="gold-plain">{{ d.assumption_label }}</strong> {{ d.ex_assumption }}</p>
+          <p class="ex-panel__muted"><strong class="gold-plain">{{ d.why_not_label }}</strong> {{ d.ex_why_not }}</p>
         </div>
       </div>
     </div>

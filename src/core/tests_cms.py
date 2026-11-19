@@ -2,8 +2,9 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 
 from src.core.block_defaults import BLOCK_DEFAULTS, RICHTEXT_KEYS
-from src.core.models import SiteBlock, SiteSettings
+from src.core.models import SiteSettings
 from src.core.site_content_registry import CONTENT_SECTIONS, all_registry_block_keys
+from src.pages.models import HomePage
 
 
 class CmsRegistryTests(TestCase):
@@ -36,9 +37,8 @@ class CmsAdminSmokeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         body = response.content.decode()
         self.assertIn('cms-tinymce', body)
-        self.assertIn('site-content-editor__img-preview', body)
-        self.assertIn('site-content-editor__tabs', body)
-        self.assertIn('cmsTab', body)
+        self.assertIn('cms-image', body)
+        self.assertIn('Перший екран — SEO', body)
 
     def test_sidebar_lists_are_under_pages(self):
         from src.core.site_content_registry import build_content_sidebar_groups
@@ -128,26 +128,22 @@ class CmsAdminSmokeTests(TestCase):
         self.assertNotIn('id="content-related"', body)
         self.assertNotIn('id="recent-actions-module"', body)
 
-    def test_hero_section_post_saves_block(self):
-        SiteBlock.objects.update_or_create(
-            page='home',
-            key='hero_cta',
-            defaults={'text_html': 'Старий CTA', 'label': 'CTA', 'content_type': 'text'},
-        )
+    def test_hero_section_post_saves_page(self):
+        page = HomePage.load()
+        page.hero_cta = 'Старий CTA'
+        page.save(update_fields=['hero_cta'])
         response = self.client.post(
             '/admin/core/homeherosettings/1/change/',
             {
-                'section_visible': 'on',
-                'block__home__seo_title__text_html': 'SEO',
-                'block__home__seo_description__text_html': 'Desc',
-                'block__home__h1__text_html': 'H1',
-                'block__home__hero_title__text_html': 'Title',
-                'block__home__hero_text__text_html': '<p>Text</p>',
-                'block__home__hero_cta__text_html': 'Новий CTA',
+                'hero_title': 'Title',
+                'hero_text': '<p>Text</p>',
+                'hero_cta': 'Новий CTA',
+                'seo_title': 'SEO',
+                'seo_description': 'Desc',
+                'h1': 'H1',
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            SiteBlock.objects.get(page='home', key='hero_cta').text_html,
-            'Новий CTA',
-        )
+        page.refresh_from_db()
+        self.assertEqual(page.hero_cta, 'Новий CTA')
+        self.assertEqual(page.h1, 'H1')

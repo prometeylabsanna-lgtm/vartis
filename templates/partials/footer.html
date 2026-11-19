@@ -1,8 +1,8 @@
-{% load static %}
+{% load static vartis_content %}
 <footer id="site-footer" class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__top">
-      <h2 class="site-footer__title">Залишити <span class="gold-text">заявку</span></h2>
+      <h2 class="site-footer__title">{{ site_settings.footer_cta_title|gold_tail }}</h2>
       <p class="site-footer__lead">{{ site_settings.footer_cta_text }}</p>
     </div>
     <div class="site-footer__grid">
@@ -19,15 +19,15 @@
         </div>
         <div class="site-footer__cols">
           <nav class="site-footer__nav" aria-label="Навігація у футері">
-            <p class="site-footer__nav-title">Компанія</p>
-            <a href="{% url 'pages:about' %}">Про компанію</a>
-            <a href="{% url 'pages:services' %}">Послуги</a>
-            <a href="{% url 'cases:list' %}">Кейси</a>
-            <a href="{% url 'blog:list' %}">Блог</a>
-            <a href="{% url 'pages:contacts' %}">Контакти</a>
+            <p class="site-footer__nav-title">{{ site_settings.footer_col_company }}</p>
+            <a href="{% url 'pages:about' %}">{{ site_settings.nav_about }}</a>
+            <a href="{% url 'pages:services' %}">{{ site_settings.nav_services }}</a>
+            <a href="{% url 'cases:list' %}">{{ site_settings.nav_cases }}</a>
+            <a href="{% url 'blog:list' %}">{{ site_settings.nav_blog }}</a>
+            <a href="{% url 'pages:contacts' %}">{{ site_settings.nav_contacts }}</a>
           </nav>
           <nav class="site-footer__nav" aria-label="Послуги у футері">
-            <p class="site-footer__nav-title">Послуги</p>
+            <p class="site-footer__nav-title">{{ site_settings.footer_col_services }}</p>
             {% for s in footer_services %}
             <a href="{{ s.href }}">{{ s.title }}</a>
             {% endfor %}
@@ -35,42 +35,42 @@
         </div>
         <div class="site-footer__contacts">
           <div class="site-footer__row">
-            <span class="site-footer__row-label">Тел</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_phone_label }}</span>
             <span class="site-footer__row-value">
               <a href="{{ public_contacts.phone_href }}">{{ public_contacts.phone }}</a>
             </span>
           </div>
           <div class="site-footer__row">
-            <span class="site-footer__row-label">Email</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_email_label }}</span>
             <span class="site-footer__row-value">
               <a href="{{ public_contacts.email_href }}">{{ public_contacts.email }}</a>
             </span>
           </div>
           <div class="site-footer__row">
-            <span class="site-footer__row-label">Адреса</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_address_label }}</span>
             <span class="site-footer__row-value">{{ public_contacts.address }}</span>
           </div>
           {% if public_contacts.whatsapp_url %}
           <div class="site-footer__row">
-            <span class="site-footer__row-label">WhatsApp</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_whatsapp_label }}</span>
             <span class="site-footer__row-value">
-              <a href="{{ public_contacts.whatsapp_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+              <a href="{{ public_contacts.whatsapp_url }}" rel="noopener noreferrer" target="_blank">{{ site_settings.footer_write_label }}</a>
             </span>
           </div>
           {% endif %}
           {% if public_contacts.signal_url %}
           <div class="site-footer__row">
-            <span class="site-footer__row-label">Signal</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_signal_label }}</span>
             <span class="site-footer__row-value">
-              <a href="{{ public_contacts.signal_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+              <a href="{{ public_contacts.signal_url }}" rel="noopener noreferrer" target="_blank">{{ site_settings.footer_write_label }}</a>
             </span>
           </div>
           {% endif %}
           {% if public_contacts.telegram_url %}
           <div class="site-footer__row">
-            <span class="site-footer__row-label">Telegram</span>
+            <span class="site-footer__row-label">{{ site_settings.footer_telegram_label }}</span>
             <span class="site-footer__row-value">
-              <a href="{{ public_contacts.telegram_url }}" rel="noopener noreferrer" target="_blank">Написати</a>
+              <a href="{{ public_contacts.telegram_url }}" rel="noopener noreferrer" target="_blank">{{ site_settings.footer_write_label }}</a>
             </span>
           </div>
           {% endif %}
@@ -95,7 +95,7 @@
         <span class="site-footer__credit-name">PrometeyLabs</span>
         {% endif %}
       </span>
-      <a href="{% url 'pages:privacy' %}">Політика конфіденційності</a>
+      <a href="{% url 'pages:privacy' %}">{{ site_settings.privacy_link_label }}</a>
       <a href="#top" class="site-footer__up" aria-label="Повернутися вгору">
         Вгору
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 12V2M7 2L3 6M7 2L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>

@@ -4,10 +4,8 @@ from django.views.generic import TemplateView
 
 from src.blog.models import Article
 from src.core.og_image import og_image_from_field
-from src.core.seo_copy import SERVICE_SEO
 from src.leads.forms import LeadForm
 
-from . import design_copy
 from .models import (
     AboutPage,
     AnalysisPage,
@@ -17,9 +15,9 @@ from .models import (
     ServicePage,
     ServicesIndex,
 )
+from .models_deep import DEEP_SLUG, DeepAnalytics
+from .present import analysis_copy, deep_copy, home_advantages, home_copy, home_steps, service_copy
 from .services import home_direction_items, service_nav_items
-
-DEEP_SLUG = 'zbir-ta-analiz-informatsii'
 
 
 def _crumbs_service(label):
@@ -39,22 +37,11 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         page = HomePage.load()
-        copy = design_copy.HOME
         ctx['page'] = page
-        ctx['copy'] = copy
+        ctx['copy'] = home_copy(page)
         ctx['services'] = home_direction_items()
-        ctx['advantages'] = [
-            {'icon': 'HiconOutlineScan5', 'title': 'Аналітичний підхід', 'text': 'Рішення на основі перевірених відомостей'},
-            {'icon': 'HiconOutlineShieldTick', 'title': 'Оцінка ризиків', 'text': 'Виявлення потенційних загроз до ухвалення важливих рішень'},
-            {'icon': 'HiconOutlineLock3', 'title': 'Конфіденційність', 'text': 'Захист інформації та факту звернення'},
-            {'icon': 'HiconOutlineCalling1', 'title': 'Експертна підтримка', 'text': 'Фаховий аналіз і пояснення отриманих результатів'},
-        ]
-        ctx['process_steps'] = [
-            {'num': '01', 'title': 'Вивчаємо завдання', 'text': 'Зʼясовуємо, яку інформацію потрібно отримати та на які питання відповісти'},
-            {'num': '02', 'title': 'Проводимо дослідження', 'text': 'Збираємо, перевіряємо й аналізуємо відомості відповідно до погодженого завдання'},
-            {'num': '03', 'title': 'Формуємо висновки', 'text': 'Систематизуємо результати та визначаємо встановлені факти й можливі ризики'},
-            {'num': '04', 'title': 'Передаємо результат', 'text': 'Надаємо матеріали, необхідні для подальшого аналізу та ухвалення рішень'},
-        ]
+        ctx['advantages'] = home_advantages(page)
+        ctx['process_steps'] = home_steps(page)
         ctx['articles'] = Article.objects.filter(is_published=True)[:3]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
@@ -101,57 +88,19 @@ class ServiceDetailView(TemplateView):
         ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
-        svc_seo = SERVICE_SEO.get(page.slug)
-        if svc_seo:
-            page.seo_title = svc_seo['title']
-            page.seo_description = svc_seo['description']
 
         if page.slug == DEEP_SLUG:
-            ctx['d'] = design_copy.DEEP_ANALYTICS
-            ctx['crumbs'] = _crumbs_service(
-                design_copy.DEEP_ANALYTICS.get('crumb') or page.title
-            )
-        else:
-            copy = dict(design_copy.SERVICES.get(page.slug, {}))
-            ctx['crumbs'] = _crumbs_service(copy.get('crumb') or page.title)
-            if 'h1' not in copy:
-                copy['h1'] = page.h1 or page.title
-            if 'hero_text' not in copy:
-                copy['hero_text'] = page.hero_text
-            if 'cta_primary' not in copy:
-                copy['cta_primary'] = 'Обговорити завдання'
-            if 'cta_secondary' not in copy:
-                copy['cta_secondary'] = 'Як ми працюємо'
-            if 'cta_secondary_href' not in copy:
-                copy['cta_secondary_href'] = '#method'
-            if 'scope_title' not in copy:
-                copy['scope_title'] = page.scope_title or 'Що входить'
-            if 'scope_paragraphs' not in copy:
-                copy['scope_paragraphs'] = [page.scope_text] if page.scope_text else []
-            if 'scope_items' not in copy:
-                copy['scope_items'] = [i.text for i in page.scope_items.all()]
-            if 'method_title' not in copy:
-                copy['method_title'] = page.method_title or 'Методологія'
-            if 'method_lead' not in copy:
-                copy['method_lead'] = ''
-            if 'steps' not in copy:
-                copy['steps'] = [
-                    (s.number, s.title, s.text) for s in page.method_steps.all()
-                ]
-            if 'advantages_title' not in copy:
-                copy['advantages_title'] = page.advantages_title or 'Переваги для клієнта'
-            if 'advantages_lead' not in copy:
-                copy['advantages_lead'] = ''
-            if 'advantages' not in copy:
-                copy['advantages'] = [
-                    ('HiconOutlineShieldTick', a.title, a.text)
-                    for a in page.advantages.all()
-                ]
-            if 'order_title' not in copy:
-                copy['order_title'] = page.order_title or 'Обговорімо\nвашу задачу'
-            if 'order_text' not in copy:
-                copy['order_text'] = page.order_text
-            ctx['copy'] = copy
+            if not DeepAnalytics.objects.filter(page=page).exists():
+                from .canon_seed import sync_deep
+                sync_deep()
+            deep = DeepAnalytics.objects.filter(page=page).first()
+            ctx['d'] = deep_copy(deep) if deep else {}
+            ctx['crumbs'] = _crumbs_service(page.title)
+            return ctx
+
+        copy = service_copy(page)
+        ctx['crumbs'] = _crumbs_service(page.title)
+        ctx['copy'] = copy
         return ctx
 
 
@@ -161,10 +110,9 @@ class AnalysisView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         page = AnalysisPage.load()
-        a = design_copy.ANALYSIS
         ctx['page'] = page
-        ctx['copy'] = a
-        ctx['crumbs'] = _crumbs_service(a['crumb'])
+        ctx['copy'] = analysis_copy(page)
+        ctx['crumbs'] = _crumbs_service(page.title or page.h1)
         ctx['others'] = [s for s in service_nav_items() if not s['is_analysis']]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
@@ -206,9 +154,7 @@ class PrivacyView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         ctx['page'] = PrivacyPage.load()
         ctx['crumbs'] = [{'label': 'Політика конфіденційності', 'url': ''}]
-        ctx['hero_text'] = (
-            'Як ми обробляємо та захищаємо персональні дані, які ви залишаєте на сайті'
-        )
+        ctx['hero_text'] = ctx['page'].hero_text
         ctx['lead_form'] = LeadForm()
         return ctx
 

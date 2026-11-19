@@ -11,10 +11,10 @@
       </a>
 
       <nav class="site-header__nav" aria-label="Основна навігація">
-        <a href="{% url 'pages:about' %}" class="site-header__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">Про компанію</a>
+        <a href="{% url 'pages:about' %}" class="site-header__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">{{ site_settings.nav_about }}</a>
         <div class="svc-wrap" data-svc>
           <button type="button" class="svc-btn" data-action="toggle-svc" aria-expanded="false" aria-haspopup="true" aria-controls="svc-menu">
-            Послуги
+            {{ site_settings.nav_services }}
             <svg class="svc-btn__chev" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="#B58B4A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <div id="svc-menu" class="svc-menu">
@@ -32,15 +32,15 @@
             </div>
           </div>
         </div>
-        <a href="{% url 'cases:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'cases' %} is-active{% endif %}">Кейси</a>
-        <a href="{% url 'blog:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'blog' %} is-active{% endif %}">Блог</a>
-        <a href="{% url 'pages:contacts' %}" class="site-header__link{% if request.resolver_match.url_name == 'contacts' %} is-active{% endif %}">Контакти</a>
+        <a href="{% url 'cases:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'cases' %} is-active{% endif %}">{{ site_settings.nav_cases }}</a>
+        <a href="{% url 'blog:list' %}" class="site-header__link{% if request.resolver_match.app_name == 'blog' %} is-active{% endif %}">{{ site_settings.nav_blog }}</a>
+        <a href="{% url 'pages:contacts' %}" class="site-header__link{% if request.resolver_match.url_name == 'contacts' %} is-active{% endif %}">{{ site_settings.nav_contacts }}</a>
       </nav>
 
-      <button type="button" class="site-header__cta" data-action="open-form">Залишити заявку</button>
+      <button type="button" class="site-header__cta" data-action="open-form">{{ site_settings.header_cta }}</button>
 
       <div class="site-header__actions">
-        <button type="button" class="site-header__cta-tablet" data-action="open-form">Залишити заявку</button>
+        <button type="button" class="site-header__cta-tablet" data-action="open-form">{{ site_settings.header_cta }}</button>
         <button type="button" class="burger" data-action="toggle-menu" aria-expanded="false" aria-controls="mobile-nav" aria-label="Відкрити меню">
           <span class="burger__bar"></span>
           <span class="burger__bar"></span>

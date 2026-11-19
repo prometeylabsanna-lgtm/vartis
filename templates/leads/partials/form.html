@@ -24,34 +24,33 @@
   <p class="lead-form__error lead-form__alert" role="alert">{{ form.non_field_errors|striptags }}</p>
   {% endif %}
 
-  <label class="lead-form__label">Імʼя
+  <label class="lead-form__label">{{ form.name.label }}
     {{ form.name }}
     <span class="lead-form__error">{{ form.name.errors|striptags }}</span>
   </label>
 
   <div class="lead-form__row">
-    <label class="lead-form__label">Телефон
+    <label class="lead-form__label">{{ form.phone.label }}
       {{ form.phone }}
       <span class="lead-form__error">{{ form.phone.errors|striptags }}</span>
     </label>
-    <label class="lead-form__label">Email
+    <label class="lead-form__label">{{ form.email.label }}
       {{ form.email }}
       <span class="lead-form__error">{{ form.email.errors|striptags }}</span>
     </label>
   </div>
 
-  <label class="lead-form__label">Коротко про завдання
+  <label class="lead-form__label">{{ form.message.label }}
     {{ form.message }}
     <span class="lead-form__error">{{ form.message.errors|striptags }}</span>
   </label>
 
   <label class="lead-form__consent">
     {{ form.consent }}
-    <span>Погоджуюся на обробку персональних даних відповідно до <a href="{% url 'pages:privacy' %}">Політики
-        конфіденційності</a></span>
+    <span>{{ lead_modal.consent_prefix }} <a href="{% url 'pages:privacy' %}">{{ site_settings.privacy_link_label }}</a></span>
   </label>
   <span class="lead-form__error" data-error-for="consent">{{ form.consent.errors|striptags }}</span>
 
-  <button type="submit" class="btn btn--primary">Надіслати заявку</button>
+  <button type="submit" class="btn btn--primary">{{ lead_modal.submit_label }}</button>
 </form>
 {% endwith %}

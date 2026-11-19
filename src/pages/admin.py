@@ -362,3 +362,6 @@ class AnalysisPriceRowAdmin(_ParentPageMixin, ModelAdmin):
     list_display = ('number', 'title', 'price_note', 'order')
     list_editable = ('order',)
     ordering = ('order', 'id')
+
+
+from . import admin_lists  # noqa: E402,F401

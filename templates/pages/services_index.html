@@ -4,7 +4,7 @@
 {% block content %}
 {% public_img page.hero_image 'images/hero.webp' as services_hero %}
 <div id="top">
-  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=services_hero shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#catalog' secondary_label='Усі напрями' crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=services_hero shade=True show_cta=True cta_primary=page.cta_primary secondary_href='#catalog' secondary_label=page.cta_secondary crumbs=crumbs %}
 
   <section id="catalog" class="section section--end" aria-label="Каталог послуг">
     <div class="container">
@@ -26,7 +26,7 @@
             </ul>
             {% endif %}
             <a href="{{ c.href }}" class="btn btn--outline">
-              Детальніше
+              {{ page.card_more_label }}
               <svg width="16" height="16" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </a>
           </div>

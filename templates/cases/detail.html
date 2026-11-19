@@ -57,8 +57,8 @@
       </div>
 
       <div class="btn-row mt-40">
-        <a href="{% url 'cases:list' %}" class="btn btn--outline">Усі кейси</a>
-        <button type="button" class="btn btn--primary" data-action="open-form">Залишити заявку</button>
+        <a href="{% url 'cases:list' %}" class="btn btn--outline">{{ cases_page.detail_all_label }}</a>
+        <button type="button" class="btn btn--primary" data-action="open-form">{{ cases_page.detail_cta }}</button>
       </div>
     </div>
   </section>

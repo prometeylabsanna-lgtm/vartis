@@ -1,6 +1,8 @@
 from datetime import timedelta
 from pathlib import Path
 
+from src.core.colors import UNFOLD_BASE, UNFOLD_PRIMARY
+
 from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -191,6 +193,11 @@ def _vartis_unfold_navigation():
                     'link': '/admin/core/sitesettings/1/change/',
                 },
                 {
+                    'title': 'Вікно заявки',
+                    'icon': 'chat',
+                    'link': '/admin/leads/leadmodal/',
+                },
+                {
                     'title': 'Недавні дії',
                     'icon': 'history',
                     'link': '/admin/recent-actions/',
@@ -203,14 +210,24 @@ def _vartis_unfold_navigation():
             'separator': True,
             'items': [
                 {
-                    'title': 'Блог',
+                    'title': 'Статті блогу',
                     'icon': 'article',
                     'link': '/admin/blog/article/',
+                },
+                {
+                    'title': 'Сторінка блогу',
+                    'icon': 'feed',
+                    'link': '/admin/blog/blogpage/',
                 },
                 {
                     'title': 'Кейси',
                     'icon': 'folder',
                     'link': '/admin/cases/casestudy/',
+                },
+                {
+                    'title': 'Сторінка кейсів',
+                    'icon': 'dashboard',
+                    'link': '/admin/cases/casespage/',
                 },
                 {
                     'title': 'Заявки',
@@ -250,23 +267,16 @@ UNFOLD = {
     ],
     'SHOW_HISTORY': True,
     'COLORS': {
-        'primary': {
-            '50': 'oklch(97% 0.01 250)',
-            '100': 'oklch(94% 0.02 250)',
-            '200': 'oklch(86% 0.04 250)',
-            '300': 'oklch(74% 0.06 250)',
-            '400': 'oklch(58% 0.08 250)',
-            '500': 'oklch(42% 0.08 250)',
-            '600': 'oklch(34% 0.07 250)',
-            '700': 'oklch(28% 0.06 250)',
-            '800': 'oklch(22% 0.05 250)',
-            '900': 'oklch(16% 0.04 250)',
-            '950': 'oklch(12% 0.03 250)',
-        },
+        'primary': UNFOLD_PRIMARY,
+        'base': UNFOLD_BASE,
     },
-    # Лише брендинг адмінки. site_content.css підключається в CMS-шаблоні.
     'STYLES': [
         '/static/css/admin/vartis_unfold.css',
+        '/static/css/admin/cms_tabs.css',
+    ],
+    'SCRIPTS': [
+        '/static/js/admin/cms_image_preview.js',
+        '/static/js/admin/cms_nested_tabs.js',
     ],
     'SIDEBAR': {
         'show_search': True,

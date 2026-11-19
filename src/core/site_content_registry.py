@@ -120,7 +120,7 @@ _PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
             {
                 "title": "Тарифи (список)",
                 "icon": "payments",
-                "link": "/admin/pages/analysispricerow/",
+                "link": "/admin/pages/analysistariff/",
             },
         ),
     ),
@@ -131,6 +131,22 @@ _PAGE_LIST_ITEMS: dict[str, tuple[tuple[str, dict], ...]] = {
                 "title": "Послуги (список)",
                 "icon": "work",
                 "link": "/admin/pages/servicepage/",
+            },
+        ),
+        (
+            "deep",
+            {
+                "title": "Глибока аналітика",
+                "icon": "analytics",
+                "link": "/admin/pages/deepanalytics/",
+            },
+        ),
+        (
+            "scope",
+            {
+                "title": "Абзаци опису",
+                "icon": "notes",
+                "link": "/admin/pages/servicescopeparagraph/",
             },
         ),
     ),

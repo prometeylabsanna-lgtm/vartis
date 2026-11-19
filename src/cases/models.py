@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from src.core.fields import WebPImageField
+from src.core.models import SingletonModel
 
 
 class CaseStudy(models.Model):
@@ -79,3 +80,31 @@ class CaseBlock(models.Model):
 
     def __str__(self):
         return self.heading or f'Блок {self.pk}'
+
+
+class CasesPage(SingletonModel):
+    seo_title = models.CharField('SEO Title', max_length=200, blank=True, default='Кейси — VARTIS INTELLIGENCE')
+    seo_description = models.TextField(
+        'SEO Description',
+        blank=True,
+        default='Реалізовані проєкти та демонстраційні приклади.',
+    )
+    h1 = models.CharField('H1', max_length=200, default='Кейси')
+    hero_text = models.TextField(
+        'Текст першого екрана',
+        blank=True,
+        default='Реалізовані проєкти та демонстраційні приклади',
+    )
+    crumb = models.CharField('Крихта', max_length=80, default='Кейси')
+    all_label = models.CharField('Підпис «усі»', max_length=40, default='Усі')
+    empty_text = models.CharField('Порожня галерея', max_length=200, default='Кейсів у цій категорії поки немає.')
+    detail_all_label = models.CharField('Посилання на всі кейси', max_length=80, default='Усі кейси')
+    detail_cta = models.CharField('Кнопка заявки', max_length=80, default='Залишити заявку')
+
+    class Meta:
+        verbose_name = 'Сторінка кейсів'
+        verbose_name_plural = 'Сторінка кейсів'
+        constraints = [models.CheckConstraint(condition=models.Q(id=1), name='casespage_singleton')]
+
+    def __str__(self):
+        return 'Сторінка кейсів'

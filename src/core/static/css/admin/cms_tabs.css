@@ -1,0 +1,35 @@
+.cms-image {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cms-image__preview {
+  width: 100%;
+  max-width: 28rem;
+  max-height: 16rem;
+  object-fit: contain;
+  background: #f6f0e6;
+  border-radius: 0.5rem;
+}
+
+.cms-color-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cms-color-picker__swatch {
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+html .bg-primary-600,
+html .bg-primary-500 {
+  color: #12263a;
+}

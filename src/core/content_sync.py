@@ -49,10 +49,16 @@ def _text_fields(model) -> tuple[str, ...]:
 
 
 def _normalize_queryset(model) -> None:
+    from django.db.utils import OperationalError
+
     fields = _text_fields(model)
     if not fields:
         return
-    for row in model.objects.all():
+    try:
+        rows = list(model.objects.all())
+    except OperationalError:
+        return
+    for row in rows:
         _normalize_obj(row, fields)
 
 

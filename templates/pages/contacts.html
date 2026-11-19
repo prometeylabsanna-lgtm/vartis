@@ -8,7 +8,7 @@
 {% block content %}
 {% public_img page.hero_image 'images/hero.webp' as contacts_hero %}
 <div id="top">
-  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=contacts_hero shade=True show_cta=True cta_primary='Залишити заявку' secondary_href='#info' secondary_label='Як звʼязатися' crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=contacts_hero shade=True show_cta=True cta_primary=page.cta_primary secondary_href='#info' secondary_label=page.cta_secondary crumbs=crumbs %}
 
   <section id="info" class="contacts-info" aria-labelledby="info-title">
     <div class="container contacts-info__inner">
@@ -16,44 +16,44 @@
 
       <div class="contacts-grid">
         <a href="{{ phone_href }}" class="contacts-tile">
-          <span class="contacts-tile__label">Телефон</span>
+          <span class="contacts-tile__label">{{ page.phone_label }}</span>
           <span class="contacts-tile__value">{{ phone_display }}</span>
-          <span class="contacts-tile__hint">Натисніть, щоб зателефонувати</span>
+          <span class="contacts-tile__hint">{{ page.phone_hint }}</span>
         </a>
 
         <a href="{{ email_href }}" class="contacts-tile">
-          <span class="contacts-tile__label">Email</span>
+          <span class="contacts-tile__label">{{ page.email_label }}</span>
           <span class="contacts-tile__value">{{ email_display }}</span>
-          <span class="contacts-tile__hint">Відкриє поштову програму</span>
+          <span class="contacts-tile__hint">{{ page.email_hint }}</span>
         </a>
 
         <a href="{{ facebook_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
-          <span class="contacts-tile__label">Facebook</span>
+          <span class="contacts-tile__label">{{ page.facebook_label }}</span>
           <span class="contacts-tile__value contacts-tile__value--break">{{ facebook_handle }}</span>
           <span class="contacts-tile__hint">{{ facebook_hint }}</span>
         </a>
 
         {% if whatsapp_url %}
         <a href="{{ whatsapp_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
-          <span class="contacts-tile__label">WhatsApp</span>
-          <span class="contacts-tile__value">Написати</span>
-          <span class="contacts-tile__hint">Відкриє чат на номер телефону</span>
+          <span class="contacts-tile__label">{{ page.whatsapp_label }}</span>
+          <span class="contacts-tile__value">{{ page.write_label }}</span>
+          <span class="contacts-tile__hint">{{ page.whatsapp_hint }}</span>
         </a>
         {% endif %}
 
         {% if signal_url %}
         <a href="{{ signal_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
-          <span class="contacts-tile__label">Signal</span>
-          <span class="contacts-tile__value">Написати</span>
-          <span class="contacts-tile__hint">Відкриє чат на номер телефону</span>
+          <span class="contacts-tile__label">{{ page.signal_label }}</span>
+          <span class="contacts-tile__value">{{ page.write_label }}</span>
+          <span class="contacts-tile__hint">{{ page.signal_hint }}</span>
         </a>
         {% endif %}
 
         {% if telegram_url %}
         <a href="{{ telegram_url }}" class="contacts-tile" rel="noopener noreferrer" target="_blank">
-          <span class="contacts-tile__label">Telegram</span>
-          <span class="contacts-tile__value">Написати</span>
-          <span class="contacts-tile__hint">Відкриє чат компанії</span>
+          <span class="contacts-tile__label">{{ page.telegram_label }}</span>
+          <span class="contacts-tile__value">{{ page.write_label }}</span>
+          <span class="contacts-tile__hint">{{ page.telegram_hint }}</span>
         </a>
         {% endif %}
       </div>
@@ -70,10 +70,10 @@
           {% endif %}
         </div>
         <div class="contacts-office__card">
-          <span class="contacts-office__label">Адреса офісу</span>
+          <span class="contacts-office__label">{{ page.office_label }}</span>
           <p class="contacts-office__address">{{ address_display }}</p>
-          <p class="contacts-office__note">Першу розмову щодо захисту інформації ми радимо проводити поза приміщенням, про яке йдеться.</p>
-          <button type="button" class="btn btn--primary" data-action="open-form">Залишити заявку</button>
+          <p class="contacts-office__note">{{ page.office_note }}</p>
+          <button type="button" class="btn btn--primary" data-action="open-form">{{ page.office_cta }}</button>
         </div>
       </div>
     </div>

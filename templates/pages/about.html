@@ -14,7 +14,7 @@
 {% block content %}
 {% public_img page.hero_image 'images/about-bg.webp' as about_hero %}
 <div id="top">
-  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=about_hero shade=True show_cta=True cta_primary='Обговорити завдання' secondary_href='#team' secondary_label='Наша команда' crumbs=crumbs %}
+  {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=about_hero shade=True show_cta=True cta_primary=page.hero_cta secondary_href=page.hero_cta_secondary_href secondary_label=page.hero_cta_secondary crumbs=crumbs %}
 
   <section id="intro" class="section" aria-labelledby="intro-title">
     <div class="container about-intro">
@@ -92,7 +92,7 @@
             <div class="founder-card__cols">
               {% if m.expertise %}
               <div class="founder-block">
-                <span class="founder-block__label">Ключова експертиза</span>
+                <span class="founder-block__label">{{ page.expertise_label }}</span>
                 <ul class="founder-block__list">
                   {% for e in m.expertise %}
                   <li><span class="founder-block__dot" aria-hidden="true"></span><span>{{ e }}</span></li>
@@ -102,7 +102,7 @@
               {% endif %}
               {% if m.career_path %}
               <div class="founder-block">
-                <span class="founder-block__label">Професійний шлях</span>
+                <span class="founder-block__label">{{ page.career_label }}</span>
                 <ol class="founder-path">
                   {% for p in m.career_path %}
                   <li class="founder-path__item">

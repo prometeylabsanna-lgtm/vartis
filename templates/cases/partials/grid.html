@@ -8,7 +8,7 @@
       hx-target="#cases-partial"
       hx-swap="outerHTML"
       hx-push-url="true"
-    >Усі</a>
+    >{{ cases_page.all_label }}</a>
     {% for cat in categories %}
     <a
       href="{% url 'cases:list' %}?cat={{ cat|urlencode }}"
@@ -38,7 +38,7 @@
       </div>
     </a>
     {% empty %}
-    <p>Кейсів у цій категорії поки немає.</p>
+    <p>{{ cases_page.empty_text }}</p>
     {% endfor %}
   </div>
 </div>

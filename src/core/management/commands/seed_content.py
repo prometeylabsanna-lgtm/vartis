@@ -65,38 +65,56 @@ class Command(BaseCommand):
         self.seed_cases()
         from django.core.management import call_command
         call_command('seed_site_blocks')
+        from src.pages.canon_seed import sync_all
+        sync_all()
         self.stdout.write(self.style.SUCCESS('seed_content OK'))
+
+    def _fill(self, obj, **fields):
+        from src.pages.canon_seed import adopt
+
+        dirty = False
+        for name, value in fields.items():
+            dirty |= adopt(obj, name, value)
+        if dirty:
+            obj.save()
+        return obj
 
     def seed_settings(self):
         from src.core.contact_defaults import apply_official_contacts
 
         s = SiteSettings.load()
-        s.company_name = 'ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»'
-        s.tagline = 'Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків'
+        self._fill(
+            s,
+            company_name='ТОВ «ВАРТІС ІНТЕЛІДЖЕНС»',
+            tagline='Стратегічна аналітика, OSINT, корпоративна безпека та аналіз ризиків',
+        )
         apply_official_contacts(s)
         s.save()
 
     def seed_home(self):
         page = HomePage.load()
-        page.seo_title = SEO['home']['title']
-        page.seo_description = SEO['home']['description']
-        page.h1 = 'Інформація, що перетворює ризики на переваги'
-        page.hero_title = 'Інформація, що перетворює ризики на переваги'
-        page.hero_text = (
-            'Стратегічна аналітика, перевірка контрагентів та захист бізнесу. '
-            'Допомагаємо виявляти приховані ризики, перевіряти інформацію й ухвалювати обґрунтовані рішення'
+        self._fill(
+            page,
+            seo_title=SEO['home']['title'],
+            seo_description=SEO['home']['description'],
+            h1='Інформація, що перетворює ризики на переваги',
+            hero_title='Інформація, що перетворює ризики на переваги',
+            hero_text=(
+                'Стратегічна аналітика, перевірка контрагентів та захист бізнесу. '
+                'Допомагаємо виявляти приховані ризики, перевіряти інформацію й ухвалювати обґрунтовані рішення'
+            ),
+            services_title='Напрями нашої роботи',
+            advantages_title='Переваги компанії',
+            mission_title='Стратегічна інформація для впевнених рішень',
+            mission_text=(
+                'VARTIS INTELLIGENCE працює на перетині стратегічної аналітики, OSINT, '
+                'корпоративної безпеки та аналізу ризиків.\n\n'
+                'Ми допомагаємо бізнесу отримувати й перевіряти інформацію, оцінювати '
+                'обставини та бачити ризики, які можуть впливати на його рішення'
+            ),
+            process_title='Як ми працюємо?',
+            blog_title='Аналітика та експертні матеріали',
         )
-        page.services_title = 'Напрями нашої роботи'
-        page.advantages_title = 'Переваги компанії'
-        page.mission_title = 'Стратегічна інформація для впевнених рішень'
-        page.mission_text = (
-            'VARTIS INTELLIGENCE працює на перетині стратегічної аналітики, OSINT, '
-            'корпоративної безпеки та аналізу ризиків.\n\n'
-            'Ми допомагаємо бізнесу отримувати й перевіряти інформацію, оцінювати '
-            'обставини та бачити ризики, які можуть впливати на його рішення'
-        )
-        page.process_title = 'Як ми працюємо?'
-        page.blog_title = 'Аналітика та експертні матеріали'
         assign_image(page.hero_image, 'hero.png')
         assign_image(page.mission_image, 'about-bg.png')
         page.save()
@@ -121,46 +139,49 @@ class Command(BaseCommand):
 
     def seed_about(self):
         page = AboutPage.load()
-        page.seo_title = SEO['about']['title']
-        page.seo_description = SEO['about']['description']
-        page.h1 = 'Про компанію'
-        page.hero_title = 'Про компанію'
-        page.hero_text = 'Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів'
-        page.intro_title = 'Аналітика та безпека для вашого бізнесу'
-        page.intro_text = (
-            'Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів. '
-            'Досліджуємо компанії та людей, бізнес-групи й корпоративні структури, '
-            'історію їхніх взаємовідносин і приховані звʼязки. За результатами ви отримуєте '
-            'чітку картину ризиків і практичні рекомендації щодо подальшої співпраці.\n\n'
-            'Пропонуємо як швидкі рішення на базі власного IT-сервісу, так і глибокі '
-            'індивідуальні дослідження, межі яких визначаємо разом із клієнтом.'
+        self._fill(
+            page,
+            seo_title=SEO['about']['title'],
+            seo_description=SEO['about']['description'],
+            h1='Про компанію',
+            hero_title='Про компанію',
+            hero_text='Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів',
+            intro_title='Аналітика та безпека для вашого бізнесу',
+            intro_text=(
+                'Ми допомагаємо бізнесу ухвалювати рішення на основі перевірених фактів. '
+                'Досліджуємо компанії та людей, бізнес-групи й корпоративні структури, '
+                'історію їхніх взаємовідносин і приховані звʼязки. За результатами ви отримуєте '
+                'чітку картину ризиків і практичні рекомендації щодо подальшої співпраці.\n\n'
+                'Пропонуємо як швидкі рішення на базі власного IT-сервісу, так і глибокі '
+                'індивідуальні дослідження, межі яких визначаємо разом із клієнтом.'
+            ),
+            principles_title='Наші принципи',
+            team_title='Засновники',
+            team_lead=(
+                'Поєднуємо практичний досвід роботи в правоохоронних органах '
+                'із науковим підходом до аналізу інформації'
+            ),
+            science_eyebrow='Наукова основа',
+            science_title='Власний сервіс VI Analysis',
+            science_text=(
+                'Методологічна основа сервісу швидкої перевірки контрагентів викладена '
+                'у статті засновників компанії В. В. Аброськіна та С. В. Тіхонова '
+                '«Цифрова екосистема перевірки контрагентів…» («Право і суспільство», № 1/2026).'
+            ),
+            science_doi_url='https://doi.org/10.32842/2078-3736/2026.1.1.28',
+            science_doi_label='doi.org/10.32842/2078-3736/2026.1.1.28',
+            partners_eyebrow='Міжнародна діяльність',
+            partners_title='Для бізнесу з інтересами за межами України',
+            partners_text=(
+                'Інтереси бізнесу не обмежуються кордонами, тож і наша робота теж. '
+                'Партнерами Vartis Intelligence є провідні профільні компанії, що '
+                'спеціалізуються на пошуку та аналізі інформації в інтересах фізичних '
+                'і юридичних осіб. Вони працюють виключно у спосіб, дозволений '
+                'національним законодавством держав Європейського Союзу.'
+            ),
+            stats_title='Ключові цифри',
+            process_title='Як ми працюємо',
         )
-        page.principles_title = 'Наші принципи'
-        page.team_title = 'Засновники'
-        page.team_lead = (
-            'Поєднуємо практичний досвід роботи в правоохоронних органах '
-            'із науковим підходом до аналізу інформації'
-        )
-        page.science_eyebrow = 'Наукова основа'
-        page.science_title = 'Власний сервіс VI Analysis'
-        page.science_text = (
-            'Методологічна основа сервісу швидкої перевірки контрагентів викладена '
-            'у статті засновників компанії В. В. Аброськіна та С. В. Тіхонова '
-            '«Цифрова екосистема перевірки контрагентів…» («Право і суспільство», № 1/2026).'
-        )
-        page.science_doi_url = 'https://doi.org/10.32842/2078-3736/2026.1.1.28'
-        page.science_doi_label = 'doi.org/10.32842/2078-3736/2026.1.1.28'
-        page.partners_eyebrow = 'Міжнародна діяльність'
-        page.partners_title = 'Для бізнесу з інтересами за межами України'
-        page.partners_text = (
-            'Інтереси бізнесу не обмежуються кордонами, тож і наша робота теж. '
-            'Партнерами Vartis Intelligence є провідні профільні компанії, що '
-            'спеціалізуються на пошуку та аналізі інформації в інтересах фізичних '
-            'і юридичних осіб. Вони працюють виключно у спосіб, дозволений '
-            'національним законодавством держав Європейського Союзу.'
-        )
-        page.stats_title = 'Ключові цифри'
-        page.process_title = 'Як ми працюємо'
         assign_image(page.hero_image, 'about-bg.png')
         page.save()
 
@@ -178,11 +199,6 @@ class Command(BaseCommand):
             for i, (icon, title, text) in enumerate(principles):
                 AboutPrinciple.objects.create(
                     page=page, icon=icon, title=title, text=text, order=i,
-                )
-        else:
-            for i, (icon, title, text) in enumerate(principles):
-                AboutPrinciple.objects.filter(page=page, title=title).update(
-                    icon=icon, text=text, order=i,
                 )
 
         team_data = [
@@ -268,21 +284,6 @@ class Command(BaseCommand):
                 )
                 assign_image(m.photo, row['photo'])
                 m.save()
-        else:
-            for i, row in enumerate(team_data):
-                m = existing_team[i] if i < len(existing_team) else TeamMember(page=page)
-                m.name = row['name']
-                m.role = row['role']
-                m.regalia = row['regalia']
-                m.email = row['email']
-                m.bio = row['bio']
-                m.photo_position = row['photo_position']
-                m.expertise = row['expertise']
-                m.career_path = row['career_path']
-                m.order = i
-                if not m.photo:
-                    assign_image(m.photo, row['photo'])
-                m.save()
 
         if not page.stats.filter(block=AboutStat.BLOCK_INTRO).exists():
             for i, (value, label) in enumerate([
@@ -301,15 +302,8 @@ class Command(BaseCommand):
             ('50+', 'клієнтів'),
             ('10+', 'реалізованих проєктів'),
         ]
-        existing_key = list(page.stats.filter(block=AboutStat.BLOCK_KEY))
-        for i, (value, label) in enumerate(key_metrics):
-            if i < len(existing_key):
-                row = existing_key[i]
-                row.value = value
-                row.label = label
-                row.order = i
-                row.save(update_fields=['value', 'label', 'order'])
-            else:
+        if not page.stats.filter(block=AboutStat.BLOCK_KEY).exists():
+            for i, (value, label) in enumerate(key_metrics):
                 AboutStat.objects.create(
                     page=page, block=AboutStat.BLOCK_KEY,
                     value=value, label=label, order=i,
@@ -322,35 +316,24 @@ class Command(BaseCommand):
             ('04', 'Висновок', 'Ви отримуєте структурований звіт із виявленими ризиками та рекомендаціями.'),
             ('05', 'Супровід', 'За потреби пояснюємо результати, відповідаємо на запитання та забезпечуємо подальший моніторинг.'),
         ]
-        existing_steps = list(page.process_steps.all())
-        if not existing_steps:
+        if not page.process_steps.exists():
             for i, (num, title, text) in enumerate(process_steps):
                 AboutProcessStep.objects.create(
                     page=page, number=num, title=title, text=text, order=i,
                 )
-        else:
-            for i, (num, title, text) in enumerate(process_steps):
-                if i < len(existing_steps):
-                    step = existing_steps[i]
-                    step.number = num
-                    step.title = title
-                    step.text = text
-                    step.order = i
-                    step.save(update_fields=['number', 'title', 'text', 'order'])
-                else:
-                    AboutProcessStep.objects.create(
-                        page=page, number=num, title=title, text=text, order=i,
-                    )
 
     def seed_services(self):
         idx = ServicesIndex.load()
-        idx.seo_title = SEO['services']['title']
-        idx.seo_description = SEO['services']['description']
-        idx.h1 = 'Послуги'
-        idx.hero_title = 'Послуги'
-        idx.hero_text = (
-            'Комплексні рішення для бізнесу — від перевірки інформації '
-            'до стратегічного аналізу та управління ризиками'
+        self._fill(
+            idx,
+            seo_title=SEO['services']['title'],
+            seo_description=SEO['services']['description'],
+            h1='Послуги',
+            hero_title='Послуги',
+            hero_text=(
+                'Комплексні рішення для бізнесу — від перевірки інформації '
+                'до стратегічного аналізу та управління ризиками'
+            ),
         )
         assign_image(idx.hero_image, 'hero.png')
         idx.save()
@@ -431,62 +414,43 @@ class Command(BaseCommand):
 
         rename_slugs(ServicePage, SERVICE_SLUGS)
         for data in services:
-            page, created = ServicePage.objects.update_or_create(
-                slug=data['slug'],
-                defaults={
-                    'title': data['title'],
-                    'short': data['short'],
-                    'icon': data['icon'],
-                    'card_text': data['card_text'],
-                    'tags': data['tags'],
-                    'hero_text': data['hero'],
-                    'scope_text': data['scope'],
-                    'seo_title': SERVICE_SEO.get(data['slug'], {}).get(
-                        'title', f"{data['title']} — VARTIS INTELLIGENCE"
-                    ),
-                    'seo_description': SERVICE_SEO.get(data['slug'], {}).get(
-                        'description', data['card_text']
-                    ),
-                    'h1': data['title'],
-                    'order': data['order'],
-                    'is_published': True,
-                    'order_title': 'Обговорімо вашу задачу',
-                    'order_text': (
-                        "Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. "
-                        'Факт звернення залишається конфіденційним.'
-                    ),
-                },
-            )
+            page = ServicePage.objects.filter(slug=data['slug']).first()
+            defaults = {
+                'title': data['title'],
+                'short': data['short'],
+                'icon': data['icon'],
+                'card_text': data['card_text'],
+                'tags': data['tags'],
+                'hero_text': data['hero'],
+                'scope_text': data['scope'],
+                'seo_title': SERVICE_SEO.get(data['slug'], {}).get(
+                    'title', f"{data['title']} — VARTIS INTELLIGENCE"
+                ),
+                'seo_description': SERVICE_SEO.get(data['slug'], {}).get(
+                    'description', data['card_text']
+                ),
+                'h1': data['title'],
+                'order': data['order'],
+                'is_published': True,
+                'order_title': 'Обговорімо вашу задачу',
+                'order_text': (
+                    "Опишіть ситуацію — ми звʼяжемося, щоб уточнити завдання. "
+                    'Факт звернення залишається конфіденційним.'
+                ),
+            }
+            if page is None:
+                page = ServicePage.objects.create(slug=data['slug'], **defaults)
+            else:
+                self._fill(page, **defaults)
             assign_image(page.card_image, data['card'])
             assign_image(page.hero_image, data['card'])
             page.save()
 
             design = DESIGN_SERVICES.get(data['slug'])
             if design:
-                page.scope_items.all().delete()
-                page.method_steps.all().delete()
-                page.advantages.all().delete()
-                page.scope_title = design.get('scope_title', page.scope_title)
-                page.method_title = design.get('method_title', page.method_title)
-                page.advantages_title = design.get('advantages_title', page.advantages_title)
-                page.order_title = design.get('order_title', page.order_title).replace('\n', ' ')
-                page.order_text = design.get('order_text', page.order_text)
-                page.hero_text = design.get('hero_text', page.hero_text)
-                page.save()
-                for i, text in enumerate(design.get('scope_items', [])):
-                    ServiceScopeItem.objects.create(page=page, text=text, order=i)
-                for i, (num, title, text) in enumerate(design.get('steps', [])):
-                    ServiceMethodStep.objects.create(
-                        page=page, number=num, title=title, text=text, order=i,
-                    )
-                for i, (_icon, title, text) in enumerate(design.get('advantages', [])):
-                    ServiceAdvantage.objects.create(
-                        page=page, title=title, text=text, order=i,
-                    )
-            elif created or not page.method_steps.exists():
-                page.method_steps.all().delete()
-                page.advantages.all().delete()
-                page.scope_items.all().delete()
+                from src.pages.canon_seed import sync_service
+                sync_service(page, design)
+            elif not page.method_steps.exists():
                 for i, text in enumerate([
                     'Конфіденційний запит і уточнення завдання',
                     'Збір і перевірка відомостей законними методами',
@@ -510,35 +474,38 @@ class Command(BaseCommand):
 
     def seed_analysis(self):
         page = AnalysisPage.load()
-        page.title = 'Експрес-перевірка контрагентів — VI Analysis'
-        page.short = 'Збір інформації, ризики, рекомендації'
-        page.hero_title = 'VI Analysis'
-        page.hero_text = (
-            'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
-            'рекомендації для бізнесу'
-        )
-        page.seo_title = SEO['analysis']['title']
-        page.seo_description = SEO['analysis']['description']
-        page.h1 = 'VI Analysis'
-        page.card_text = (
-            'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
-            'рекомендації для бізнесу'
-        )
-        page.tags = 'Збір інформації|Оцінка ризиків|Рекомендації'
-        page.recommendation_text = (
-            'Рекомендаційний модуль перетворює виявлені ризики на конкретний варіант дій '
-            'і показує, які саме фактори на нього вплинули.'
-        )
-        page.result_text = (
-            'Замовник отримує оцінку ризиків і рекомендації для ухвалення рішення: '
-            'на стандартних умовах, із додатковими умовами або з відмовою від співпраці.'
-        )
-        page.paket_text = (
-            'Для компаній, яким потрібен постійний контроль за партнерською базою. '
-            'Ви визначаєте контрагентів — ми перевіряємо й моніторимо зміни.'
-        )
-        page.order_text = (
-            'Надішліть назву компанії або код ЄДРПОУ — ми підготуємо звіт із рекомендацією.'
+        self._fill(
+            page,
+            title='Експрес-перевірка контрагентів — VI Analysis',
+            short='Збір інформації, ризики, рекомендації',
+            hero_title='VI Analysis',
+            hero_text=(
+                'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
+                'рекомендації для бізнесу'
+            ),
+            seo_title=SEO['analysis']['title'],
+            seo_description=SEO['analysis']['description'],
+            h1='VI Analysis',
+            card_text=(
+                'Експрес-перевірка контрагентів, збір інформації — оцінка ризиків — '
+                'рекомендації для бізнесу'
+            ),
+            tags='Збір інформації|Оцінка ризиків|Рекомендації',
+            recommendation_text=(
+                'Рекомендаційний модуль перетворює виявлені ризики на конкретний варіант дій '
+                'і показує, які саме фактори на нього вплинули.'
+            ),
+            result_text=(
+                'Замовник отримує оцінку ризиків і рекомендації для ухвалення рішення: '
+                'на стандартних умовах, із додатковими умовами або з відмовою від співпраці.'
+            ),
+            paket_text=(
+                'Для компаній, яким потрібен постійний контроль за партнерською базою. '
+                'Ви визначаєте контрагентів — ми перевіряємо й моніторимо зміни.'
+            ),
+            order_text=(
+                'Надішліть назву компанії або код ЄДРПОУ — ми підготуємо звіт із рекомендацією.'
+            ),
         )
         assign_image(page.hero_image, 'services/dir-1.png')
         assign_image(page.card_image, 'services/dir-1.png')
@@ -568,7 +535,7 @@ class Command(BaseCommand):
             ),
         ]
         for i, (num, title, text, bullets) in enumerate(steps_data):
-            AnalysisStep.objects.update_or_create(
+            AnalysisStep.objects.get_or_create(
                 page=page, number=num,
                 defaults={'title': title, 'text': text, 'bullets': bullets, 'order': i},
             )
@@ -616,24 +583,29 @@ class Command(BaseCommand):
 
     def seed_contacts_privacy(self):
         c = ContactsPage.load()
-        c.seo_title = SEO['contacts']['title']
-        c.seo_description = SEO['contacts']['description']
-        c.h1 = 'Контакти'
-        c.hero_title = 'Контакти'
-        c.hero_text = (
-            'Перша консультація допоможе визначити, яке рішення підійде саме вам. '
-            'Факт звернення, зміст запиту та результати роботи залишаються відомими лише вам'
+        self._fill(
+            c,
+            seo_title=SEO['contacts']['title'],
+            seo_description=SEO['contacts']['description'],
+            h1='Контакти',
+            hero_title='Контакти',
+            hero_text=(
+                'Перша консультація допоможе визначити, яке рішення підійде саме вам. '
+                'Факт звернення, зміст запиту та результати роботи залишаються відомими лише вам'
+            ),
+            info_title='Обговорімо вашу задачу',
         )
-        c.info_title = 'Обговорімо вашу задачу'
         assign_image(c.hero_image, 'hero.png')
         c.save()
 
         p = PrivacyPage.load()
-        p.seo_title = SEO['privacy']['title']
-        p.seo_description = SEO['privacy']['description']
-        p.h1 = 'Політика конфіденційності'
-        p.hero_title = 'Політика конфіденційності'
-        p.body = (
+        self._fill(
+            p,
+            seo_title=SEO['privacy']['title'],
+            seo_description=SEO['privacy']['description'],
+            h1='Політика конфіденційності',
+            hero_title='Політика конфіденційності',
+            body=(
             '<p>Редакція від [дата]. Тимчасовий текст — буде замінено на затверджену редакцію.</p>'
             '<div class="privacy-block">'
             '<h2><span class="privacy-block__num">01</span> Загальні положення</h2>'
@@ -670,8 +642,8 @@ class Command(BaseCommand):
             '<h2><span class="privacy-block__num">08</span> Контакти</h2>'
             '<p>З питань обробки персональних даних звертайтеся: [Email], [Телефон], '
             '[Адреса офісу].</p></div>'
+            ),
         )
-        p.save()
 
     def seed_articles(self):
         from .seed_content_2 import seed_articles

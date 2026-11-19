@@ -4,7 +4,7 @@ from django.views.generic import DetailView, ListView
 from src.core.og_image import og_image_from_field
 from src.leads.forms import LeadForm
 
-from .models import CaseStudy
+from .models import CaseStudy, CasesPage
 
 
 class CaseListView(ListView):
@@ -32,10 +32,11 @@ class CaseListView(ListView):
             'current_cat': cat,
             'categories': categories,
             'lead_form': LeadForm(),
-            'seo_title': 'Кейси — VARTIS INTELLIGENCE',
-            'seo_description': 'Реалізовані проєкти та демонстраційні приклади.',
-            'h1': 'Кейси',
-            'crumbs': [{'label': 'Кейси', 'url': ''}],
+            'seo_title': CasesPage.load().seo_title,
+            'seo_description': CasesPage.load().seo_description,
+            'h1': CasesPage.load().h1,
+            'hero_text': CasesPage.load().hero_text,
+            'crumbs': [{'label': CasesPage.load().crumb, 'url': ''}],
         })
         return ctx
 
@@ -61,7 +62,7 @@ class CaseDetailView(DetailView):
         ctx['seo_title'] = case.seo_title or f'{case.title} — VARTIS INTELLIGENCE'
         ctx['seo_description'] = case.seo_description or case.excerpt
         ctx['crumbs'] = [
-            {'label': 'Кейси', 'url': reverse('cases:list')},
+            {'label': CasesPage.load().crumb, 'url': reverse('cases:list')},
             {'label': case.title, 'url': ''},
         ]
         if case.image:

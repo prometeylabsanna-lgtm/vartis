@@ -142,3 +142,21 @@ class CmsAdminColorWidget(Widget):
             val,
             hex_class,
         )
+
+
+class CmsAdminImageWidget(UnfoldAdminFileFieldWidget):
+    def render(self, name, value, attrs=None, renderer=None):
+        url = ""
+        if value and getattr(value, "url", ""):
+            url = value.url
+        preview = format_html(
+            '<img class="cms-image__preview" src="{}" alt="" {}>',
+            url,
+            "" if url else "hidden",
+        )
+        control = super().render(name, value, attrs, renderer)
+        return format_html(
+            '<div class="cms-image" data-cms-image>{}{}</div>',
+            preview,
+            control,
+        )

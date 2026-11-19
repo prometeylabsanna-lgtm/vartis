@@ -1,7 +1,7 @@
 {% load vartis_media %}
 <div id="feed-partial" class="feed">
   <div class="feed-head">
-    <h2 class="feed-head__title">Усі публікації</h2>
+    <h2 class="feed-head__title">{{ blog_page.feed_title }}</h2>
     <div class="feed-toolbar" role="group" aria-label="Фільтр за темою">
       <a
         href="{% url 'blog:list' %}"
@@ -11,7 +11,7 @@
         hx-target="#feed-partial"
         hx-swap="outerHTML"
         hx-push-url="true"
-      >Усі</a>
+      >{{ blog_page.all_label }}</a>
       {% for cat in categories %}
       <a
         href="{% url 'blog:list' %}?cat={{ cat|urlencode }}"
@@ -45,7 +45,7 @@
         <a href="{{ featured.get_absolute_url }}">{{ featured.title }}</a>
       </h3>
       <p class="article-featured__text">{{ featured.excerpt }}</p>
-      <a href="{{ featured.get_absolute_url }}" class="btn btn--primary">Читати статтю</a>
+      <a href="{{ featured.get_absolute_url }}" class="btn btn--primary">{{ blog_page.read_label }}</a>
     </div>
   </article>
   {% endif %}
@@ -66,11 +66,11 @@
         <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
       </h3>
       <p class="blog-card__text">{{ article.excerpt }}</p>
-      <a href="{{ article.get_absolute_url }}" class="blog-card__more">Читати статтю</a>
+      <a href="{{ article.get_absolute_url }}" class="blog-card__more">{{ blog_page.read_label }}</a>
     </article>
     {% empty %}
       {% if not featured %}
-      <p class="feed-empty">У цій темі ще немає публікацій.</p>
+      <p class="feed-empty">{{ blog_page.empty_text }}</p>
       {% endif %}
     {% endfor %}
   </div>
