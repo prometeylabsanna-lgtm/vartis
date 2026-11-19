@@ -65,5 +65,5 @@ class CaseDetailView(DetailView):
             {'label': case.title, 'url': ''},
         ]
         if case.image:
-            ctx['og_image'] = media_or_static_absolute(self.request, case.image.url)
+            ctx['og_image'] = og_image_from_field(self.request, case.image)
         return ctx
