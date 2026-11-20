@@ -94,6 +94,16 @@ class PublicUrlTests(TestCase):
         self.assertEqual(listing.status_code, 200)
         self.assertContains(listing, 'Каталог послуг')
 
+    def test_header_service_menu_arrows_keep_size(self):
+        from pathlib import Path
+
+        html = self.client.get(reverse('pages:home')).content.decode()
+        self.assertIn('class="svc-menu__arrow"', html)
+        css = Path('src/core/static/css/header.css').read_text(encoding='utf-8')
+        self.assertIn('.svc-menu__arrow', css)
+        self.assertIn('min-width: 18px', css)
+        self.assertIn('flex: 0 0 18px', css)
+
     def test_cases_catalog_is_removed(self):
         home = self.client.get(reverse('pages:home'))
         self.assertNotContains(home, 'href="/keisy/"')

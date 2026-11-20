@@ -260,6 +260,21 @@
   background: var(--color-cream);
 }
 
+.svc-menu__copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.svc-menu__arrow {
+  display: block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  overflow: visible;
+}
+
 .svc-menu__icon {
   width: 52px;
   height: 52px;
@@ -363,9 +378,19 @@
 
 .mobile-nav__label {
   flex: 1;
+  min-width: 0;
   font-weight: 600;
   font-size: clamp(26px, 5vw, 40px);
   line-height: 1;
+}
+
+.mobile-nav__link > svg {
+  display: block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
 }
 
 .mobile-nav__subs {
