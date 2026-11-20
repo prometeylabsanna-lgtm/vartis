@@ -617,11 +617,25 @@
   flex-direction: column;
   gap: 14px;
   align-items: flex-start;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .compare-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(11, 22, 38, 0.1);
+  }
 }
 
 .compare-card--dark {
   background: var(--color-dark);
   border-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .compare-card--dark:hover {
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.32);
+  }
 }
 
 .compare-card__title {
@@ -750,6 +764,14 @@
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .get-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(11, 22, 38, 0.1);
+  }
 }
 
 .get-card__num {

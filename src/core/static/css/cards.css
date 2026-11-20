@@ -415,9 +415,11 @@
   padding: 24px;
 }
 
-.band-dark--photo .adv-card:hover {
-  transform: none;
-  box-shadow: none;
+@media (hover: hover) and (pointer: fine) {
+  .band-dark--photo .adv-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.32);
+  }
 }
 
 .band-dark .adv-card__title {

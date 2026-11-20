@@ -67,6 +67,22 @@ class ArticleEditorTests(TestCase):
         self.assertIn('name="help_title"', body)
         self.assertIn('name="help_cta"', body)
 
+    def test_rich_list_then_heading_keeps_spacing_rule(self):
+        from pathlib import Path
+
+        self.article.body = (
+            '<ul><li>who can see the client base</li>'
+            '<li>how people are hired and how they leave</li></ul>'
+            '<h2>Step 2. Short rules</h2><p>Write the few rules.</p>'
+        )
+        self.article.save(update_fields=['body'])
+        response = self.client.get(self.article.get_absolute_url())
+        self.assertContains(response, '<ul>')
+        self.assertContains(response, '<h2>Step 2. Short rules</h2>', html=True)
+        css = Path('src/core/static/css/article-detail.css').read_text(encoding='utf-8')
+        self.assertIn('.art-body .art-body__rich > ul + h2', css)
+        self.assertIn('margin-top: 32px', css)
+
     def test_blocks_to_html(self):
         from src.blog.body_html import article_blocks_to_html
         from src.blog.models import ArticleBlock

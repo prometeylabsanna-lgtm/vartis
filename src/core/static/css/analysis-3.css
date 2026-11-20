@@ -105,12 +105,26 @@
   flex-direction: column;
   gap: 20px;
   color: var(--color-ink);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vi-tariff:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(11, 22, 38, 0.1);
+  }
 }
 
 .vi-tariff--featured {
   border-color: var(--color-dark);
   background: var(--color-dark);
   color: var(--color-white);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vi-tariff--featured:hover {
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.32);
+  }
 }
 
 .vi-tariff__head {
