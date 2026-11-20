@@ -90,6 +90,8 @@ class EnglishLocaleTests(TestCase):
         form = self.client.get(f'/admin/core/sitesettings/{settings.pk}/change/')
         self.assertEqual(form.headers.get('Content-Language'), 'uk')
         self.assertContains(form, 'ВАРТІС')
+        self.assertContains(form, 'Українська')
+        self.assertContains(form, 'English')
 
     def test_custom_500_both_languages_without_database(self):
         factory = RequestFactory()

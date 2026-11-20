@@ -15,7 +15,7 @@ from src.core.admin_site_content_widgets import (
     CmsTinyMCEWidget,
 )
 from src.core.admin_hero_chrome import HERO_PAGE, HeroChromeAdminMixin
-from src.core.admin_i18n import expand_fieldsets
+from src.core.admin_i18n import language_fieldsets
 from src.core.models_cms import PageStyle
 
 _SEO = ("seo_title", "seo_description", "h1")
@@ -193,7 +193,7 @@ class SectionAdmin(ModelAdmin):
                 f"{self.tab_title} — SEO",
                 {"classes": ["tab"], "fields": _SEO},
             ))
-        return expand_fieldsets(sets, self.model)
+        return language_fieldsets(sets, self.model)
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if isinstance(db_field, models.TextField):

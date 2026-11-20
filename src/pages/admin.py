@@ -127,19 +127,22 @@ class ServicePageForm(forms.ModelForm):
             )
 
         for name, max_chars in SERVICE_TEXT_LIMITS.items():
-            if name == 'icon' or name not in self.fields:
+            if name == 'icon':
                 continue
-            field = self.fields[name]
-            if isinstance(field.widget, forms.Textarea):
-                field.widget = CmsAdminTextareaWidget(
-                    attrs={'rows': 3},
-                    max_chars=max_chars,
-                    hard_limit=True,
-                )
-            else:
-                field.widget = CmsAdminTextInputWidget(max_chars=max_chars, hard_limit=True)
-            field.help_text = f'Максимум {max_chars} символів.'
-            field.max_length = max_chars
+            for field_name in (name, f'{name}_en'):
+                if field_name not in self.fields:
+                    continue
+                field = self.fields[field_name]
+                if isinstance(field.widget, forms.Textarea):
+                    field.widget = CmsAdminTextareaWidget(
+                        attrs={'rows': 3},
+                        max_chars=max_chars,
+                        hard_limit=True,
+                    )
+                else:
+                    field.widget = CmsAdminTextInputWidget(max_chars=max_chars, hard_limit=True)
+                field.help_text = f'Максимум {max_chars} символів.'
+                field.max_length = max_chars
 
         for name in SERVICE_IMAGE_FIELDS:
             if name not in self.fields:

@@ -148,7 +148,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 20px;
   min-height: auto;
   transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
@@ -183,7 +183,8 @@
 .adv-card__title {
   font-weight: 700;
   font-size: 24px;
-  line-height: 1;
+  line-height: 1.2;
+  min-height: calc(1.2em * 2);
   color: var(--color-ink);
 }
 

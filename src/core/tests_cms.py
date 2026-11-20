@@ -40,8 +40,14 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('cms-image__preview', body)
         self.assertIn('cms-image__thumb', body)
         self.assertIn('/static/images/hero.webp', body)
-        self.assertIn('Перший екран — SEO', body)
+        self.assertIn('Українська', body)
+        self.assertIn('English', body)
         self.assertIn('Перший екран — Баннер', body)
+        self.assertIn('name="hero_title_en"', body)
+        uk = body.find('Українська')
+        en = body.find('English')
+        self.assertGreater(uk, 0)
+        self.assertGreater(en, uk)
         self.assertIn('Колір тексту на баннері', body)
         self.assertIn('name="hero_text_color"', body)
         self.assertIn('name="hero_panel_opacity"', body)
@@ -184,3 +190,28 @@ class CmsAdminSmokeTests(TestCase):
         page.refresh_from_db()
         self.assertEqual(page.hero_cta, 'Новий CTA')
         self.assertEqual(page.h1, 'H1')
+
+    def test_hero_and_tariff_use_language_tabs(self):
+        from django.contrib.admin.sites import site
+
+        from src.core.admin_i18n import EN_TAB, UK_TAB
+        from src.core.cms_proxies import HomeHeroSettings
+        from src.pages.models_analysis_items import AnalysisTariff
+
+        request = self.client.get('/admin/').wsgi_request
+        hero_admin = site._registry[HomeHeroSettings]
+        hero_sets = hero_admin.get_fieldsets(request)
+        self.assertEqual(hero_sets[0][0], UK_TAB)
+        self.assertEqual(hero_sets[1][0], EN_TAB)
+        self.assertIn('hero_title', hero_sets[0][1]['fields'])
+        self.assertNotIn('hero_title_en', hero_sets[0][1]['fields'])
+        self.assertIn('hero_title_en', hero_sets[1][1]['fields'])
+        self.assertTrue(any(title.endswith('Баннер') for title, _opts in hero_sets))
+
+        tariff_admin = site._registry[AnalysisTariff]
+        tariff_sets = tariff_admin.get_fieldsets(request)
+        self.assertEqual(tariff_sets[0][0], UK_TAB)
+        self.assertEqual(tariff_sets[1][0], EN_TAB)
+        self.assertIn('price', tariff_sets[0][1]['fields'])
+        self.assertNotIn('price_en', tariff_sets[0][1]['fields'])
+        self.assertIn('price_en', tariff_sets[1][1]['fields'])

@@ -78,14 +78,10 @@ class HeroChromeAdminMixin:
         sets = list(super().get_fieldsets(request, obj) or [])
         if not self.hero_page:
             return sets
-        banner = (
+        sets.append((
             f"{self.tab_title} — Баннер",
             {"classes": ["tab"], "fields": HERO_CHROME_FIELDS},
-        )
-        if len(sets) > 1:
-            sets.insert(1, banner)
-        else:
-            sets.append(banner)
+        ))
         return sets
 
     def save_model(self, request, obj, form, change):
