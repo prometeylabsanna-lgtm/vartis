@@ -108,6 +108,49 @@ def _with_query(path: str, query: str) -> str:
     return f'{path}?{query}'
 
 
+_SKIP_PREFIXES = (
+    '/admin/',
+    '/leads/',
+    '/static/',
+    '/media/',
+    '/sitemap.xml',
+    '/robots.txt',
+    '/llms.txt',
+)
+
+
+def _split_internal_path(path: str) -> tuple[str, str, str]:
+    base, _, query = path.partition('?')
+    base, hash_sign, fragment = base.partition('#')
+    return base, query, f'{hash_sign}{fragment}' if hash_sign else ''
+
+
+def _resolve_public_path(path: str):
+    """Зіставляє публічний шлях незалежно від мови поточного потоку."""
+    for lang in ('uk', 'en'):
+        with override(lang):
+            try:
+                match = resolve(path)
+            except Resolver404:
+                continue
+            if match.namespace in {'pages', 'blog'}:
+                return match
+    return None
+
+
+def _localized_kwargs(match) -> dict:
+    kwargs = dict(match.kwargs)
+    if match.namespace == 'pages' and match.url_name == 'service_detail':
+        page = find_service(kwargs.get('slug', ''))
+        if page is not None:
+            kwargs['slug'] = service_public_slug(page)
+    elif match.namespace == 'blog' and match.url_name == 'detail':
+        article = find_article(kwargs.get('slug', ''))
+        if article is not None:
+            kwargs['slug'] = article_public_slug(article)
+    return kwargs
+
+
 def language_url(request, lang: str) -> str:
     """Еквівалент поточної сторінки іншою мовою. Зберігає query, крім перекладу cat."""
     raw = request.get_full_path() if request is not None else '/'
@@ -152,32 +195,25 @@ def language_url(request, lang: str) -> str:
 
 def localize_internal_path(path: str) -> str:
     """Перекладає внутрішній шлях на активну мову. Якорі й зовнішні URL не чіпає."""
-    if not path or path.startswith('#') or path.startswith('http://') or path.startswith('https://'):
-        return path or ''
-    base, _, query = path.partition('?')
+    if not path:
+        return ''
+    if path.startswith(('#', 'http://', 'https://', 'mailto:', 'tel:')):
+        return path
+    if not path.startswith('/') or path.startswith('//'):
+        return path
+    if any(path == prefix.rstrip('/') or path.startswith(prefix) for prefix in _SKIP_PREFIXES):
+        return path
+    base, query, fragment = _split_internal_path(path)
+    match = _resolve_public_path(base)
+    if match is None:
+        return path
+    name = f'{match.namespace}:{match.url_name}'
+    kwargs = _localized_kwargs(match)
     try:
-        match = resolve(base)
-    except Resolver404:
         with override(language_code()):
-            try:
-                return translate_url(base, language_code())
-            except Exception:
-                return path
-    if match.namespace == 'pages' and match.url_name == 'service_detail':
-        page = find_service(match.kwargs.get('slug', ''))
-        if page is not None:
-            slug = service_public_slug(page)
-            translated = reverse('pages:service_detail', kwargs={'slug': slug})
-            return f'{translated}?{query}' if query else translated
-    if match.namespace == 'blog' and match.url_name == 'detail':
-        article = find_article(match.kwargs.get('slug', ''))
-        if article is not None:
-            slug = article_public_slug(article)
-            translated = reverse('blog:detail', kwargs={'slug': slug})
-            return f'{translated}?{query}' if query else translated
-    with override(language_code()):
-        try:
-            translated = translate_url(base, language_code())
-        except Exception:
-            return path
-    return f'{translated}?{query}' if query else translated
+            translated = reverse(name, args=match.args, kwargs=kwargs)
+    except Exception:
+        return path
+    if query:
+        translated = f'{translated}?{query}'
+    return f'{translated}{fragment}'

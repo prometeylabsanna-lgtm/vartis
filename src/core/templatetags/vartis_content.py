@@ -91,6 +91,13 @@ def block_image_url(context, page: str, key: str, fallback_static: str = "") -> 
 
 
 @register.filter
+def localize_path(value):
+    from src.core.i18n_urls import localize_internal_path
+
+    return localize_internal_path(value or '')
+
+
+@register.filter
 def gold_tail(value):
     text = str(value or "").strip()
     if " " not in text:

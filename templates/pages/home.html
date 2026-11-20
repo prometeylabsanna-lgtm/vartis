@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_icons vartis_media %}
+{% load static vartis_icons vartis_media vartis_content %}
 
 {% block preload_lcp %}
 {% public_img page.hero_image 'images/hero.webp' as hero_src %}
@@ -20,7 +20,7 @@
       </div>
       <div class="dir-grid mt-40">
         {% for s in services %}
-        <a href="{{ s.href }}" class="dir-card">
+        <a href="{{ s.href|localize_path }}" class="dir-card">
           <div class="dir-card__media">
             {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="{{ interface.service_alt_prefix|default:'Ілюстрація послуги:' }} {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </div>

@@ -43,9 +43,13 @@ def _clean_style(raw: str) -> str:
 
 def _clean_href(raw: str) -> str:
     href = (raw or '').strip()
-    if href and _SAFE_HREF.match(href):
-        return href
-    return ''
+    if not href or not _SAFE_HREF.match(href):
+        return ''
+    if href.startswith('/') and not href.startswith('//'):
+        from src.core.i18n_urls import localize_internal_path
+
+        return localize_internal_path(href)
+    return href
 
 
 def _rebuild_open(tag: str, attr_blob: str) -> str:

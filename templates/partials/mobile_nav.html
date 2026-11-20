@@ -1,4 +1,4 @@
-{% load vartis_icons %}
+{% load vartis_icons vartis_content %}
 <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
   <div class="mobile-nav__inner">
     <nav aria-label="{{ interface.mobile_nav_aria|default:'Мобільна навігація' }}">
@@ -19,7 +19,7 @@
           <ul class="mobile-nav__subs">
             {% for s in nav_services %}
             <li>
-              <a href="{{ s.href }}" class="mobile-nav__sub" data-action="close-menu">
+              <a href="{{ s.href|localize_path }}" class="mobile-nav__sub" data-action="close-menu">
                 <span class="mobile-nav__sub-icon" aria-hidden="true">{% icon s.icon 22 %}</span>
                 <span>{{ s.title }}</span>
               </a>

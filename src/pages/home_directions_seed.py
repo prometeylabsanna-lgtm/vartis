@@ -69,7 +69,7 @@ def seed_home_directions(page: HomePage | None = None) -> None:
             page=page,
             title=live_title,
             text=live.get('card_text') or text,
-            href=live.get('href') or href,
+            href=href,
             is_visible=True,
             order=i,
         )

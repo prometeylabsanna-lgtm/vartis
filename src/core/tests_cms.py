@@ -69,6 +69,11 @@ class CmsAdminSmokeTests(TestCase):
         self.assertIn('cmsframe', tinymce)
         self.assertIn('data-cms-tabs', tabs_js)
         self.assertIn('nav[data-cms-tabs]', tabs_css)
+        self.assertNotIn('rgba(181, 139, 74, 0.08)', tabs_css)
+        self.assertNotRegex(
+            tabs_css,
+            r'nav\[data-cms-tabs\]\s*\{[^}]*border:\s*1\.5px solid',
+        )
 
     def test_style_admin_hides_hero_chrome_fields(self):
         from src.core.models_cms import PageStyle

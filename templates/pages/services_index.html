@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static vartis_media %}
+{% load static vartis_media vartis_content %}
 
 {% block content %}
 {% public_img page.hero_image 'images/hero.webp' as services_hero %}
@@ -11,7 +11,7 @@
       <div class="split-catalog">
         {% for c in catalog %}
         <article id="{{ c.key }}" class="split-item">
-          <a href="{{ c.href }}" class="split-item__media" aria-label="{{ c.title }}">
+          <a href="{{ c.href|localize_path }}" class="split-item__media" aria-label="{{ c.title }}">
             {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="{{ interface.direction_alt_prefix|default:'Фото напряму:' }} {{ c.title }}" loading="lazy" width="800" height="500" decoding="async">{% endif %}
           </a>
           <div class="split-item__body">
@@ -25,7 +25,7 @@
               {% endfor %}
             </ul>
             {% endif %}
-            <a href="{{ c.href }}" class="btn btn--outline">
+            <a href="{{ c.href|localize_path }}" class="btn btn--outline">
               {{ page.card_more_label }}
               <svg width="16" height="16" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 17L17 5M17 5H8M17 5V14" stroke="#B58B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </a>

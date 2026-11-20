@@ -28,7 +28,7 @@
           <nav class="site-footer__nav" aria-label="{{ interface.footer_services_aria|default:'Послуги у футері' }}">
             <p class="site-footer__nav-title">{{ site_settings.footer_col_services }}</p>
             {% for s in footer_services %}
-            <a href="{{ s.href }}">{{ s.title }}</a>
+            <a href="{{ s.href|localize_path }}">{{ s.title }}</a>
             {% endfor %}
           </nav>
         </div>

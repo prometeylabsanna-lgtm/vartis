@@ -6,7 +6,7 @@ from django.utils import translation
 from src.blog.models import Article
 from src.core.i18n_seed.fill import open_for_english
 from src.core.models import SiteSettings
-from src.pages.models import ServicePage
+from src.pages.models import HomePage, ServicePage
 from src.pages.views import server_error
 
 
@@ -156,6 +156,90 @@ class EnglishDeployHookTests(TestCase):
         response = self.client.get('/en/')
         self.assertContains(response, 'Leave a request')
         self.assertContains(response, 'What we do')
+
+
+class InternalHrefLocaleTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command('seed_content')
+        call_command('seed_en')
+
+    def test_ukrainian_path_reverses_while_english_is_active(self):
+        from src.core.i18n_urls import localize_internal_path
+
+        with translation.override('en'):
+            self.assertEqual(
+                localize_internal_path('/posluhy/perevirka-kontrahentiv/'),
+                '/en/services/counterparty-screening/',
+            )
+            self.assertEqual(
+                localize_internal_path('/posluhy/konsaltynh/'),
+                '/en/services/consulting/',
+            )
+            self.assertEqual(localize_internal_path('/pro-kompaniiu/'), '/en/about/')
+            self.assertEqual(localize_internal_path('/kontakty/'), '/en/contacts/')
+            self.assertEqual(
+                localize_internal_path('/polityka-konfidentsiinosti/'),
+                '/en/privacy/',
+            )
+            self.assertEqual(
+                localize_internal_path('/blog/perevirka-kontrahenta/'),
+                '/en/blog/counterparty-check/',
+            )
+            self.assertEqual(
+                localize_internal_path('/en/services/counterparty-screening/'),
+                '/en/services/counterparty-screening/',
+            )
+
+    def test_english_path_reverses_while_ukrainian_is_active(self):
+        from src.core.i18n_urls import localize_internal_path
+
+        with translation.override('uk'):
+            self.assertEqual(
+                localize_internal_path('/en/services/counterparty-screening/'),
+                '/posluhy/perevirka-kontrahentiv/',
+            )
+            self.assertEqual(
+                localize_internal_path('/posluhy/perevirka-kontrahentiv/'),
+                '/posluhy/perevirka-kontrahentiv/',
+            )
+
+    def test_english_home_cards_stay_on_english_urls(self):
+        page = HomePage.load()
+        card = page.directions.filter(is_visible=True).first()
+        self.assertIsNotNone(card)
+        card.href = '/posluhy/perevirka-kontrahentiv/'
+        card.save(update_fields=['href'])
+
+        html = self.client.get('/en/').content.decode()
+        self.assertIn('href="/en/services/counterparty-screening/"', html)
+        self.assertNotIn('href="/posluhy/perevirka-kontrahentiv/"', html)
+        self.assertNotIn('href="/posluhy/konsaltynh/"', html)
+        self.assertNotIn('href="/posluhy/kompleksna-dopomoha-biznesu/"', html)
+        self.assertNotIn('href="/posluhy/zbir-ta-analiz-informatsii/"', html)
+
+        uk_html = self.client.get('/').content.decode()
+        self.assertIn('href="/posluhy/perevirka-kontrahentiv/"', uk_html)
+        self.assertNotIn('href="/en/services/counterparty-screening/"', uk_html)
+
+    def test_english_nav_catalog_and_related_cards_use_english_hrefs(self):
+        catalog = self.client.get('/en/services/').content.decode()
+        self.assertIn('href="/en/services/counterparty-screening/"', catalog)
+        self.assertNotIn('href="/posluhy/perevirka-kontrahentiv/"', catalog)
+
+        related = self.client.get('/en/services/consulting/').content.decode()
+        self.assertIn('href="/en/services/counterparty-screening/"', related)
+        self.assertNotIn('href="/posluhy/perevirka-kontrahentiv/"', related)
+
+    def test_cms_html_links_follow_active_language(self):
+        from src.core.richtext import sanitize_html
+
+        with translation.override('en'):
+            html = sanitize_html(
+                '<p><a href="/posluhy/perevirka-kontrahentiv/">VI</a></p>'
+            )
+        self.assertIn('href="/en/services/counterparty-screening/"', html)
+        self.assertNotIn('/posluhy/perevirka-kontrahentiv/', html)
 
 
 class EnglishFillGateTests(SimpleTestCase):

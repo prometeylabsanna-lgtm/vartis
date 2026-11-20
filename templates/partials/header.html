@@ -1,4 +1,4 @@
-{% load static vartis_icons %}
+{% load static vartis_icons vartis_content %}
 <header id="site-header" class="site-header">
   <div class="site-header__inner">
     <div class="site-header__bar">
@@ -25,7 +25,7 @@
           <div id="svc-menu" class="svc-menu">
             <div class="svc-menu__panel">
               {% for s in nav_services %}
-              <a href="{{ s.href }}" class="svc-menu__item" {% if request.path == s.href %}aria-current="page"{% endif %}>
+              <a href="{{ s.href|localize_path }}" class="svc-menu__item" {% if request.path == s.href|localize_path %}aria-current="page"{% endif %}>
                 <span class="svc-menu__icon" aria-hidden="true">{% icon s.icon 30 %}</span>
                 <span>
                   <span class="svc-menu__title">{{ s.title }}</span>

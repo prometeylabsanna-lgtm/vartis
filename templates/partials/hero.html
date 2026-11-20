@@ -1,4 +1,4 @@
-{% load static %}
+{% load static vartis_content %}
 <section
   class="hero{% if shade %} hero--shade{% endif %}{% if home %} hero--home{% endif %}{% if home and image %} has-upload{% endif %}"
   aria-labelledby="hero-title"
@@ -42,7 +42,7 @@
         <button type="button" class="btn btn--primary" data-action="open-form">{{ cta_primary|default:"Залишити заявку" }}</button>
         {% endif %}
         {% if secondary_href %}
-        <a href="{{ secondary_href }}" class="btn btn--light">{{ secondary_label }}</a>
+        <a href="{{ secondary_href|localize_path }}" class="btn btn--light">{{ secondary_label }}</a>
         {% endif %}
       </div>
       {% endif %}
