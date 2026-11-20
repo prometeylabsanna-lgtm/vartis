@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, SimpleTestCase, TestCase
+from django.utils import translation
 
 from src.blog.models import Article
+from src.core.i18n_seed.fill import open_for_english
 from src.core.models import SiteSettings
 from src.pages.models import ServicePage
 from src.pages.views import server_error
@@ -18,6 +20,8 @@ class EnglishLocaleTests(TestCase):
         response = self.client.get('/en/services/consulting/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Expert support for business')
+        self.assertContains(response, 'What consulting includes')
+        self.assertContains(response, 'Request a consultation')
         self.assertContains(response, 'lang-switch--desktop')
         self.assertContains(response, 'hreflang="uk"')
         self.assertContains(response, 'hreflang="en"')
@@ -29,8 +33,10 @@ class EnglishLocaleTests(TestCase):
 
     def test_empty_english_falls_back_to_ukrainian(self):
         page = ServicePage.objects.get(slug='konsaltynh')
-        page.hero_text_en = ''
-        page.save(update_fields=['hero_text_en'])
+        with translation.override('uk'):
+            page.hero_text_uk = 'Експертна підтримка'
+            page.hero_text_en = ''
+            page.save(update_fields=['hero_text_uk', 'hero_text_en'])
         response = self.client.get('/en/services/consulting/')
         self.assertContains(response, 'Експертна підтримка')
 
@@ -112,3 +118,53 @@ class EnglishLocaleTests(TestCase):
         self.assertIn('/en/services/consulting/', body)
         self.assertIn('hreflang="en"', body)
         self.assertIn('hreflang="uk"', body)
+
+
+class EnglishDeployHookTests(TestCase):
+    def test_vercel_bootstrap_always_calls_seed_en(self):
+        from pathlib import Path
+
+        import src.core.bootstrap_vercel as mod
+
+        text = Path(mod.__file__).read_text(encoding='utf-8')
+        self.assertIn("call_command('seed_en'", text)
+        after_ukrainian = text.split("vercel seed_site_blocks failed")[-1]
+        self.assertIn("call_command('seed_en'", after_ukrainian)
+        self.assertGreater(
+            text.find("call_command('seed_en'"),
+            text.find('if needs_seed:'),
+        )
+        from src.core.management.commands.seed_content import Command as SeedContent
+        from src.core.i18n_seed import apply_english_copy
+        import inspect
+
+        self.assertIn('under_ukrainian', inspect.getsource(SeedContent.handle))
+        self.assertIn('under_ukrainian', inspect.getsource(apply_english_copy))
+
+    def test_seed_content_alone_fills_english_home(self):
+        translation.activate('en')
+        try:
+            call_command('seed_content')
+        finally:
+            translation.deactivate()
+        settings = SiteSettings.load()
+        self.assertEqual(settings.nav_about_en, 'About')
+        page = ServicePage.objects.get(slug='konsaltynh')
+        self.assertEqual(page.scope_title_uk, 'Що входить у консалтинг')
+        self.assertEqual(page.scope_title_en, 'What consulting includes')
+        self.assertEqual(page.cta_primary_en, 'Request a consultation')
+        response = self.client.get('/en/')
+        self.assertContains(response, 'Leave a request')
+        self.assertContains(response, 'What we do')
+
+
+class EnglishFillGateTests(SimpleTestCase):
+    def test_cyrillic_in_english_slot_is_replaced(self):
+        self.assertTrue(
+            open_for_english('Що входить у консалтинг', 'Опис напряму', 'Опис напряму'),
+        )
+
+    def test_custom_english_is_kept(self):
+        self.assertFalse(
+            open_for_english('Custom title', 'Що входить у консалтинг', 'Опис напряму'),
+        )

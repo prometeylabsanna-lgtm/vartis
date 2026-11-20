@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
+
+_CYRILLIC_START = '\u0400'
+_CYRILLIC_END = '\u04FF'
+
 
 def _default(obj, name):
     try:
@@ -18,14 +23,31 @@ def _blank(value) -> bool:
     return value is None or value == '' or value == [] or value == {}
 
 
+def looks_ukrainian(value) -> bool:
+    if not isinstance(value, str):
+        return False
+    return any(_CYRILLIC_START <= ch <= _CYRILLIC_END for ch in value)
+
+
 def open_for_english(current, ukrainian, default) -> bool:
     if _blank(current):
+        return True
+    # Якщо в EN уже лежить український текст (seed при активній 'en'), це не переклад.
+    if looks_ukrainian(current):
         return True
     if default not in (None, '') and current == default:
         return True
     if not _blank(ukrainian) and current == ukrainian:
         return True
     return False
+
+
+@contextmanager
+def under_ukrainian():
+    from django.utils import translation
+
+    with translation.override('uk'):
+        yield
 
 
 def fill_en(obj, **values) -> bool:

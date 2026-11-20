@@ -54,18 +54,24 @@ class Command(BaseCommand):
     help = 'Idempotent seed of Vartis content from design export'
 
     def handle(self, *args, **options):
-        self.seed_settings()
-        self.seed_home()
-        self.seed_about()
-        self.seed_services()
-        self.seed_analysis()
-        self.seed_contacts_privacy()
-        self.seed_articles()
-        from django.core.management import call_command
-        call_command('seed_site_blocks')
-        from src.pages.canon_seed import sync_all
-        sync_all()
-        self.stdout.write(self.style.SUCCESS('seed_content OK'))
+        from src.core.i18n_seed.fill import under_ukrainian
+
+        # adopt() пише в поточну мову потоку. Після запиту /en/ це 'en' —
+        # український макет тоді потрапляє в *_en, а seed_en вважає це перекладом.
+        with under_ukrainian():
+            self.seed_settings()
+            self.seed_home()
+            self.seed_about()
+            self.seed_services()
+            self.seed_analysis()
+            self.seed_contacts_privacy()
+            self.seed_articles()
+            from django.core.management import call_command
+            call_command('seed_site_blocks')
+            from src.pages.canon_seed import sync_all
+            sync_all()
+            call_command('seed_en')
+            self.stdout.write(self.style.SUCCESS('seed_content OK'))
 
     def _fill(self, obj, **fields):
         from src.pages.canon_seed import adopt

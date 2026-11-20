@@ -141,6 +141,13 @@ def bootstrap_vercel_demo() -> None:
         logger.exception('vercel seed_site_blocks failed')
 
     try:
+        # Український seed_content не заповнює *_en. Без цього /en/ показує
+        # запасний український текст, навіть коли маршрути вже з префіксом.
+        call_command('seed_en', verbosity=0)
+    except Exception:
+        logger.exception('vercel seed_en failed')
+
+    try:
         from src.core.page_styles import reset_page_styles_to_layout_defaults
 
         reset_page_styles_to_layout_defaults()
