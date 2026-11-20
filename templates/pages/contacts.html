@@ -62,7 +62,7 @@
         <div class="contacts-office__map">
           {% if map_embed_url %}
           <iframe
-            title="Карта розташування офісу"
+            title="{{ interface.map_title|default:'Карта розташування офісу' }}"
             src="{{ map_embed_url }}"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"

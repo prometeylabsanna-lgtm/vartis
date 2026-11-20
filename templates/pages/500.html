@@ -1,0 +1,55 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ lang|default:'uk' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% trans "Внутрішня помилка сервера — VARTIS INTELLIGENCE" %}</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" sizes="any">
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/page-shell.css' %}">
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/hero.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="site-header__bar">
+        <a class="site-header__logo" href="{{ home_url }}" aria-label="{% trans 'VARTIS INTELLIGENCE — на головну' %}">
+          <img src="{% static 'images/logo-sm.webp' %}" alt="" width="49" height="49" decoding="async">
+        </a>
+        <nav class="lang-switch" aria-label="{% trans 'Мова' %}">
+          <a class="lang-switch__btn{% if lang != 'en' %} is-active{% endif %}" href="/" lang="uk" hreflang="uk"{% if lang != 'en' %} aria-current="true"{% endif %}>UA</a>
+          <a class="lang-switch__btn{% if lang == 'en' %} is-active{% endif %}" href="/en/" lang="en" hreflang="en"{% if lang == 'en' %} aria-current="true"{% endif %}>EN</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main
+    id="main-content"
+    class="page-shell"
+    data-theme="light"
+    style="--page-bg: #ffffff; --page-text: #12263a; --page-accent: #b58b4a;"
+  >
+    <div id="top">
+      <section class="hero hero--shade" aria-labelledby="hero-title">
+        <img class="hero__bg" src="{% static 'images/hero.webp' %}" alt="" width="1600" height="900" decoding="async">
+        <div class="hero__panel">
+          <span class="hero__code" aria-hidden="true">500</span>
+          <div class="hero__content">
+            <h1 id="hero-title" class="hero__title">{% trans "Внутрішня помилка сервера" %}</h1>
+            <p class="hero__text">{% trans "Щось пішло не так на нашому боці. Спробуйте оновити сторінку або поверніться на головну." %}</p>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="{{ home_url }}">{% trans "На головну" %}</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

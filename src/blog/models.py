@@ -12,6 +12,7 @@ from src.core.models import SingletonModel
 
 class Article(models.Model):
     slug = models.SlugField('Slug', unique=True, max_length=160)
+    slug_en = models.SlugField('Slug (EN)', max_length=160, unique=True, null=True, blank=True)
     title = models.CharField('Заголовок', max_length=300)
     category = models.CharField('Категорія', max_length=120)
     published_at = models.DateField('Дата публікації')
@@ -40,7 +41,9 @@ class Article(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog:detail', kwargs={'slug': self.slug})
+        from src.core.i18n_urls import article_public_slug
+
+        return reverse('blog:detail', kwargs={'slug': article_public_slug(self)})
 
     @property
     def display_h1(self):
@@ -49,7 +52,14 @@ class Article(models.Model):
     @property
     def read_label(self):
         minutes = self.read_minutes or 1
-        return f'{minutes} хв читання'
+        template = '{n} хв читання'
+        try:
+            raw = BlogPage.load().read_minutes_template
+            if raw and '{n}' in raw:
+                template = raw
+        except Exception:
+            pass
+        return template.replace('{n}', str(minutes))
 
     def estimate_read_minutes(self):
         words = len((self.excerpt or '').split())
@@ -128,6 +138,12 @@ class BlogPage(SingletonModel):
     help_cta = models.CharField('Кнопка банера', max_length=80, default='Обговорити завдання')
     related_title = models.CharField('Заголовок «читайте також»', max_length=80, default='Читайте також')
     all_articles_label = models.CharField('Посилання на всі статті', max_length=80, default='Усі статті →')
+    read_minutes_template = models.CharField(
+        'Шаблон часу читання',
+        max_length=80,
+        default='{n} хв читання',
+        help_text='{n} замінюється на кількість хвилин.',
+    )
 
     class Meta:
         verbose_name = 'Сторінка блогу'

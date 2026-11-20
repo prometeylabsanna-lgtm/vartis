@@ -1,6 +1,8 @@
 from django.templatetags.static import static
 from django.urls import reverse
 
+from src.core.i18n_urls import service_public_slug
+
 from .models import AnalysisPage, ServicePage
 
 
@@ -75,7 +77,7 @@ def _service_nav_item(svc):
         'title': svc.title,
         'short': svc.short,
         'icon': svc.icon,
-        'href': reverse('pages:service_detail', kwargs={'slug': svc.slug}),
+        'href': reverse('pages:service_detail', kwargs={'slug': service_public_slug(svc)}),
         'card_image': svc.card_image,
         'card_image_url': _card_image_url(svc.card_image, svc.slug),
         'card_text': svc.card_text or svc.short,

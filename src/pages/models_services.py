@@ -43,6 +43,7 @@ class ServicesIndex(SingletonModel, SEOFields):
 
 class ServicePage(SEOFields):
     slug = models.SlugField('Slug', unique=True, choices=SERVICE_SLUGS)
+    slug_en = models.SlugField('Slug (EN)', max_length=80, unique=True, null=True, blank=True)
     title = models.CharField('Назва', max_length=200)
     short = models.CharField('Короткий опис', max_length=200, blank=True)
     hero_text = models.TextField('Текст першого екрана', blank=True)

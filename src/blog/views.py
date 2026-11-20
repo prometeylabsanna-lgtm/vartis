@@ -1,3 +1,5 @@
+from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
@@ -17,16 +19,25 @@ CHIP_ORDER = (
     'Корпоративна безпека',
     'Консалтинг',
 )
+CHIP_ORDER_EN = (
+    'Counterparty screening',
+    'Analytics',
+    'Corporate security',
+    'Consulting',
+)
 
 
 def _ordered_categories():
+    from src.core.i18n_urls import language_code
+
     present = set(
         Article.objects.filter(is_published=True)
         .values_list('category', flat=True)
         .distinct()
     )
-    ordered = [c for c in CHIP_ORDER if c in present]
-    extras = sorted(present - set(CHIP_ORDER))
+    order = CHIP_ORDER_EN if language_code() == 'en' else CHIP_ORDER
+    ordered = [c for c in order if c in present]
+    extras = sorted(present - set(order))
     return ordered + extras
 
 
@@ -86,6 +97,18 @@ class ArticleDetailView(StyledPageMixin, DetailView):
 
     def get_queryset(self):
         return Article.objects.filter(is_published=True).prefetch_related('blocks')
+
+    def get(self, request, *args, **kwargs):
+        from src.core.i18n_urls import resolve_article
+
+        article, canonical = resolve_article(kwargs.get('slug', ''))
+        if canonical:
+            return redirect('blog:detail', slug=canonical, permanent=True)
+        if article is None:
+            raise Http404
+        self.object = article
+        context = self.get_context_data(object=article)
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

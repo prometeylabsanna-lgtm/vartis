@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.forms',
+    'modeltranslation',
     'django_htmx',
     'csp',
     'src.core',
@@ -43,6 +44,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'src.core.middleware_language.ForceAdminUkrainianMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -53,6 +56,7 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
     'csp.middleware.CSPMiddleware',
     'src.core.middleware_seo.SeoRobotsMiddleware',
+    'src.core.middleware_language.PublicLanguageCookieMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -65,6 +69,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'django.template.context_processors.i18n',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'src.core.context_processors.site_settings',
@@ -117,8 +122,25 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'uk'
+LANGUAGES = [
+    ('uk', 'Українська'),
+    ('en', 'English'),
+]
 # Українські переклади інтерфейсу Unfold (кнопки, дії, підказки) — locale/uk.
 LOCALE_PATHS = [BASE_DIR / 'locale']
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uk'
+MODELTRANSLATION_LANGUAGES = ('uk', 'en')
+MODELTRANSLATION_FALLBACK_LANGUAGES = {'default': ('uk',)}
+MODELTRANSLATION_AUTO_POPULATE = False
+
+
+def _en_field_label(verbose_name, lang):
+    if lang == 'en':
+        return f'{verbose_name} (EN)'
+    return str(verbose_name)
+
+
+MODELTRANSLATION_BUILD_LOCALIZED_VERBOSE_NAME = _en_field_label
 TIME_ZONE = 'Europe/Kyiv'
 USE_I18N = True
 USE_TZ = True
@@ -197,6 +219,11 @@ def _vartis_unfold_navigation():
                     'title': 'Вікно заявки',
                     'icon': 'chat',
                     'link': '/admin/leads/leadmodal/',
+                },
+                {
+                    'title': 'Інтерфейс',
+                    'icon': 'translate',
+                    'link': '/admin/core/interfacecopy/',
                 },
                 {
                     'title': 'Недавні дії',

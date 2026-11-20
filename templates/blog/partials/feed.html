@@ -2,7 +2,7 @@
 <div id="feed-partial" class="feed">
   <div class="feed-head">
     <h2 class="feed-head__title">{{ blog_page.feed_title }}</h2>
-    <div class="feed-toolbar" role="group" aria-label="Фільтр за темою">
+    <div class="feed-toolbar" role="group" aria-label="{{ interface.feed_filter_aria|default:'Фільтр за темою' }}">
       <a
         href="{% url 'blog:list' %}"
         class="feed-chip{% if not current_cat %} is-active{% endif %}"
@@ -30,11 +30,11 @@
   <article class="article-featured">
     <a href="{{ featured.get_absolute_url }}" class="article-featured__media" aria-label="{{ featured.title }}">
       {% public_img featured.image 'images/blog/article.webp' as featured_src %}
-      {% if featured_src %}<img src="{{ featured_src }}" alt="Обкладинка: {{ featured.title }}" loading="lazy" width="960" height="540" decoding="async">{% endif %}
+      {% if featured_src %}<img src="{{ featured_src }}" alt="{{ interface.cover_alt_prefix|default:'Обкладинка:' }} {{ featured.title }}" loading="lazy" width="960" height="540" decoding="async">{% endif %}
     </a>
     <div class="article-featured__body">
       <div class="article-featured__meta">
-        <span class="article-featured__badge">Нове</span>
+        <span class="article-featured__badge">{{ interface.new_badge|default:'Нове' }}</span>
         <span class="article-card__cat">{{ featured.category }}</span>
         <span aria-hidden="true">·</span>
         <time datetime="{{ featured.published_at|date:'Y-m-d' }}">{{ featured.published_at|date:"j E Y" }}</time>
@@ -55,7 +55,7 @@
     <article class="blog-card">
       <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
         {% public_img article.image 'images/blog/article.webp' as article_src %}
-        {% if article_src %}<img src="{{ article_src }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+        {% if article_src %}<img src="{{ article_src }}" alt="{{ interface.cover_alt_prefix|default:'Обкладинка:' }} {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
       </a>
       <div class="blog-card__meta">
         <span class="article-card__cat">{{ article.category }}</span>
@@ -76,7 +76,7 @@
   </div>
 
   {% if page_obj.has_other_pages %}
-  <nav class="pagination" aria-label="Сторінки">
+  <nav class="pagination" aria-label="{{ interface.pagination_aria|default:'Сторінки' }}">
     {% for num in page_obj.paginator.page_range %}
     <a
       href="{% url 'blog:list' %}?{% if current_cat %}cat={{ current_cat|urlencode }}&{% endif %}page={{ num }}"

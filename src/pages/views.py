@@ -1,5 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import translation
 from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView
 
@@ -31,9 +34,18 @@ from .privacy_copy import fill_privacy_placeholders
 from .services import service_nav_items
 
 
+def _nav_label(field, fallback):
+    try:
+        from src.core.models import SiteSettings
+
+        return getattr(SiteSettings.load(), field, '') or fallback
+    except Exception:
+        return fallback
+
+
 def _crumbs_service(label):
     return [
-        {'label': 'Послуги', 'url': reverse('pages:services')},
+        {'label': _nav_label('nav_services', 'Послуги'), 'url': reverse('pages:services')},
         {'label': label, 'url': ''},
     ]
 
@@ -84,7 +96,7 @@ class AboutView(StyledPageMixin, TemplateView):
             },
         )
         # #endregion
-        ctx['crumbs'] = [{'label': 'Про компанію', 'url': ''}]
+        ctx['crumbs'] = [{'label': _nav_label('nav_about', 'Про компанію'), 'url': ''}]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
         return ctx
@@ -99,7 +111,7 @@ class ServicesIndexView(StyledPageMixin, TemplateView):
         page = ServicesIndex.load()
         ctx['page'] = page
         ctx['catalog'] = service_nav_items()
-        ctx['crumbs'] = [{'label': 'Послуги', 'url': ''}]
+        ctx['crumbs'] = [{'label': _nav_label('nav_services', 'Послуги'), 'url': ''}]
         ctx['lead_form'] = LeadForm()
         ctx['og_image'] = _og_image(self.request, page.hero_image)
         return ctx
@@ -107,14 +119,26 @@ class ServicesIndexView(StyledPageMixin, TemplateView):
 
 class ServiceDetailView(StyledPageMixin, TemplateView):
     page_style_key = 'services'
+
+    def dispatch(self, request, *args, **kwargs):
+        from src.core.i18n_urls import resolve_service
+
+        page, canonical = resolve_service(kwargs.get('slug', ''))
+        if canonical:
+            return redirect('pages:service_detail', slug=canonical, permanent=True)
+        if page is None:
+            raise Http404
+        self.page = page
+        return super().dispatch(request, *args, **kwargs)
+
     def get_template_names(self):
-        if self.kwargs.get('slug') == DEEP_SLUG:
+        if self.page.slug == DEEP_SLUG:
             return ['pages/deep_analytics.html']
         return ['pages/service_detail.html']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        page = get_object_or_404(ServicePage, slug=kwargs['slug'], is_published=True)
+        page = self.page
         ctx['page'] = page
         ctx['others'] = [s for s in service_nav_items() if s['key'] != page.slug]
         ctx['lead_form'] = LeadForm()
@@ -161,7 +185,7 @@ class ContactsView(StyledPageMixin, TemplateView):
 
         ctx = super().get_context_data(**kwargs)
         ctx['page'] = ContactsPage.load()
-        ctx['crumbs'] = [{'label': 'Контакти', 'url': ''}]
+        ctx['crumbs'] = [{'label': _nav_label('nav_contacts', 'Контакти'), 'url': ''}]
         ctx['lead_form'] = LeadForm()
 
         contacts = resolve_public_contacts(SiteSettings.load())
@@ -187,7 +211,7 @@ class PrivacyView(StyledPageMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['page'] = PrivacyPage.load()
-        ctx['crumbs'] = [{'label': 'Політика конфіденційності', 'url': ''}]
+        ctx['crumbs'] = [{'label': _nav_label('privacy_link_label', 'Політика конфіденційності'), 'url': ''}]
         ctx['hero_text'] = ctx['page'].hero_text
         ctx['lead_form'] = LeadForm()
         ctx['privacy_body'] = mark_safe(fill_privacy_placeholders(ctx['page'].body))
@@ -196,3 +220,32 @@ class PrivacyView(StyledPageMixin, TemplateView):
 
 def page_not_found(request, exception=None):
     return render(request, 'pages/404.html', {'lead_form': LeadForm()}, status=404)
+
+
+def _error_language(request) -> str:
+    path = request.path or ''
+    if path == '/en' or path.startswith('/en/'):
+        return 'en'
+    cookie = request.COOKIES.get('django_language', '')
+    if str(cookie).startswith('en'):
+        return 'en'
+    return 'uk'
+
+
+def server_error(request, exception=None):
+    """Сторінка 500 без бази: мова з префікса /en/ або cookie."""
+    path = (request.path or '').rstrip('/') or '/'
+    if path == '/500':
+        lang = 'uk'
+    elif path == '/en/500':
+        lang = 'en'
+    else:
+        lang = _error_language(request)
+    home_url = '/en/' if lang == 'en' else '/'
+    with translation.override(lang):
+        html = render_to_string('pages/500.html', {
+            'lang': lang,
+            'home_url': home_url,
+            'other_home': '/' if lang == 'en' else '/en/',
+        })
+    return HttpResponse(html, status=500, content_type='text/html; charset=utf-8')

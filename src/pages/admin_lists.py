@@ -3,6 +3,8 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 
+from src.core.admin_i18n import BilingualAdminMixin
+
 from src.pages.models import (
     AnalysisPaketStep,
     AnalysisPayTerm,
@@ -22,7 +24,7 @@ from src.pages.models import (
 )
 
 
-class _BindPage:
+class _BindPage(BilingualAdminMixin):
     parent_model = None
 
     def save_model(self, request, obj, form, change):
@@ -37,7 +39,7 @@ class _BindPage:
         return excluded
 
 
-class AnalysisTariffLineInline(TabularInline):
+class AnalysisTariffLineInline(BilingualAdminMixin, TabularInline):
     model = AnalysisTariffLine
     extra = 0
     fields = ("order", "label", "value")
@@ -100,18 +102,18 @@ class AnalysisPayTermAdmin(_BindPage, ModelAdmin):
 
 
 @admin.register(ServiceScopeParagraph)
-class ServiceScopeParagraphAdmin(ModelAdmin):
+class ServiceScopeParagraphAdmin(BilingualAdminMixin, ModelAdmin):
     list_display = ("page", "order")
     list_filter = ("page",)
     ordering = ("page", "order", "id")
 
 
 @admin.register(DeepAnalytics)
-class DeepAnalyticsAdmin(ModelAdmin):
+class DeepAnalyticsAdmin(BilingualAdminMixin, ModelAdmin):
     list_display = ("page", "h1")
 
 
-class _DeepChild(ModelAdmin):
+class _DeepChild(BilingualAdminMixin, ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not getattr(obj, "page_id", None):
             parent = DeepAnalytics.objects.first()

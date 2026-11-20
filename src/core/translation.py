@@ -1,0 +1,86 @@
+from modeltranslation.translator import TranslationOptions, register
+
+from src.core.models import SiteSettings
+from src.core.models_interface import InterfaceCopy
+
+
+@register(SiteSettings)
+class SiteSettingsTR(TranslationOptions):
+    fields = (
+        'company_name',
+        'tagline',
+        'address',
+        'default_seo_title',
+        'default_seo_description',
+        'footer_cta_title',
+        'footer_cta_text',
+        'nav_about',
+        'nav_services',
+        'nav_cases',
+        'nav_blog',
+        'nav_contacts',
+        'header_cta',
+        'mobile_lead',
+        'mobile_cta_secondary',
+        'footer_col_company',
+        'footer_col_services',
+        'footer_phone_label',
+        'footer_email_label',
+        'footer_address_label',
+        'footer_whatsapp_label',
+        'footer_signal_label',
+        'footer_telegram_label',
+        'footer_write_label',
+        'privacy_link_label',
+    )
+
+
+@register(InterfaceCopy)
+class InterfaceCopyTR(TranslationOptions):
+    fields = (
+        'lang_switch_aria',
+        'cookie_title',
+        'cookie_body',
+        'cookie_more_label',
+        'cookie_accept_label',
+        'cookie_settings_label',
+        'cookie_again_label',
+        'developed_label',
+        'back_to_top',
+        'back_to_top_aria',
+        'crumb_home',
+        'crumbs_aria',
+        'logo_home_aria',
+        'nav_main_aria',
+        'services_list_aria',
+        'menu_open_aria',
+        'footer_nav_aria',
+        'footer_services_aria',
+        'mobile_nav_aria',
+        'photo_lightbox_aria',
+        'photo_close_aria',
+        'modal_close_aria',
+        'form_aria',
+        'pagination_aria',
+        'feed_filter_aria',
+        'dir_prev_aria',
+        'dir_next_aria',
+        'profile_services_aria',
+        'map_title',
+        'article_section_aria',
+        'feed_section_aria',
+        'catalog_aria',
+        'privacy_section_aria',
+        'share_label',
+        'copy_link_label',
+        'copied_label',
+        'new_badge',
+        'cover_alt_prefix',
+        'service_alt_prefix',
+        'direction_alt_prefix',
+        'err404_meta_title',
+        'err404_title',
+        'err404_text',
+        'err404_primary',
+        'err404_secondary',
+    )

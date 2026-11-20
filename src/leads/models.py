@@ -68,6 +68,36 @@ class LeadModal(models.Model):
             'Факт звернення залишається конфіденційним.'
         ),
     )
+    error_required = models.CharField(
+        'Помилка: обовʼязкове поле',
+        max_length=160,
+        default='Поле обовʼязкове для заповнення',
+    )
+    error_name = models.CharField(
+        'Помилка: імʼя',
+        max_length=200,
+        default='Імʼя може містити лише літери, пробіл, дефіс або апостроф',
+    )
+    error_phone = models.CharField(
+        'Помилка: телефон',
+        max_length=200,
+        default='Введіть номер у форматі +380XXXXXXXXX або 0XXXXXXXXX',
+    )
+    error_email = models.CharField(
+        'Помилка: email',
+        max_length=160,
+        default='Введіть коректну електронну пошту',
+    )
+    error_message = models.CharField(
+        'Помилка: довжина повідомлення',
+        max_length=200,
+        default='Повідомлення має містити не більше 2000 символів',
+    )
+    error_consent = models.CharField(
+        'Помилка: згода',
+        max_length=160,
+        default='Потрібна згода на обробку даних',
+    )
 
     class Meta:
         verbose_name = 'Вікно заявки'

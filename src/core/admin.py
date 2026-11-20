@@ -4,17 +4,19 @@ from django.contrib.admin import ModelAdmin as DjangoModelAdmin
 from unfold.admin import ModelAdmin
 from unfold.forms import ActionForm
 
+from .admin_i18n import BilingualAdminMixin
 from .admin_recent_actions import patch_admin_urls
 from .admin_site_content_proxies import register_site_content_section_admins
 from .admin_site_content_widgets import CmsImageFieldWidget
 from .models import SiteSettings
+from .models_interface import InterfaceCopy
 
 register_site_content_section_admins()
 patch_admin_urls()
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(ModelAdmin):
+class SiteSettingsAdmin(BilingualAdminMixin, ModelAdmin):
     fieldsets = (
         ('Компанія', {
             'classes': ('tab',),
@@ -73,3 +75,19 @@ def _ukrainian_action_choices(self, request, default_choices=None):
 
 ModelAdmin.action_form = VartisActionForm
 ModelAdmin.get_action_choices = _ukrainian_action_choices
+
+
+@admin.register(InterfaceCopy)
+class InterfaceCopyAdmin(BilingualAdminMixin, ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        from django.shortcuts import redirect
+        from django.urls import reverse
+
+        InterfaceCopy.load()
+        return redirect(reverse('admin:core_interfacecopy_change', args=[1]))

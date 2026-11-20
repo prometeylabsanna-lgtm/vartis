@@ -8,7 +8,7 @@
     <div class="site-footer__grid">
       <div class="site-footer__left">
         <div class="site-footer__brand">
-          <a href="{% url 'pages:home' %}" class="site-footer__logo" aria-label="VARTIS INTELLIGENCE — на головну">
+          <a href="{% url 'pages:home' %}" class="site-footer__logo" aria-label="{{ interface.logo_home_aria|default:'VARTIS INTELLIGENCE — на головну' }}">
             {% if site_settings.logo %}
               <img src="{{ site_settings.logo.url }}" alt="" width="104" height="104" decoding="async">
             {% else %}
@@ -18,14 +18,14 @@
           <p class="site-footer__tagline">{{ site_settings.tagline }}</p>
         </div>
         <div class="site-footer__cols">
-          <nav class="site-footer__nav" aria-label="Навігація у футері">
+          <nav class="site-footer__nav" aria-label="{{ interface.footer_nav_aria|default:'Навігація у футері' }}">
             <p class="site-footer__nav-title">{{ site_settings.footer_col_company }}</p>
             <a href="{% url 'pages:about' %}">{{ site_settings.nav_about }}</a>
             <a href="{% url 'pages:services' %}">{{ site_settings.nav_services }}</a>
             <a href="{% url 'blog:list' %}">{{ site_settings.nav_blog }}</a>
             <a href="{% url 'pages:contacts' %}">{{ site_settings.nav_contacts }}</a>
           </nav>
-          <nav class="site-footer__nav" aria-label="Послуги у футері">
+          <nav class="site-footer__nav" aria-label="{{ interface.footer_services_aria|default:'Послуги у футері' }}">
             <p class="site-footer__nav-title">{{ site_settings.footer_col_services }}</p>
             {% for s in footer_services %}
             <a href="{{ s.href }}">{{ s.title }}</a>
@@ -82,7 +82,7 @@
     <div class="site-footer__bottom">
       <span>© {% now "Y" %} {{ site_settings.company_name }}</span>
       <span class="site-footer__credit">
-        Розроблено
+        {{ interface.developed_label|default:'Розроблено' }}
         {% if request.resolver_match.url_name == 'home' %}
         <a
           class="site-footer__credit-link"
@@ -96,10 +96,10 @@
       </span>
       <a href="{% url 'pages:privacy' %}">{{ site_settings.privacy_link_label }}</a>
       <button type="button" class="site-footer__cookie" data-action="reset-cookies">
-        Налаштування cookie
+        {{ interface.cookie_settings_label|default:'Налаштування cookie' }}
       </button>
-      <a href="#top" class="site-footer__up" aria-label="Повернутися вгору">
-        Вгору
+      <a href="#top" class="site-footer__up" aria-label="{{ interface.back_to_top_aria|default:'Повернутися вгору' }}">
+        {{ interface.back_to_top|default:'Вгору' }}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 12V2M7 2L3 6M7 2L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
     </div>

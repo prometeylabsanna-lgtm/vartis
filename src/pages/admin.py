@@ -10,6 +10,7 @@ from src.core.admin_site_content_widgets import (
     CmsImageFieldWidget,
     CmsTinyMCEWidget,
 )
+from src.core.admin_i18n import BilingualAdminMixin
 from src.pages.admin_team_widgets import CareerPathWidget, ExpertiseListWidget
 
 from .models import (
@@ -37,7 +38,7 @@ from .models import (
 )
 
 
-class _ParentPageMixin:
+class _ParentPageMixin(BilingualAdminMixin):
     """Автоматично привʼязує ListItem до singleton-сторінки."""
 
     parent_model = None
@@ -107,7 +108,11 @@ class ServicePageForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
 
+        rich_names = []
         for name in SERVICE_RICH_FIELDS:
+            rich_names.append(name)
+            rich_names.append(f'{name}_en')
+        for name in rich_names:
             if name not in self.fields:
                 continue
             limit = text_limit_for_key(name) or text_limit_for_key(name.replace('hero_', '').replace('card_', ''))
@@ -158,7 +163,11 @@ class _CountableInlineForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        limits = {}
         for name, max_chars in self.text_limits.items():
+            limits[name] = max_chars
+            limits[f'{name}_en'] = max_chars
+        for name, max_chars in limits.items():
             if name not in self.fields:
                 continue
             field = self.fields[name]
@@ -199,7 +208,7 @@ class ServiceAdvantageForm(_CountableInlineForm):
         fields = '__all__'
 
 
-class ServiceScopeItemInline(StackedInline):
+class ServiceScopeItemInline(BilingualAdminMixin, StackedInline):
     model = ServiceScopeItem
     form = ServiceScopeItemForm
     extra = 0
@@ -207,7 +216,7 @@ class ServiceScopeItemInline(StackedInline):
     classes = ['vartis-inline-card']
 
 
-class ServiceMethodStepInline(StackedInline):
+class ServiceMethodStepInline(BilingualAdminMixin, StackedInline):
     model = ServiceMethodStep
     form = ServiceMethodStepForm
     extra = 0
@@ -215,7 +224,7 @@ class ServiceMethodStepInline(StackedInline):
     classes = ['vartis-inline-card']
 
 
-class ServiceAdvantageInline(StackedInline):
+class ServiceAdvantageInline(BilingualAdminMixin, StackedInline):
     model = ServiceAdvantage
     form = ServiceAdvantageForm
     extra = 0
@@ -224,7 +233,7 @@ class ServiceAdvantageInline(StackedInline):
 
 
 @admin.register(ServicePage)
-class ServicePageAdmin(ModelAdmin):
+class ServicePageAdmin(BilingualAdminMixin, ModelAdmin):
     form = ServicePageForm
     list_display = ('title', 'slug', 'order', 'is_published')
     list_editable = ('order', 'is_published')
@@ -301,23 +310,27 @@ class TeamMemberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        if 'bio' in self.fields:
-            self.fields['bio'].widget = CmsTinyMCEWidget(
+        for rich_name in ('bio', 'bio_en'):
+            if rich_name not in self.fields:
+                continue
+            self.fields[rich_name].widget = CmsTinyMCEWidget(
                 attrs={'rows': 10},
                 max_chars=2000,
                 hard_limit=False,
             )
-            self.fields['bio'].help_text = 'Рекомендовано до 2000 символів.'
-        if 'expertise' in self.fields:
-            self.fields['expertise'].widget = ExpertiseListWidget()
-            self.fields['expertise'].help_text = (
-                'Кожен рядок — окремий пункт списку на сайті. Розмітка підставляється автоматично.'
-            )
-        if 'career_path' in self.fields:
-            self.fields['career_path'].widget = CareerPathWidget()
-            self.fields['career_path'].help_text = (
-                'Заголовок — жирний і золотий, роки — окремим рядком, як на сайті.'
-            )
+            self.fields[rich_name].help_text = 'Рекомендовано до 2000 символів.'
+        for json_name in ('expertise', 'expertise_en'):
+            if json_name in self.fields:
+                self.fields[json_name].widget = ExpertiseListWidget()
+                self.fields[json_name].help_text = (
+                    'Кожен рядок — окремий пункт списку на сайті. Розмітка підставляється автоматично.'
+                )
+        for path_name in ('career_path', 'career_path_en'):
+            if path_name in self.fields:
+                self.fields[path_name].widget = CareerPathWidget()
+                self.fields[path_name].help_text = (
+                    'Заголовок — жирний і золотий, роки — окремим рядком, як на сайті.'
+                )
         if 'photo' in self.fields:
             profile = image_profile_for_key('team_photo')
             self.fields['photo'].widget = CmsImageFieldWidget(
@@ -325,7 +338,11 @@ class TeamMemberForm(forms.ModelForm):
                 preview_url=_preview_url(getattr(instance, 'photo', None) if instance else None),
             )
             self.fields['photo'].help_text = profile.hint
-        for name, max_chars in (('name', 80), ('role', 120), ('regalia', 200)):
+        for name, max_chars in (
+            ('name', 80), ('name_en', 80),
+            ('role', 120), ('role_en', 120),
+            ('regalia', 200), ('regalia_en', 200),
+        ):
             if name in self.fields:
                 self.fields[name].widget = CmsAdminTextInputWidget(
                     max_chars=max_chars,

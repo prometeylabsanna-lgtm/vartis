@@ -2,9 +2,11 @@ from django.db import migrations, models
 
 
 def forwards(apps, schema_editor):
+    from src.core.migration_compat import hide_unmigrated_fields
     from src.pages.home_directions_seed import seed_home_directions
 
-    seed_home_directions()
+    with hide_unmigrated_fields(schema_editor):
+        seed_home_directions()
 
 
 class Migration(migrations.Migration):

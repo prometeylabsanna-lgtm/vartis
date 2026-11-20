@@ -1,0 +1,16 @@
+<nav class="lang-switch {{ extra_class }}" aria-label="{{ interface.lang_switch_aria|default:'Мова' }}">
+  <a
+    href="{{ lang_uk_url|default:'/' }}"
+    class="lang-switch__btn{% if LANGUAGE_CODE == 'uk' %} is-active{% endif %}"
+    lang="uk"
+    hreflang="uk"
+    {% if LANGUAGE_CODE == 'uk' %}aria-current="true"{% endif %}
+  >UA</a>
+  <a
+    href="{{ lang_en_url|default:'/en/' }}"
+    class="lang-switch__btn{% if LANGUAGE_CODE == 'en' %} is-active{% endif %}"
+    lang="en"
+    hreflang="en"
+    {% if LANGUAGE_CODE == 'en' %}aria-current="true"{% endif %}
+  >EN</a>
+</nav>

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Сторінку не знайдено — VARTIS INTELLIGENCE{% endblock %}
+{% block title %}{{ interface.err404_meta_title|default:'Сторінку не знайдено — VARTIS INTELLIGENCE' }}{% endblock %}
 {% block meta_robots %}noindex, nofollow{% endblock %}
 
 {% block content %}
 {% url 'pages:home' as home_url %}
 {% url 'pages:services' as services_url %}
 <div id="top">
-  {% include 'partials/hero.html' with code='404' title='Сторінку не знайдено' text='Можливо, адресу введено з помилкою або сторінку було переміщено. Поверніться на головну або оберіть потрібний розділ у меню.' fallback_static='images/hero.webp' shade=True show_cta=True primary_href=home_url cta_primary='На головну' secondary_href=services_url secondary_label='Наші послуги' %}
+  {% include 'partials/hero.html' with code='404' title=interface.err404_title|default:'Сторінку не знайдено' text=interface.err404_text|default:'Можливо, адресу введено з помилкою або сторінку було переміщено. Поверніться на головну або оберіть потрібний розділ у меню.' fallback_static='images/hero.webp' shade=True show_cta=True primary_href=home_url cta_primary=interface.err404_primary|default:'На головну' secondary_href=services_url secondary_label=interface.err404_secondary|default:'Наші послуги' %}
 </div>
 {% endblock %}

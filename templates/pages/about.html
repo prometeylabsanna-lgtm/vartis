@@ -130,10 +130,10 @@
     role="dialog"
     aria-modal="true"
     aria-hidden="true"
-    aria-label="Перегляд фото"
+    aria-label="{{ interface.photo_lightbox_aria|default:'Перегляд фото' }}"
     hidden
   >
-    <button type="button" class="photo-lb__close" data-action="close-photo" aria-label="Закрити">×</button>
+    <button type="button" class="photo-lb__close" data-action="close-photo" aria-label="{{ interface.photo_close_aria|default:'Закрити' }}">×</button>
     <img class="photo-lb__img" id="photo-lb-img" src="" alt="">
     <p class="photo-lb__caption" id="photo-lb-caption"></p>
   </div>

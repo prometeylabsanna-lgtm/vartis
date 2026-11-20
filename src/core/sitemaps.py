@@ -6,6 +6,9 @@ from src.pages.models import ServicePage
 
 
 class StaticSitemap(Sitemap):
+    i18n = True
+    alternates = True
+    x_default = True
     def changefreq(self, item):
         if item[0] == 'pages:privacy':
             return 'yearly'
@@ -33,23 +36,34 @@ class StaticSitemap(Sitemap):
 class ServiceSitemap(Sitemap):
     changefreq = 'weekly'
     priority = 0.8
+    i18n = True
+    alternates = True
+    x_default = True
 
     def items(self):
         return ServicePage.objects.filter(is_published=True)
 
     def location(self, obj):
-        return reverse('pages:service_detail', kwargs={'slug': obj.slug})
+        from django.utils.translation import get_language
+
+        slug = obj.slug
+        if (get_language() or '').startswith('en') and obj.slug_en:
+            slug = obj.slug_en
+        return reverse('pages:service_detail', kwargs={'slug': slug})
 
 
 class ArticleSitemap(Sitemap):
     changefreq = 'weekly'
     priority = 0.6
+    i18n = True
+    alternates = True
+    x_default = True
 
     def items(self):
         return Article.objects.filter(is_published=True)
 
     def lastmod(self, obj):
-        return obj.updated_at
+        return obj.published_at
 
 
 sitemaps = {

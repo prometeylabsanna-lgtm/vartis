@@ -6,13 +6,13 @@
 <div id="top">
   {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=page.hero_text image=services_hero shade=True show_cta=True cta_primary=page.cta_primary secondary_href='#catalog' secondary_label=page.cta_secondary crumbs=crumbs %}
 
-  <section id="catalog" class="section section--end" aria-label="Каталог послуг">
+  <section id="catalog" class="section section--end" aria-label="{{ interface.catalog_aria|default:'Каталог послуг' }}">
     <div class="container">
       <div class="split-catalog">
         {% for c in catalog %}
         <article id="{{ c.key }}" class="split-item">
           <a href="{{ c.href }}" class="split-item__media" aria-label="{{ c.title }}">
-            {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="Фото напряму: {{ c.title }}" loading="lazy" width="800" height="500" decoding="async">{% endif %}
+            {% if c.card_image_url %}<img src="{{ c.card_image_url }}" alt="{{ interface.direction_alt_prefix|default:'Фото напряму:' }} {{ c.title }}" loading="lazy" width="800" height="500" decoding="async">{% endif %}
           </a>
           <div class="split-item__body">
             <span class="split-item__num">0{{ forloop.counter }}</span>

@@ -2,9 +2,11 @@ from django.db import migrations
 
 
 def forwards(apps, schema_editor):
+    from src.core.migration_compat import hide_unmigrated_fields
     from src.pages.canon_seed import sync_all
 
-    sync_all()
+    with hide_unmigrated_fields(schema_editor):
+        sync_all()
 
 
 class Migration(migrations.Migration):

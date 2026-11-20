@@ -8,4 +8,5 @@ gunicorn==26.2.0
 psycopg[binary]==3.3.6
 django-csp==4.0
 django-axes==9.0.0
+django-modeltranslation==0.20.6
 # TinyMCE в CMS-адмінці — CDN (jsdelivr), окремий пакет не потрібен

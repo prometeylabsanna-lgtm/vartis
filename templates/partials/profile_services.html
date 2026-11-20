@@ -1,14 +1,14 @@
 <div class="dir-scroller mt-40" data-dir-scroller>
-  <button type="button" class="dir-scroller__btn dir-scroller__btn--prev" data-dir-prev aria-label="Попередні послуги">
+  <button type="button" class="dir-scroller__btn dir-scroller__btn--prev" data-dir-prev aria-label="{{ interface.dir_prev_aria|default:'Попередні послуги' }}">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path d="M11.5 3.5L6 9l5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
   </button>
-  <div class="dir-grid dir-grid--profile" data-dir-track tabindex="0" aria-label="Профільні послуги">
+  <div class="dir-grid dir-grid--profile" data-dir-track tabindex="0" aria-label="{{ interface.profile_services_aria|default:'Профільні послуги' }}">
     {% for s in others %}
     <a href="{{ s.href }}" class="dir-card">
       <div class="dir-card__media">
-        {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="Ілюстрація послуги: {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+        {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="{{ interface.service_alt_prefix|default:'Ілюстрація послуги:' }} {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
       </div>
       <div class="dir-card__body">
         <h3 class="dir-card__title">{{ s.title }}</h3>
@@ -17,7 +17,7 @@
     </a>
     {% endfor %}
   </div>
-  <button type="button" class="dir-scroller__btn dir-scroller__btn--next" data-dir-next aria-label="Наступні послуги">
+  <button type="button" class="dir-scroller__btn dir-scroller__btn--next" data-dir-next aria-label="{{ interface.dir_next_aria|default:'Наступні послуги' }}">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path d="M6.5 3.5L12 9l-5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>

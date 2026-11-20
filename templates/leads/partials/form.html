@@ -8,12 +8,18 @@
   {% if form_variant == 'modal' %}
   hx-target="#modal-panel"
   hx-swap="innerHTML"
-  aria-label="Форма заявки у вікні"
+  aria-label="{{ interface.form_aria|default:'Форма заявки у вікні' }}"
   {% else %}
   hx-target="this"
   hx-swap="outerHTML"
   {% endif %}
   novalidate
+  data-msg-required="{{ lead_modal.error_required }}"
+  data-msg-name="{{ lead_modal.error_name }}"
+  data-msg-phone="{{ lead_modal.error_phone }}"
+  data-msg-email="{{ lead_modal.error_email }}"
+  data-msg-message="{{ lead_modal.error_message }}"
+  data-msg-consent="{{ lead_modal.error_consent }}"
 >
   {% csrf_token %}
   <input type="hidden" name="form_variant" value="{{ form_variant|default:'footer' }}">

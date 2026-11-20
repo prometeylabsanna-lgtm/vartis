@@ -126,3 +126,4 @@ class SiteSettings(SingletonModel):
 
 
 from src.core import cms_proxies as _cms_proxies  # noqa: E402,F401
+from src.core.models_interface import InterfaceCopy  # noqa: E402,F401

@@ -1,7 +1,7 @@
 {% load vartis_icons %}
 <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
   <div class="mobile-nav__inner">
-    <nav aria-label="Мобільна навігація">
+    <nav aria-label="{{ interface.mobile_nav_aria|default:'Мобільна навігація' }}">
       <ul class="mobile-nav__list">
         <li>
           <a href="{% url 'pages:about' %}" class="mobile-nav__link" data-action="close-menu">
@@ -48,6 +48,7 @@
       <div class="btn-row">
         <button type="button" class="btn btn--primary" data-action="open-form">{{ site_settings.header_cta }}</button>
         <button type="button" class="btn btn--light" data-action="open-form">{{ site_settings.mobile_cta_secondary }}</button>
+        {% include 'partials/lang_switch.html' with extra_class='lang-switch--menu' %}
       </div>
     </div>
   </div>

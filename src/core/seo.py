@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 
 STAGING_HOST_MARKERS = ('vercel.app', 'localhost', '127.0.0.1')
 
@@ -100,6 +101,7 @@ def organization_schema(request, site_settings) -> dict[str, Any]:
             'name': 'UA',
         },
         'knowsLanguage': ['uk', 'en'],
+        'inLanguage': 'en-US' if (get_language() or '').startswith('en') else 'uk-UA',
         'priceRange': '$$',
     }
     from src.core.contact_defaults import resolve_public_contacts
@@ -110,32 +112,47 @@ def organization_schema(request, site_settings) -> dict[str, Any]:
     data['address'] = {
         '@type': 'PostalAddress',
         'streetAddress': contacts['address'],
-        'addressLocality': 'Київ',
+        'addressLocality': 'Kyiv' if (get_language() or '').startswith('en') else 'Київ',
         'addressCountry': 'UA',
     }
     data['sameAs'] = [contacts['facebook_url']]
     return data
 
 
+def _content_language() -> str:
+    return 'en-US' if (get_language() or '').startswith('en') else 'uk-UA'
+
+
 def website_schema(request) -> dict[str, Any]:
+    from django.urls import reverse
+
     return {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         'name': 'VARTIS INTELLIGENCE',
-        'url': get_public_origin(request) + '/',
-        'inLanguage': 'uk-UA',
+        'url': absolute_url(request, reverse('pages:home')),
+        'inLanguage': _content_language(),
     }
 
 
 def breadcrumb_schema(request, crumbs: list[dict[str, str]] | None) -> dict[str, Any] | None:
     if not crumbs:
         return None
+    from django.urls import reverse
+
+    home_name = 'Головна'
+    try:
+        from src.core.models_interface import InterfaceCopy
+
+        home_name = InterfaceCopy.load().crumb_home or home_name
+    except Exception:
+        pass
     items = [
         {
             '@type': 'ListItem',
             'position': 1,
-            'name': 'Головна',
-            'item': absolute_url(request, '/'),
+            'name': home_name,
+            'item': absolute_url(request, reverse('pages:home')),
         }
     ]
     for index, crumb in enumerate(crumbs, start=2):
@@ -171,7 +188,7 @@ def article_schema(request, article, site_settings) -> dict[str, Any]:
         'description': (article.seo_description or article.excerpt or '')[:300],
         'datePublished': article.published_at.isoformat(),
         'dateModified': article.updated_at.date().isoformat(),
-        'inLanguage': 'uk-UA',
+        'inLanguage': _content_language(),
         'mainEntityOfPage': {
             '@type': 'WebPage',
             '@id': absolute_url(request, article.get_absolute_url()),

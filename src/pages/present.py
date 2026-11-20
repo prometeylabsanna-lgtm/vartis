@@ -38,6 +38,12 @@ def home_steps(page):
     ]
 
 
+def _local_href(href: str) -> str:
+    from src.core.i18n_urls import localize_internal_path
+
+    return localize_internal_path(href or '#')
+
+
 def home_directions(page):
     from src.core.public_images import public_image_url
 
@@ -46,7 +52,7 @@ def home_directions(page):
         items.append({
             'title': item.title,
             'card_text': item.text,
-            'href': item.href or '#',
+            'href': _local_href(item.href),
             'card_image_url': public_image_url(item.image),
         })
     return items

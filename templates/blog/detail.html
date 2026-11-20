@@ -17,7 +17,7 @@
 <div id="top">
   {% include 'partials/hero.html' with title=article.display_h1 text=article.excerpt image=article_hero shade=True show_cta=True cta_primary=blog_page.detail_cta secondary_href='#article' secondary_label=blog_page.detail_read crumbs=crumbs %}
 
-  <section id="article" class="art-section" aria-label="Текст статті">
+  <section id="article" class="art-section" aria-label="{{ interface.article_section_aria|default:'Текст статті' }}">
     <div class="art-layout">
       <aside class="art-aside">
         <div class="art-aside__meta">
@@ -26,13 +26,13 @@
           <span>{{ article.read_label }}</span>
         </div>
         <div class="art-share">
-          <p class="art-share__label">Поділитися</p>
+          <p class="art-share__label">{{ interface.share_label|default:'Поділитися' }}</p>
           <div class="art-share__row">
             <a class="art-share__btn" href="https://t.me/share/url?url={{ share_url|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">Telegram</a>
             <a class="art-share__btn" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">Facebook</a>
             <a class="art-share__btn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url|urlencode }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a class="art-share__btn" href="https://twitter.com/intent/tweet?url={{ share_url|urlencode }}&text={{ article.title|urlencode }}" target="_blank" rel="noopener noreferrer">X</a>
-            <button type="button" class="art-share__btn" data-action="share-copy" data-url="{{ share_url }}">Скопіювати посилання</button>
+            <button type="button" class="art-share__btn" data-action="share-copy" data-url="{{ share_url }}" data-label="{{ interface.copy_link_label|default:'Скопіювати посилання' }}" data-copied="{{ interface.copied_label|default:'Скопійовано' }}">{{ interface.copy_link_label|default:'Скопіювати посилання' }}</button>
           </div>
         </div>
       </aside>
@@ -88,7 +88,7 @@
         <article class="blog-card">
           <a href="{{ article.get_absolute_url }}" class="blog-card__media" aria-label="{{ article.title }}">
             {% public_img article.image 'images/blog/article.webp' as related_src %}
-            {% if related_src %}<img src="{{ related_src }}" alt="Обкладинка: {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+            {% if related_src %}<img src="{{ related_src }}" alt="{{ interface.cover_alt_prefix|default:'Обкладинка:' }} {{ article.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </a>
           <div class="blog-card__meta">
             <span class="article-card__cat">{{ article.category }}</span>

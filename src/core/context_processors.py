@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.translation import get_language
 
 from .contact_defaults import resolve_public_contacts
 from .models import SiteSettings
@@ -61,6 +62,28 @@ def site_settings(request):
         except Exception:
             lead_form = None
 
+    try:
+        from src.core.models_interface import InterfaceCopy
+
+        interface = InterfaceCopy.load()
+    except Exception:
+        interface = None
+
+    try:
+        from src.core.i18n_urls import language_url
+        from src.core.seo import absolute_url as _abs
+
+        lang_uk_url = language_url(request, 'uk')
+        lang_en_url = language_url(request, 'en')
+        hreflang_uk = _abs(request, lang_uk_url)
+        hreflang_en = _abs(request, lang_en_url)
+    except Exception:
+        lang_uk_url = '/'
+        lang_en_url = '/en/'
+        hreflang_uk = ''
+        hreflang_en = ''
+
+    lang = (get_language() or 'uk').split('-')[0]
     default_og = media_or_static_absolute(
         request,
         f'{settings.STATIC_URL}images/og-default.webp',
@@ -69,6 +92,12 @@ def site_settings(request):
 
     return {
         'site_settings': settings_obj,
+        'interface': interface,
+        'lang_uk_url': lang_uk_url,
+        'lang_en_url': lang_en_url,
+        'hreflang_uk': hreflang_uk,
+        'hreflang_en': hreflang_en,
+        'og_locale': 'en_US' if lang == 'en' else 'uk_UA',
         'public_contacts': public_contacts,
         'nav_services': services,
         'footer_services': footer_services,

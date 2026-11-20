@@ -135,6 +135,16 @@ class LeadForm(forms.ModelForm):
         self.fields['message'].widget.attrs['placeholder'] = _modal_value(
             'message_placeholder', ''
         )
+        required = _modal_value('error_required', "Поле обовʼязкове для заповнення")
+        self.fields['name'].error_messages['required'] = required
+        self.fields['phone'].error_messages['required'] = required
+        self.fields['email'].error_messages['required'] = required
+        self.fields['email'].error_messages['invalid'] = _modal_value(
+            'error_email', 'Введіть коректну електронну пошту',
+        )
+        self.fields['consent'].error_messages['required'] = _modal_value(
+            'error_consent', 'Потрібна згода на обробку даних',
+        )
         if self.is_bound:
             for name in self.fields:
                 if self.errors.get(name):
@@ -146,44 +156,57 @@ class LeadForm(forms.ModelForm):
     def clean_name(self):
         name = re.sub(r'\s+', ' ', (self.cleaned_data.get('name') or '').strip())
         if len(name) < 2:
-            raise forms.ValidationError("Поле обовʼязкове для заповнення")
+            raise forms.ValidationError(_modal_value('error_required', "Поле обовʼязкове для заповнення"))
         if not NAME_RE.match(name):
             raise forms.ValidationError(
-                "Імʼя може містити лише літери, пробіл, дефіс або апостроф"
+                _modal_value(
+                    'error_name',
+                    "Імʼя може містити лише літери, пробіл, дефіс або апостроф",
+                )
             )
         return name
 
     def clean_phone(self):
         phone = (self.cleaned_data.get('phone') or '').strip()
         if not phone:
-            raise forms.ValidationError("Поле обовʼязкове для заповнення")
+            raise forms.ValidationError(_modal_value('error_required', "Поле обовʼязкове для заповнення"))
         normalized = normalize_ua_phone(phone)
         if not normalized:
             raise forms.ValidationError(
-                'Введіть номер у форматі +380XXXXXXXXX або 0XXXXXXXXX'
+                _modal_value(
+                    'error_phone',
+                    'Введіть номер у форматі +380XXXXXXXXX або 0XXXXXXXXX',
+                )
             )
         return normalized
 
     def clean_email(self):
         email = (self.cleaned_data.get('email') or '').strip()
         if not email:
-            raise forms.ValidationError("Поле обовʼязкове для заповнення")
+            raise forms.ValidationError(_modal_value('error_required', "Поле обовʼязкове для заповнення"))
         if not EMAIL_RE.match(email):
-            raise forms.ValidationError('Введіть коректну електронну пошту')
+            raise forms.ValidationError(
+                _modal_value('error_email', 'Введіть коректну електронну пошту')
+            )
         return email.lower()
 
     def clean_message(self):
         message = (self.cleaned_data.get('message') or '').strip()
         if len(message) > LEAD_MESSAGE_MAX_LENGTH:
             raise forms.ValidationError(
-                'Повідомлення має містити не більше 2000 символів'
+                _modal_value(
+                    'error_message',
+                    'Повідомлення має містити не більше 2000 символів',
+                )
             )
         return message
 
     def clean_consent(self):
         consent = self.cleaned_data.get('consent')
         if not consent:
-            raise forms.ValidationError('Потрібна згода на обробку даних')
+            raise forms.ValidationError(
+                _modal_value('error_consent', 'Потрібна згода на обробку даних')
+            )
         return consent
 
     def clean_honeypot(self):

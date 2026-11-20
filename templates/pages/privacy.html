@@ -9,12 +9,12 @@
 <div id="top">
   {% include 'partials/hero.html' with title=page.h1|default:page.hero_title text=hero_text fallback_static='images/hero.webp' shade=True crumbs=crumbs %}
 
-  <section class="privacy-section" aria-label="Текст політики">
+  <section class="privacy-section" aria-label="{{ interface.privacy_section_aria|default:'Текст політики' }}">
     <div class="privacy-body">
       {{ privacy_body }}
       <p class="privacy-cookie-reset-wrap">
         <button type="button" class="privacy-cookie-reset" data-action="reset-cookies">
-          Показати банер cookie знову
+          {{ interface.cookie_again_label|default:'Показати банер cookie знову' }}
         </button>
       </p>
     </div>

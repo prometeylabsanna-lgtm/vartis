@@ -1,6 +1,6 @@
 {% load static django_htmx vartis_seo %}
 <!DOCTYPE html>
-<html lang="uk"{% if gtm_id %} data-gtm-id="{{ gtm_id }}"{% endif %}>
+<html lang="{{ LANGUAGE_CODE|default:'uk' }}"{% if gtm_id %} data-gtm-id="{{ gtm_id }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,9 +12,13 @@
   <meta name="description" content="{% block meta_description %}{% if page.seo_description %}{{ page.seo_description }}{% elif seo_description %}{{ seo_description }}{% elif article.seo_description %}{{ article.seo_description }}{% else %}{{ site_settings.default_seo_description }}{% endif %}{% endblock %}">
   <meta name="robots" content="{% block meta_robots %}{{ seo_robots }}{% endblock %}">
   <link rel="canonical" href="{% block canonical %}{{ canonical_url }}{% endblock %}">
+  {% if hreflang_uk %}<link rel="alternate" hreflang="uk" href="{{ hreflang_uk }}">{% endif %}
+  {% if hreflang_en %}<link rel="alternate" hreflang="en" href="{{ hreflang_en }}">{% endif %}
+  {% if hreflang_uk %}<link rel="alternate" hreflang="x-default" href="{{ hreflang_uk }}">{% endif %}
 
   <meta property="og:type" content="{% block og_type %}{% if og_type %}{{ og_type }}{% else %}website{% endif %}{% endblock %}">
-  <meta property="og:locale" content="uk_UA">
+  <meta property="og:locale" content="{{ og_locale|default:'uk_UA' }}">
+  <meta property="og:locale:alternate" content="{% if og_locale == 'en_US' %}uk_UA{% else %}en_US{% endif %}">
   <meta property="og:site_name" content="VARTIS INTELLIGENCE">
   <meta property="og:title" content="{% block og_title %}{% if page.seo_title %}{{ page.seo_title }}{% elif seo_title %}{{ seo_title }}{% elif article.seo_title %}{{ article.seo_title }}{% else %}{{ site_settings.default_seo_title }}{% endif %}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{% if page.seo_description %}{{ page.seo_description }}{% elif seo_description %}{{ seo_description }}{% elif article.seo_description %}{{ article.seo_description }}{% else %}{{ site_settings.default_seo_description }}{% endif %}{% endblock %}">

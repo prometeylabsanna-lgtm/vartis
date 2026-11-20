@@ -22,7 +22,7 @@
         {% for s in services %}
         <a href="{{ s.href }}" class="dir-card">
           <div class="dir-card__media">
-            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="Ілюстрація послуги: {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
+            {% if s.card_image_url %}<img src="{{ s.card_image_url }}" alt="{{ interface.service_alt_prefix|default:'Ілюстрація послуги:' }} {{ s.title }}" loading="lazy" width="640" height="360" decoding="async">{% endif %}
           </div>
           <div class="dir-card__body">
             <h3 class="dir-card__title">{{ s.title }}</h3>

@@ -5,7 +5,7 @@
 <div id="top">
   {% include 'partials/hero.html' with title=h1 text=hero_text fallback_static='images/blog/meet.webp' shade=True show_cta=True cta_primary=blog_page.cta_primary secondary_href='#feed' secondary_label=blog_page.cta_secondary crumbs=crumbs %}
 
-  <section id="feed" class="section section--end blog-feed" aria-label="Стрічка статей">
+  <section id="feed" class="section section--end blog-feed" aria-label="{{ interface.feed_section_aria|default:'Стрічка статей' }}">
     <div class="container">
       {% include 'blog/partials/feed.html' %}
     </div>

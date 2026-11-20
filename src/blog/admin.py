@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from unfold.admin import ModelAdmin
 
+from src.core.admin_i18n import BilingualAdminMixin
 from src.core.admin_mixins import TopDropdownFiltersMixin
 from src.core.admin_site_content_widgets import CmsTinyMCEWidget
 
@@ -10,7 +11,7 @@ from .models import Article, BlogArticleBanner, BlogPage
 
 
 @admin.register(Article)
-class ArticleAdmin(TopDropdownFiltersMixin, ModelAdmin):
+class ArticleAdmin(BilingualAdminMixin, TopDropdownFiltersMixin, ModelAdmin):
     list_display = ('title', 'category', 'published_at', 'read_minutes', 'is_published')
     list_filter = ('category', 'is_published')
     search_fields = ('title', 'slug', 'excerpt', 'body')
@@ -30,7 +31,7 @@ class ArticleAdmin(TopDropdownFiltersMixin, ModelAdmin):
     )
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
-        if db_field.name == 'body':
+        if db_field.name in ('body', 'body_en'):
             kwargs['widget'] = CmsTinyMCEWidget(
                 attrs={'class': 'cms-tinymce--article', 'rows': 22},
             )
@@ -55,7 +56,7 @@ class _SingletonRedirectAdmin(ModelAdmin):
 
 
 @admin.register(BlogPage)
-class BlogPageAdmin(_SingletonRedirectAdmin):
+class BlogPageAdmin(BilingualAdminMixin, _SingletonRedirectAdmin):
     fieldsets = (
         ('Сторінка блогу — Сторінка', {
             'classes': ['tab'],
@@ -73,7 +74,7 @@ class BlogPageAdmin(_SingletonRedirectAdmin):
 
 
 @admin.register(BlogArticleBanner)
-class BlogArticleBannerAdmin(_SingletonRedirectAdmin):
+class BlogArticleBannerAdmin(BilingualAdminMixin, _SingletonRedirectAdmin):
     fields = ('help_title', 'help_cta')
 
     def get_form(self, request, obj=None, change=False, **kwargs):

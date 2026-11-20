@@ -12,9 +12,9 @@
   {% endif %}
   <div class="hero__panel">
     {% if crumbs %}
-    <nav aria-label="Хлібні крихти">
+    <nav aria-label="{{ interface.crumbs_aria|default:'Хлібні крихти' }}">
       <ol class="hero__crumbs">
-        <li><a href="{% url 'pages:home' %}">Головна</a></li>
+        <li><a href="{% url 'pages:home' %}">{{ interface.crumb_home|default:'Головна' }}</a></li>
         {% for crumb in crumbs %}
         <li aria-hidden="true">/</li>
         {% if crumb.url %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
+from src.core.admin_i18n import BilingualAdminMixin
 from src.core.admin_mixins import TopDropdownFiltersMixin
 
 from .models import Lead, LeadModal
@@ -19,7 +20,7 @@ class LeadAdmin(TopDropdownFiltersMixin, ModelAdmin):
 
 
 @admin.register(LeadModal)
-class LeadModalAdmin(ModelAdmin):
+class LeadModalAdmin(BilingualAdminMixin, ModelAdmin):
     def has_add_permission(self, request):
         return False
 

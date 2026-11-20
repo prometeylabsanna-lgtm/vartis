@@ -126,8 +126,10 @@
       var url = btn.getAttribute('data-url') || window.location.href;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(function () {
-          btn.textContent = 'Скопійовано';
-          setTimeout(function () { btn.textContent = 'Скопіювати посилання'; }, 1800);
+          var copied = btn.getAttribute('data-copied') || 'Скопійовано';
+          var label = btn.getAttribute('data-label') || 'Скопіювати посилання';
+          btn.textContent = copied;
+          setTimeout(function () { btn.textContent = label; }, 1800);
         });
       }
     });

@@ -1,6 +1,6 @@
 <div id="lead-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="lead-modal-title" aria-modal="true">
   <div class="modal__dialog">
-    <button type="button" class="modal__close" data-action="close-form" aria-label="Закрити">×</button>
+    <button type="button" class="modal__close" data-action="close-form" aria-label="{{ interface.modal_close_aria|default:'Закрити' }}">×</button>
     <div id="modal-panel">
       {% include 'leads/partials/modal_panel.html' %}
     </div>
