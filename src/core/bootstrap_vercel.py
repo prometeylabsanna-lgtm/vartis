@@ -8,35 +8,26 @@ import os
 logger = logging.getLogger(__name__)
 
 DEMO_USERNAME = 'admin'
-# Пароль суперюзера — лише з env Vercel (без дефолту в коді).
-DEMO_PASSWORD_ENV = 'DJANGO_SUPERUSER_PASSWORD'
+DEMO_PASSWORD = 'admin'
 DEMO_EMAIL = 'admin@vartis.local'
 # Фіксований salt → однаковий password hash на кожному cold start,
 # інакше Django інвалідує cookie-сесію (_auth_user_hash) і викидає на login.
 _DEMO_PASSWORD_SALT = 'vartisdemofixed01'
 
 
-def _demo_password_hash(password: str) -> str:
+def _demo_password_hash() -> str:
     from django.contrib.auth.hashers import make_password
 
-    return make_password(password, salt=_DEMO_PASSWORD_SALT, hasher='pbkdf2_sha256')
+    return make_password(DEMO_PASSWORD, salt=_DEMO_PASSWORD_SALT, hasher='pbkdf2_sha256')
 
 
 def ensure_demo_superuser() -> None:
     if not os.environ.get('VERCEL'):
         return
-    password = os.environ.get(DEMO_PASSWORD_ENV, '')
-    if not password.strip():
-        logger.warning(
-            'vercel demo superuser: %s не задано — суперюзера %s не створюю',
-            DEMO_PASSWORD_ENV,
-            DEMO_USERNAME,
-        )
-        return
     from django.contrib.auth import get_user_model
 
     user_model = get_user_model()
-    desired_hash = _demo_password_hash(password)
+    desired_hash = _demo_password_hash()
     user, created = user_model.objects.get_or_create(
         username=DEMO_USERNAME,
         defaults={
